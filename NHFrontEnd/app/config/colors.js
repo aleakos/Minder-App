@@ -1,4 +1,5 @@
 export default {
-  primary: '#fc5c65',
-  secondary: '#4ecdc4',
+  accept: '#4BB543',
+  acceptPressed: '#347d2e',
+  reject: '#D25959',
 };
