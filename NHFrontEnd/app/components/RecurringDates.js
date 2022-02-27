@@ -72,14 +72,7 @@ const RecurringDates = (props) => {
 export default RecurringDates;
 
 const styles = StyleSheet.create({
-  //   innerContainer: {
-  //     marginVertical: 25,
-  //     flexDirection: 'row',
-  //     justifyContent: 'space-between',
-  //     alignContent: 'center',
-  //     alignItems: 'center',
-  //     marginHorizontal: 20,
-  //   },
+
   datesContainer: {
     marginVertical: 25,
     flexDirection: 'row',
