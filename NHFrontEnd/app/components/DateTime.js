@@ -1,24 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { View, Platform, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Platform, Text, StyleSheet } from 'react-native';
 import { Button, List } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import colors from '../config/colors';
 
-const DateTime = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [time, setTime] = useState(new Date());
-
+const DateTime = ({
+  recurring,
+  startDate,
+  endDate,
+  time,
+  setStartDate,
+  setEndDate,
+  setTime,
+}) => {
   const [showTimeAndroid, setShowTimeAndroid] = useState(false);
   const [showStartDateAndroid, setShowStartDateAndroid] = useState(false);
   const [showEndDateAndroid, setShowEndDateAndroid] = useState(false);
 
-  // new Date is hacky but fine for a hackathon
+  useEffect(() => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setTime(time);
+  }, [startDate, endDate, time]);
+
   const saveStartDate = (event, selectedDate) => {
     const currentDate = selectedDate || startDate;
     setStartDate(currentDate);
+    console.log(currentDate);
+    console.log(endDate);
+    console.log(currentDate > endDate);
+    // TODO doesn't always work?
+    if (currentDate > endDate) {
+      setEndDate(currentDate);
+    }
     setShowStartDateAndroid(false);
   };
 
@@ -46,6 +61,10 @@ const DateTime = () => {
     setShowTimeAndroid(true);
   };
 
+  const startDateTitle = () => {
+    return recurring ? 'Set Start Date' : 'Set Date';
+  };
+
   const startPickerList = () => {
     if (Platform.OS === 'ios') {
       return (
@@ -56,7 +75,7 @@ const DateTime = () => {
               alignSelf: 'center',
             }}
           >
-            Set Start Date
+            {startDateTitle()}
           </Text>
           <DateTimePicker
             testID="dateTimePicker"
@@ -73,7 +92,7 @@ const DateTime = () => {
       return (
         <View>
           <List.Item
-            title="Set Start Date"
+            title={startDateTitle()}
             left={() => <List.Icon color={colors.primary} icon="calendar" />}
             onPress={showStartDatePicker}
             right={() => (
@@ -193,7 +212,9 @@ const DateTime = () => {
                   alignSelf: 'center',
                 }}
               >
-                {`${time.getHours()}:${time.getMinutes()}`}
+                {`${time.getHours()}:${
+                  (time.getMinutes() < 10 ? '0' : '') + time.getMinutes()
+                }`}
               </Text>
             )}
           />
@@ -216,8 +237,8 @@ const DateTime = () => {
   return (
     <List.Section>
       {startPickerList()}
-      {endPickerList()}
       {timePickerList()}
+      {recurring ? endPickerList() : null}
     </List.Section>
   );
 };

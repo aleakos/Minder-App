@@ -5,15 +5,22 @@ import { Avatar } from 'react-native-paper';
 
 import colors from '../config/colors';
 
-const RecurringDates = (props) => {
-  const [mondays, setMondays] = useState(false);
-  const [tuesdays, setTuesdays] = useState(false);
-  const [wednesdays, setWednesdays] = useState(false);
-  const [thursdays, setThursdays] = useState(false);
-  const [fridays, setFridays] = useState(false);
-  const [saturdays, setSaturdays] = useState(false);
-  const [sundays, setSundays] = useState(false);
-
+const RecurringDates = ({
+  mondays,
+  tuesdays,
+  wednesdays,
+  thursdays,
+  fridays,
+  saturdays,
+  sundays,
+  setMondays,
+  setTuesdays,
+  setWednesdays,
+  setThursdays,
+  setFridays,
+  setSaturdays,
+  setSundays,
+}) => {
   return (
     <View style={styles.datesContainer}>
       <Pressable onPress={() => setMondays(!mondays)}>
@@ -72,11 +79,10 @@ const RecurringDates = (props) => {
 export default RecurringDates;
 
 const styles = StyleSheet.create({
-
   datesContainer: {
     marginVertical: 25,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   buttonContainer: {
     flexDirection: 'row',
