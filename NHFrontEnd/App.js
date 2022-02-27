@@ -1,45 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import ReminderBadge from './app/components/ReminderBadge';
-import AcceptReminder from './app/screens/AcceptReminderScreen';
+import React, { useState } from 'react';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+import Navigator from './app/routes/homeStack';
+
+const getFonts = () =>
+  Font.loadAsync({
+    'nunito-regular': require('./app/assets/fonts/Nunito-Regular.ttf'),
+    'nunito-bold': require('./app/assets/fonts/Nunito-Bold.ttf'),
+  });
 
 export default function App() {
-  return (
-    <>
-      {/* <AcceptReminder /> */}
-      <ReminderBadge
-        reminderContent="hello"
-        reminderStatus="complete"
-        reminderTime="7:00AM"
-        reminderType="medication"
-      />
-      <ReminderBadge
-        reminderContent="hello"
-        reminderStatus="rejected"
-        reminderTime="7:20AM"
-        reminderType="medication"
-      />
-      <ReminderBadge
-        reminderContent="hello"
-        reminderStatus="pending"
-        reminderTime="8:00AM"
-        reminderType="exercise"
-      />
-      <ReminderBadge
-        reminderContent="hello"
-        reminderStatus="pending"
-        reminderTime="10:00AM"
-        reminderType="appointment"
-      />
-    </>
-  );
+  const [fontLoaded, setFontLoaded] = useState(false);
+  if (fontLoaded) {
+    return Navigator();
+  } else {
+    return (
+      <AppLoading startAsync={getFonts} onFinish={() => setFontLoaded(true)} />
+    );
+  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

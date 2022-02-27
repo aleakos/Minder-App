@@ -13,30 +13,31 @@ const ReminderBadge = ({
   const [icon, setIcon] = useState('');
   const [iconColor, setIconColor] = useState('');
 
+  const iconDictionary = {
+    medication: 'pill',
+    appointment: 'calendar',
+    exercise: 'walk',
+    diet: 'food',
+    alert: 'alert-circle-outline',
+    complete: 'check-bold',
+    missed: 'close-circle-outline',
+    other: 'help-circle-outline',
+  };
+
   useEffect(() => {
     if (reminderStatus === 'complete') {
       setIconColor(colors.accept);
-    } else if (reminderStatus === 'rejected') {
+      setIcon(iconDictionary.complete);
+    } else if (reminderStatus === 'missed') {
       setIconColor(colors.reject);
+      setIcon(iconDictionary.missed);
     } else {
       setIconColor(colors.caution);
-    }
 
-    if (reminderStatus === 'complete') {
-      setIcon('check-bold');
-    } else if (reminderStatus === 'rejected') {
-      setIcon('close-circle');
-    } else {
-      if (reminderType === 'medication') {
-        setIcon('pill');
-      } else if (reminderType === 'appointment') {
-        setIcon('calendar');
-      } else if (reminderType === 'exercise') {
-        setIcon('walk');
-      } else if (reminderType === 'diet') {
-        setIcon('food');
+      if (reminderType in iconDictionary) {
+        setIcon(iconDictionary[reminderType]);
       } else {
-        setIcon('alert-circle-outline');
+        setIcon(iconDictionary.other);
       }
     }
   }, [reminderStatus, reminderType]);
@@ -84,9 +85,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   iconCircle: {
-    width: 60,
-    height: 60,
-    borderRadius: 60,
+    width: 65,
+    height: 65,
+    borderRadius: 65,
   },
 });
 
