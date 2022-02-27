@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Platform, Text } from 'react-native';
-import { Button } from 'react-native-paper';
+import { View, Platform, Text, Pressable, StyleSheet } from 'react-native';
+import { Button, List } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import colors from '../config/colors';
 
 const DateTime = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -15,19 +17,19 @@ const DateTime = () => {
 
   // new Date is hacky but fine for a hackathon
   const saveStartDate = (event, selectedDate) => {
-    const currentDate = selectedDate || new Date();
+    const currentDate = selectedDate || startDate;
     setStartDate(currentDate);
     setShowStartDateAndroid(false);
   };
 
   const saveEndDate = (event, selectedDate) => {
-    const currentDate = selectedDate || new Date();
+    const currentDate = selectedDate || endDate;
     setEndDate(currentDate);
     setShowEndDateAndroid(false);
   };
 
   const saveTime = (event, selectedTime) => {
-    const currentTime = selectedTime || new Date();
+    const currentTime = selectedTime || time;
     setTime(currentTime);
     setShowTimeAndroid(false);
   };
@@ -42,6 +44,62 @@ const DateTime = () => {
 
   const showTimepicker = () => {
     setShowTimeAndroid(true);
+  };
+
+  const startPickerList = () => {
+    if (Platform.OS === 'ios') {
+      return (
+        <View style={styles.iosContainer}>
+          <List.Icon color={colors.primary} icon="calendar" />
+          <Text
+            style={{
+              alignSelf: 'center',
+            }}
+          >
+            Set Start Date
+          </Text>
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={startDate}
+            mode="date"
+            is24Hour={true}
+            display="default"
+            onChange={saveStartDate}
+            minimumDate={new Date()}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <List.Item
+            title="Set Start Date"
+            left={() => <List.Icon color={colors.primary} icon="calendar" />}
+            onPress={setShowStartDateAndroid}
+            right={() => (
+              <Text
+                style={{
+                  alignSelf: 'center',
+                }}
+              >
+                {startDate.toDateString()}
+              </Text>
+            )}
+          />
+          {showStartDateAndroid && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={startDate}
+              mode="date"
+              is24Hour={true}
+              display="default"
+              onChange={saveStartDate}
+              minimumDate={new Date()}
+            />
+          )}
+        </View>
+      );
+    }
   };
 
   const startDatePicker = () => {
@@ -150,23 +208,78 @@ const DateTime = () => {
 
   //TODO format
   return (
-    <View>
-      <Text
-        style={{
-          fontSize: 50,
-          marginTop: Platform.OS === 'ios' ? '10%' : '15%',
-        }}
-      >
-        Placeholder
-      </Text>
-      {startDatePicker()}
-      <Text>{startDate.toDateString()}</Text>
-      {endDatePicker()}
-      <Text>{endDate.toDateString()}</Text>
-      {timePicker()}
-      <Text>{`${time.getHours()}:${time.getMinutes()}`}</Text>
-    </View>
+    <List.Section>
+      <List.Subheader>Some title</List.Subheader>
+      {startPickerList()}
+      <List.Item
+        title="Set End Date"
+        left={() => <List.Icon color={colors.primary} icon="calendar" />}
+        onPress={() => console.log('end')}
+        right={() => (
+          <Text
+            style={{
+              alignSelf: 'center',
+            }}
+          >
+            {endDate.toDateString()}
+          </Text>
+        )}
+      />
+      <List.Item
+        title="Set End Date"
+        left={() => <List.Icon color={colors.primary} icon="clock" />}
+        onPress={() => console.log('time')}
+        right={() => (
+          <Text
+            style={{
+              alignSelf: 'center',
+            }}
+          >
+            {`${time.getHours()}:${time.getMinutes()}`}
+          </Text>
+        )}
+      />
+    </List.Section>
   );
 };
 
 export default DateTime;
+
+const styles = StyleSheet.create({
+  iosContainer: {
+    marginVertical: 25,
+    // flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+});
+
+//           {/* <List.Item
+//             title="Set Start Date"
+//             left={() => <List.Icon color={colors.primary} icon="calendar" />}
+//             right={() => (
+//               <DateTimePicker
+//                 testID="dateTimePicker"
+//                 value={startDate}
+//                 mode="date"
+//                 is24Hour={true}
+//                 display="default"
+//                 onChange={saveStartDate}
+//                 minimumDate={new Date()}
+//               />
+//             )}
+//           /> */}
+// //       style={{
+// //         fontSize: 50,
+// //         marginTop: Platform.OS === 'ios' ? '10%' : '15%',
+// //       }}
+// //     >
+// //       Placeholder
+// //     </Text>
+// //     {startDatePicker()}
+// //     <Text>{startDate.toDateString()}</Text>
+// //     {endDatePicker()}
+// //     <Text>{endDate.toDateString()}</Text>
+// //     {timePicker()}
+// //     <Text>{`${time.getHours()}:${time.getMinutes()}`}</Text>
+// //   </View>
+// // );
