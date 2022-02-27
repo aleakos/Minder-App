@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Avatar, Card, Paragraph, Title, Divider } from 'react-native-paper';
+import moment from "moment";
+
 
 import colors from '../config/colors';
 
@@ -59,7 +61,7 @@ const ReminderBadge = ({
             fontSize: 30,
           }}
         >
-          {reminderTime}
+          {moment(reminderTime).format('h:mm a')}
         </Title>
       </View>
       <View>

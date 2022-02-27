@@ -2,44 +2,16 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import ReminderBadge from './app/components/ReminderBadge';
 import AcceptReminder from './app/screens/AcceptReminderScreen';
+import MainReminderScreen from "./app/screens/MainReminderScreen";
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 
 export default function App() {
   return (
     <>
-      {/* <AcceptReminder /> */}
-      <ReminderBadge
-        reminderContent="hello"
-        reminderStatus="complete"
-        reminderTime="7:00AM"
-        reminderType="medication"
-      />
-      <ReminderBadge
-        reminderContent="hello"
-        reminderStatus="rejected"
-        reminderTime="7:20AM"
-        reminderType="medication"
-      />
-      <ReminderBadge
-        reminderContent="hello"
-        reminderStatus="pending"
-        reminderTime="8:00AM"
-        reminderType="exercise"
-      />
-      <ReminderBadge
-        reminderContent="hello"
-        reminderStatus="pending"
-        reminderTime="10:00AM"
-        reminderType="appointment"
-      />
+      <SafeAreaProvider>
+        <MainReminderScreen/>
+      </SafeAreaProvider>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
