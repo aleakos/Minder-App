@@ -155,12 +155,12 @@ const DateTime = () => {
         Placeholder
       </Text>
       {Platform.OS === 'ios' ? iosStartDate() : androidStartDate()}
-      <Text>{startDate.toString()}</Text>
+      <Text>{startDate.toDateString()}</Text>
 
       {Platform.OS === 'ios' ? iosEndDate() : androidEndDate()}
-      <Text>{endDate.toString()}</Text>
+      <Text>{endDate.toDateString()}</Text>
       {Platform.OS === 'ios' ? iosTime() : androidTime()}
-      <Text>{time.toString()}</Text>
+      <Text>{`${time.getHours()}:${time.getMinutes()}`}</Text>
     </View>
   );
 };
