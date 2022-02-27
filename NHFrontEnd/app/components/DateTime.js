@@ -44,55 +44,10 @@ const DateTime = () => {
     setShowTimeAndroid(true);
   };
 
-  const iosStartDate = () => {
-    return (
-      <SafeAreaView>
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={startDate}
-          mode="date"
-          is24Hour={true}
-          display="default"
-          onChange={saveStartDate}
-        />
-      </SafeAreaView>
-    );
-  };
-  const iosEndDate = () => {
-    return (
-      <SafeAreaView>
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={endDate}
-          mode="date"
-          is24Hour={true}
-          display="default"
-          onChange={saveEndDate}
-        />
-      </SafeAreaView>
-    );
-  };
-
-  const iosTime = () => {
-    return (
-      <SafeAreaView>
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={time}
-          mode="time"
-          is24Hour={true}
-          display="default"
-          onChange={saveTime}
-        />
-      </SafeAreaView>
-    );
-  };
-
-  const androidStartDate = () => {
-    return (
-      <View>
-        <Button onPress={showStartDatePicker}>Start Date</Button>
-        {showStartDateAndroid && (
+  const startDatePicker = () => {
+    if (Platform.OS === 'ios') {
+      return (
+        <SafeAreaView>
           <DateTimePicker
             testID="dateTimePicker"
             value={startDate}
@@ -100,18 +55,34 @@ const DateTime = () => {
             is24Hour={true}
             display="default"
             onChange={saveStartDate}
+            minimumDate={new Date()}
           />
-        )}
-      </View>
-    );
+        </SafeAreaView>
+      );
+    } else {
+      return (
+        <View>
+          <Button onPress={showStartDatePicker}>Start Date</Button>
+          {showStartDateAndroid && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={startDate}
+              mode="date"
+              is24Hour={true}
+              display="default"
+              onChange={saveStartDate}
+              minimumDate={new Date()}
+            />
+          )}
+        </View>
+      );
+    }
   };
 
-  const androidEndDate = () => {
-    return (
-      <View>
-        <Button onPress={showEndDatePicker}>End Date</Button>
-
-        {showEndDateAndroid && (
+  const endDatePicker = () => {
+    if (Platform.OS === 'ios') {
+      return (
+        <SafeAreaView>
           <DateTimePicker
             testID="dateTimePicker"
             value={endDate}
@@ -119,17 +90,35 @@ const DateTime = () => {
             is24Hour={true}
             display="default"
             onChange={saveEndDate}
+            minimumDate={startDate}
           />
-        )}
-      </View>
-    );
+        </SafeAreaView>
+      );
+    } else {
+      return (
+        <View>
+          <Button onPress={showEndDatePicker}>End Date</Button>
+
+          {showEndDateAndroid && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={endDate}
+              mode="date"
+              is24Hour={true}
+              display="default"
+              onChange={saveEndDate}
+              minimumDate={startDate}
+            />
+          )}
+        </View>
+      );
+    }
   };
 
-  const androidTime = () => {
-    return (
-      <View>
-        <Button onPress={showTimepicker}>Reminder Time</Button>
-        {showTimeAndroid && (
+  const timePicker = () => {
+    if (Platform.OS === 'ios') {
+      return (
+        <SafeAreaView>
           <DateTimePicker
             testID="dateTimePicker"
             value={time}
@@ -138,9 +127,25 @@ const DateTime = () => {
             display="default"
             onChange={saveTime}
           />
-        )}
-      </View>
-    );
+        </SafeAreaView>
+      );
+    } else {
+      return (
+        <View>
+          <Button onPress={showTimepicker}>Reminder Time</Button>
+          {showTimeAndroid && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={time}
+              mode="time"
+              is24Hour={true}
+              display="default"
+              onChange={saveTime}
+            />
+          )}
+        </View>
+      );
+    }
   };
 
   //TODO format
@@ -154,12 +159,11 @@ const DateTime = () => {
       >
         Placeholder
       </Text>
-      {Platform.OS === 'ios' ? iosStartDate() : androidStartDate()}
+      {startDatePicker()}
       <Text>{startDate.toDateString()}</Text>
-
-      {Platform.OS === 'ios' ? iosEndDate() : androidEndDate()}
+      {endDatePicker()}
       <Text>{endDate.toDateString()}</Text>
-      {Platform.OS === 'ios' ? iosTime() : androidTime()}
+      {timePicker()}
       <Text>{`${time.getHours()}:${time.getMinutes()}`}</Text>
     </View>
   );
