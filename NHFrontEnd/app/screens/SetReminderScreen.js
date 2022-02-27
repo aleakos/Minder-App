@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { TextInput, Checkbox, Switch, Button } from 'react-native-paper';
+import { TextInput, Switch, Button, Appbar } from 'react-native-paper';
 
 import RecurringDates from '../components/RecurringDates';
 import DateTime from '../components/DateTime';
-
-import colors from '../config/colors';
 
 const ReminderContent = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -51,66 +49,73 @@ const ReminderContent = () => {
     console.log(reminderData);
   };
 
+  const _goBack = () => console.log('Went back');
+
   return (
-    <View style={styles.innerContainer}>
-      <Text style={styles.textHeader}>Create Reminder:</Text>
-      <View style={styles.textBox}>
-        <Text style={styles.textTitle}>Push Notification Title:</Text>
-        <TextInput
-          label="Title"
-          mode="outlined"
-          multiline={false}
-          value={title}
-          onChangeText={(e) => setTitle(e)}
-        />
-        <Text style={styles.textTitle}>Detailed Instructions:</Text>
-        <TextInput
-          label="Detailed Instructions"
-          mode="outlined"
-          multiline={true}
-          value={reminderContent}
-          onChangeText={(e) => setReminderContent(e)}
-        />
-        <View style={styles.checkContainer}>
-          <Text style={styles.textTitle}>Recurring Event:</Text>
-          <Switch value={recurring} onValueChange={onToggleSwitch} />
-        </View>
-        <Text style={styles.textTitle}>Set Schedule:</Text>
-        <DateTime
-          recurring={recurring}
-          startDate={startDate}
-          setStartDate={setStartDate}
-          endDate={endDate}
-          setEndDate={setEndDate}
-          time={time}
-          setTime={setTime}
-        />
-        {recurring ? (
-          <Text style={styles.textTitle}>Days Scheduled:</Text>
-        ) : null}
-        {recurring ? (
-          <RecurringDates
-            mondays={mondays}
-            tuesdays={tuesdays}
-            wednesdays={wednesdays}
-            thursdays={thursdays}
-            fridays={fridays}
-            saturdays={saturdays}
-            sundays={sundays}
-            setMondays={setMondays}
-            setTuesdays={setTuesdays}
-            setWednesdays={setWednesdays}
-            setThursdays={setThursdays}
-            setFridays={setFridays}
-            setSaturdays={setSaturdays}
-            setSundays={setSundays}
+    <>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={_goBack} />
+        <Appbar.Content title="Create Reminder" />
+      </Appbar.Header>
+      <View style={styles.innerContainer}>
+        <View style={styles.textBox}>
+          <Text style={styles.textTitle}>Push Notification Title:</Text>
+          <TextInput
+            label="Title"
+            mode="outlined"
+            multiline={false}
+            value={title}
+            onChangeText={(e) => setTitle(e)}
           />
-        ) : null}
+          <Text style={styles.textTitle}>Detailed Instructions:</Text>
+          <TextInput
+            label="Detailed Instructions"
+            mode="outlined"
+            multiline={true}
+            value={reminderContent}
+            onChangeText={(e) => setReminderContent(e)}
+          />
+          <View style={styles.checkContainer}>
+            <Text style={styles.textTitle}>Recurring Event:</Text>
+            <Switch value={recurring} onValueChange={onToggleSwitch} />
+          </View>
+          <Text style={styles.textTitle}>Set Schedule:</Text>
+          <DateTime
+            recurring={recurring}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
+            time={time}
+            setTime={setTime}
+          />
+          {recurring ? (
+            <Text style={styles.textTitle}>Days Scheduled:</Text>
+          ) : null}
+          {recurring ? (
+            <RecurringDates
+              mondays={mondays}
+              tuesdays={tuesdays}
+              wednesdays={wednesdays}
+              thursdays={thursdays}
+              fridays={fridays}
+              saturdays={saturdays}
+              sundays={sundays}
+              setMondays={setMondays}
+              setTuesdays={setTuesdays}
+              setWednesdays={setWednesdays}
+              setThursdays={setThursdays}
+              setFridays={setFridays}
+              setSaturdays={setSaturdays}
+              setSundays={setSundays}
+            />
+          ) : null}
+        </View>
+        <Button mode="contained" onPress={handleSubmit}>
+          <Text style={styles.textButton}>Create Reminder</Text>
+        </Button>
       </View>
-      <Button mode="contained" onPress={handleSubmit}>
-        <Text style={styles.textButton}>Create Reminder</Text>
-      </Button>
-    </View>
+    </>
   );
 };
 
@@ -123,21 +128,15 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   innerContainer: {
-    marginTop: 30,
     flexDirection: 'column',
     marginHorizontal: 10,
   },
   textBox: {
-    marginVertical: 10,
-    marginHorizontal: 10,
+    marginHorizontal: 5,
   },
   textTitle: {
-    fontSize: 20,
+    fontSize: 18,
     marginBottom: 5,
-    marginTop: 10,
-  },
-  textHeader: {
-    fontSize: 35,
-    textAlign: 'center',
+    marginTop: 8,
   },
 });
