@@ -75,7 +75,7 @@ const DateTime = () => {
           <List.Item
             title="Set Start Date"
             left={() => <List.Icon color={colors.primary} icon="calendar" />}
-            onPress={setShowStartDateAndroid}
+            onPress={showStartDatePicker}
             right={() => (
               <Text
                 style={{
@@ -102,45 +102,18 @@ const DateTime = () => {
     }
   };
 
-  const startDatePicker = () => {
+  const endPickerList = () => {
     if (Platform.OS === 'ios') {
       return (
-        <SafeAreaView>
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={startDate}
-            mode="date"
-            is24Hour={true}
-            display="default"
-            onChange={saveStartDate}
-            minimumDate={new Date()}
-          />
-        </SafeAreaView>
-      );
-    } else {
-      return (
-        <View>
-          <Button onPress={showStartDatePicker}>Start Date</Button>
-          {showStartDateAndroid && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={startDate}
-              mode="date"
-              is24Hour={true}
-              display="default"
-              onChange={saveStartDate}
-              minimumDate={new Date()}
-            />
-          )}
-        </View>
-      );
-    }
-  };
-
-  const endDatePicker = () => {
-    if (Platform.OS === 'ios') {
-      return (
-        <SafeAreaView>
+        <View style={styles.iosContainer}>
+          <List.Icon color={colors.primary} icon="calendar" />
+          <Text
+            style={{
+              alignSelf: 'center',
+            }}
+          >
+            Set End Date
+          </Text>
           <DateTimePicker
             testID="dateTimePicker"
             value={endDate}
@@ -150,13 +123,25 @@ const DateTime = () => {
             onChange={saveEndDate}
             minimumDate={startDate}
           />
-        </SafeAreaView>
+        </View>
       );
     } else {
       return (
         <View>
-          <Button onPress={showEndDatePicker}>End Date</Button>
-
+          <List.Item
+            title="Set End Date"
+            left={() => <List.Icon color={colors.primary} icon="calendar" />}
+            onPress={showEndDatePicker}
+            right={() => (
+              <Text
+                style={{
+                  alignSelf: 'center',
+                }}
+              >
+                {endDate.toDateString()}
+              </Text>
+            )}
+          />
           {showEndDateAndroid && (
             <DateTimePicker
               testID="dateTimePicker"
@@ -173,10 +158,18 @@ const DateTime = () => {
     }
   };
 
-  const timePicker = () => {
+  const timePickerList = () => {
     if (Platform.OS === 'ios') {
       return (
-        <SafeAreaView>
+        <View style={styles.iosContainer}>
+          <List.Icon color={colors.primary} icon="clock" />
+          <Text
+            style={{
+              alignSelf: 'center',
+            }}
+          >
+            Set Reminder Time
+          </Text>
           <DateTimePicker
             testID="dateTimePicker"
             value={time}
@@ -185,12 +178,25 @@ const DateTime = () => {
             display="default"
             onChange={saveTime}
           />
-        </SafeAreaView>
+        </View>
       );
     } else {
       return (
         <View>
-          <Button onPress={showTimepicker}>Reminder Time</Button>
+          <List.Item
+            title="Set Reminder Time"
+            left={() => <List.Icon color={colors.primary} icon="clock" />}
+            onPress={showTimepicker}
+            right={() => (
+              <Text
+                style={{
+                  alignSelf: 'center',
+                }}
+              >
+                {`${time.getHours()}:${time.getMinutes()}`}
+              </Text>
+            )}
+          />
           {showTimeAndroid && (
             <DateTimePicker
               testID="dateTimePicker"
@@ -209,36 +215,9 @@ const DateTime = () => {
   //TODO format
   return (
     <List.Section>
-      <List.Subheader>Some title</List.Subheader>
       {startPickerList()}
-      <List.Item
-        title="Set End Date"
-        left={() => <List.Icon color={colors.primary} icon="calendar" />}
-        onPress={() => console.log('end')}
-        right={() => (
-          <Text
-            style={{
-              alignSelf: 'center',
-            }}
-          >
-            {endDate.toDateString()}
-          </Text>
-        )}
-      />
-      <List.Item
-        title="Set End Date"
-        left={() => <List.Icon color={colors.primary} icon="clock" />}
-        onPress={() => console.log('time')}
-        right={() => (
-          <Text
-            style={{
-              alignSelf: 'center',
-            }}
-          >
-            {`${time.getHours()}:${time.getMinutes()}`}
-          </Text>
-        )}
-      />
+      {endPickerList()}
+      {timePickerList()}
     </List.Section>
   );
 };
@@ -252,34 +231,3 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
-
-//           {/* <List.Item
-//             title="Set Start Date"
-//             left={() => <List.Icon color={colors.primary} icon="calendar" />}
-//             right={() => (
-//               <DateTimePicker
-//                 testID="dateTimePicker"
-//                 value={startDate}
-//                 mode="date"
-//                 is24Hour={true}
-//                 display="default"
-//                 onChange={saveStartDate}
-//                 minimumDate={new Date()}
-//               />
-//             )}
-//           /> */}
-// //       style={{
-// //         fontSize: 50,
-// //         marginTop: Platform.OS === 'ios' ? '10%' : '15%',
-// //       }}
-// //     >
-// //       Placeholder
-// //     </Text>
-// //     {startDatePicker()}
-// //     <Text>{startDate.toDateString()}</Text>
-// //     {endDatePicker()}
-// //     <Text>{endDate.toDateString()}</Text>
-// //     {timePicker()}
-// //     <Text>{`${time.getHours()}:${time.getMinutes()}`}</Text>
-// //   </View>
-// // );
