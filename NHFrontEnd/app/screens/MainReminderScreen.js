@@ -70,7 +70,7 @@ export default function MainReminderScreen() {
               reminderType={item.type}
             />
           )}
-        ></FlatList>
+        />
         <View style={styles.goBackButtonContainer}>
           <Icon name="back" type={'antdesign'} color={colors.white} />
           <Text style={styles.goBackButtonText}>Go Back</Text>
