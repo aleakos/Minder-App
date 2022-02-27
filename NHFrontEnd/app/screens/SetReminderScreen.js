@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { TextInput, Checkbox } from 'react-native-paper';
+import { TextInput, Checkbox, Switch, Button } from 'react-native-paper';
 
 import RecurringDates from '../components/RecurringDates';
 import DateTime from '../components/DateTime';
@@ -45,23 +45,11 @@ const ReminderContent = () => {
     }`,
   };
 
-  useEffect(() => {
+  const onToggleSwitch = () => setRecurring(!recurring);
+
+  const handleSubmit = () => {
     console.log(reminderData);
-  }, [
-    startDate,
-    endDate,
-    time,
-    mondays,
-    tuesdays,
-    wednesdays,
-    thursdays,
-    fridays,
-    saturdays,
-    sundays,
-    reminderContent,
-    recurring,
-    title,
-  ]);
+  };
 
   return (
     <View style={styles.innerContainer}>
@@ -85,12 +73,7 @@ const ReminderContent = () => {
         />
         <View style={styles.checkContainer}>
           <Text style={styles.textTitle}>Recurring Event:</Text>
-          <Checkbox
-            status={recurring ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setRecurring(!recurring);
-            }}
-          />
+          <Switch value={recurring} onValueChange={onToggleSwitch} />
         </View>
         <Text style={styles.textTitle}>Set Schedule:</Text>
         <DateTime
@@ -124,6 +107,9 @@ const ReminderContent = () => {
           />
         ) : null}
       </View>
+      <Button mode="contained" onPress={handleSubmit}>
+        <Text style={styles.textButton}>Create Reminder</Text>
+      </Button>
     </View>
   );
 };
@@ -135,12 +121,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignContent: 'center',
-    alignItems: 'center',
-    marginVertical: 10,
   },
   innerContainer: {
-    marginTop: 50,
-    marginVertical: 10,
+    marginTop: 30,
     flexDirection: 'column',
     marginHorizontal: 10,
   },
@@ -151,10 +134,10 @@ const styles = StyleSheet.create({
   textTitle: {
     fontSize: 20,
     marginBottom: 5,
+    marginTop: 10,
   },
   textHeader: {
-    fontSize: 40,
-    marginBottom: 5,
+    fontSize: 35,
     textAlign: 'center',
   },
 });
