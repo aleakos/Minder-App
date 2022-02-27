@@ -21,10 +21,12 @@ const ReminderContent = () => {
   const [sundays, setSundays] = useState(false);
 
   const [reminderContent, setReminderContent] = useState('');
+  const [title, setTitle] = useState('');
 
   const [recurring, setRecurring] = React.useState(false);
 
   let reminderData = {
+    title: title,
     recurring: recurring,
     description: reminderContent,
     recurringDates: {
@@ -58,15 +60,24 @@ const ReminderContent = () => {
     sundays,
     reminderContent,
     recurring,
+    title,
   ]);
 
   return (
     <View style={styles.innerContainer}>
       <Text style={styles.textHeader}>Create Reminder:</Text>
       <View style={styles.textBox}>
-        <Text style={styles.textTitle}>Reminder Content:</Text>
+        <Text style={styles.textTitle}>Push Notification Title:</Text>
         <TextInput
-          label="Reminder Content here..."
+          label="Title"
+          mode="outlined"
+          multiline={false}
+          value={title}
+          onChangeText={(e) => setTitle(e)}
+        />
+        <Text style={styles.textTitle}>Detailed Instructions:</Text>
+        <TextInput
+          label="Detailed Instructions"
           mode="outlined"
           multiline={true}
           value={reminderContent}
@@ -92,7 +103,7 @@ const ReminderContent = () => {
           setTime={setTime}
         />
         {recurring ? (
-          <Text style={styles.textTitle}>Recurring Days:</Text>
+          <Text style={styles.textTitle}>Days Scheduled:</Text>
         ) : null}
         {recurring ? (
           <RecurringDates
