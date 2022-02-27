@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import {
   Modal,
   Avatar,
@@ -47,13 +47,11 @@ const PreSetReminder = () => {
   const handlePressIn = () => {
     // do something like re route to the actual card
     console.log('Pressed');
-    setVisible();
-    console.log(visible);
   };
 
   return (
     <Provider>
-      <Card onPress={showModal}>
+      <Card onPress={handlePressIn}>
         <View style={styles.innerContainer}>
           <Avatar.Icon
             icon={icon}

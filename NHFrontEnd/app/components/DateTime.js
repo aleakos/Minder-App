@@ -91,7 +91,7 @@ const DateTime = () => {
   const androidStartDate = () => {
     return (
       <View>
-        <Button onPress={showStartDatePicker}>Choose Start Date</Button>
+        <Button onPress={showStartDatePicker}>Start Date</Button>
         {showStartDateAndroid && (
           <DateTimePicker
             testID="dateTimePicker"
@@ -109,7 +109,7 @@ const DateTime = () => {
   const androidEndDate = () => {
     return (
       <View>
-        <Button onPress={showEndDatePicker}>Choose End Date</Button>
+        <Button onPress={showEndDatePicker}>End Date</Button>
 
         {showEndDateAndroid && (
           <DateTimePicker
@@ -128,7 +128,7 @@ const DateTime = () => {
   const androidTime = () => {
     return (
       <View>
-        <Button onPress={showTimepicker}>Choose Reminder Time</Button>
+        <Button onPress={showTimepicker}>Reminder Time</Button>
         {showTimeAndroid && (
           <DateTimePicker
             testID="dateTimePicker"
@@ -148,7 +148,8 @@ const DateTime = () => {
     <View>
       <Text
         style={{
-          fontSize: 100,
+          fontSize: 50,
+          marginTop: Platform.OS === 'ios' ? '10%' : '15%',
         }}
       >
         Placeholder
