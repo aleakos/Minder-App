@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Avatar, Card, Paragraph, Title, Divider } from 'react-native-paper';
+import { Avatar, Card, Paragraph, Title } from 'react-native-paper';
 import moment from 'moment';
 
 import colors from '../config/colors';

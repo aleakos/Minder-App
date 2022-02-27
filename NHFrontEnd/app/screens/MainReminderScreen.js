@@ -1,62 +1,62 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import ReminderBadge from '../components/ReminderBadge';
-import AcceptReminder from './AcceptReminderScreen';
-import moment from "moment";
+import moment from 'moment';
 import { Icon } from 'react-native-elements';
 
+import colors from '../config/colors';
 
 export default function MainReminderScreen() {
   const day = 26;
 
-  const [reminders, setReminders] = useState(
-      [{
-        id:1,
-        content:"Take Advil",
-        status:"complete",
-        time: new Date(2022, 2, day, 7, 0, 0),
-        type:"medication"
-      },
-      {
-        id:2,
-        content:"Apply Rub A5-35 to knee",
-        status:"complete",
-        time: new Date(2022, 2, day, 7, 0, 0),
-        type:"medication"
-      },
-      {
-        id:3,
-        content:"Do phyiso exercises",
-        status:"pending",
-        time: new Date(2022, 2, day, 12, 0, 0),
-        type:"medication"
-      },
-      {
-        id:4,
-        content:"Dr. Noiles Appointment",
-        status:"pending",
-        time: new Date(2022, 2, day, 12, 0, 0),
-        type:"medication"
-      },
-      {
-        id:5,
-        content:"Take melatonin",
-        status:"complete",
-        time: new Date(2022, 2, day, 20, 0, 0),
-        type:"medication"
-      },]
-  );
-  const [reminderDate, setReminderDate] = useState(new Date())
+  const [reminders, setReminders] = useState([
+    {
+      id: 1,
+      content: 'Take Advil',
+      status: 'complete',
+      time: new Date(2022, 2, day, 7, 0, 0),
+      type: 'medication',
+    },
+    {
+      id: 2,
+      content: 'Apply Rub A5-35 to knee',
+      status: 'missed',
+      time: new Date(2022, 2, day, 7, 0, 0),
+      type: 'medication',
+    },
+    {
+      id: 3,
+      content: 'Do phyiso exercises',
+      status: 'pending',
+      time: new Date(2022, 2, day, 12, 0, 0),
+      type: 'exercise',
+    },
+    {
+      id: 4,
+      content: 'Dr. Noiles Appointment',
+      status: 'pending',
+      time: new Date(2022, 2, day, 12, 0, 0),
+      type: 'appointment',
+    },
+    {
+      id: 5,
+      content: 'Take melatonin',
+      status: 'pending',
+      time: new Date(2022, 2, day, 20, 0, 0),
+      type: 'medication',
+    },
+  ]);
+  const [reminderDate, setReminderDate] = useState(new Date());
 
   return (
     <>
       <View style={styles.container}>
-
         <View style={styles.pageTitleContainer}>
-          <Icon name="left" type={"antdesign"} color={'white'} />
-          <Text style={styles.pageTitle}>{moment(reminderDate).format('MMMM Do YYYY')}</Text>
-          <Icon name="right" type={"antdesign"} color={'white'} />
+          <Icon name="left" type={'antdesign'} color={'white'} />
+          <Text style={styles.pageTitle}>
+            {moment(reminderDate).format('MMMM Do YYYY')}
+          </Text>
+          <Icon name="right" type={'antdesign'} color={'white'} />
         </View>
 
         <FlatList
@@ -70,10 +70,9 @@ export default function MainReminderScreen() {
               reminderType={item.type}
             />
           )}
-        >
-        </FlatList>
+        ></FlatList>
         <View style={styles.goBackButtonContainer}>
-          <Icon name="back" type={"antdesign"} color={'black'} />
+          <Icon name="back" type={'antdesign'} color={colors.white} />
           <Text style={styles.goBackButtonText}>Go Back</Text>
         </View>
       </View>
@@ -87,38 +86,38 @@ const formatAMPM = (date) => {
   let ampm = hours >= 12 ? 'pm' : 'am';
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? '0'+minutes : minutes;
+  minutes = minutes < 10 ? '0' + minutes : minutes;
   let strTime = hours + ':' + minutes + ' ' + ampm;
   return strTime;
-}
-
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  pageTitleContainer:{
-    backgroundColor: '#74959A',
-    height:75,
+  pageTitleContainer: {
+    backgroundColor: colors.primary,
+    height: 75,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection:'row',
-    paddingTop:15,
+    flexDirection: 'row',
+    paddingTop: 15,
   },
-  pageTitle:{
-    color:"#fff",
-    fontSize:20,
-    paddingHorizontal:15
+  pageTitle: {
+    color: '#fff',
+    fontSize: 20,
+    paddingHorizontal: 15,
   },
-  goBackButtonContainer:{
-    backgroundColor: '#F1E0AC',
-    height:75,
+  goBackButtonContainer: {
+    backgroundColor: colors.primary,
+    height: 75,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection:'row',
+    flexDirection: 'row',
   },
-  goBackButtonText:{
-    fontSize:20,
-    paddingHorizontal:10,
-  }
+  goBackButtonText: {
+    fontSize: 20,
+    paddingHorizontal: 10,
+    color: colors.white,
+  },
 });
