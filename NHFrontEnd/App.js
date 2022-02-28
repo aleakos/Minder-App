@@ -25,7 +25,6 @@ Notifications.setNotificationHandler({
 });
 
 export default function App() {
-
   const [loaded, setLoaded] = useState(true);
   const [loggedIn, setLoggedIn] = useState(true);
 
