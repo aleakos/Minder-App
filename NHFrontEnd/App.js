@@ -1,12 +1,8 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-=======
+
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Platform} from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import ReminderBadge from './app/components/ReminderBadge';
-import AcceptReminder from './app/screens/AcceptReminderScreen';
->>>>>>> feat-pushNotificationsGH
 import MainReminderScreen from './app/screens/MainReminderScreen';
 import SetReminderScreen from './app/screens/SetReminderScreen';
 import HomeScreen from './app/screens/HomeScreen';
