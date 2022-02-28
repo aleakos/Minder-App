@@ -5,21 +5,19 @@ import colors from '../config/colors';
 
 
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   return (
     <>
       <View style={styles.container}>
         <Button
-          onPress={()=>{
-            console.log("hello")}}
-          title="Learn More"
+          onPress={() => navigation.navigate('MainReminderScreen')}
+          title="Main Reminders Screen"
           buttonStyle={styles.button}
           containerStyle={{ margin: 5 }}
         />
         <Button
-          onPress={()=>{
-            console.log("hello")}}
-          title="Learn More"
+          onPress={() => navigation.navigate('SetReminderScreen')}
+          title="Create New Reminder"
           buttonStyle={styles.button}
           containerStyle={{ margin: 5 }}
         />

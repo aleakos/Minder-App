@@ -7,15 +7,21 @@ import MainReminderScreen from './app/screens/MainReminderScreen';
 import PreSetReminder from './app/components/PreSetReminder';
 import SetReminderScreen from './app/screens/SetReminderScreen';
 import HomeScreen from "./app/screens/HomeScreen";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <>
-      <SafeAreaProvider>
-         {/*<MainReminderScreen />*/}
-        {/*<SetReminderScreen />*/}
-        <HomeScreen/>
-      </SafeAreaProvider>
-    </>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="MainReminderScreen" component={MainReminderScreen} />
+        <Stack.Screen name="SetReminderScreen" component={SetReminderScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
+
+

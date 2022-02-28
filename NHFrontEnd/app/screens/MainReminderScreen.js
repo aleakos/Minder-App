@@ -102,10 +102,6 @@ export default function MainReminderScreen() {
             />
           )}
         />
-        <View style={styles.goBackButtonContainer}>
-          <Icon name="back" type={'antdesign'} color={colors.white} />
-          <Text style={styles.goBackButtonText}>Go Back</Text>
-        </View>
       </View>
     </>
   );
@@ -127,17 +123,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     paddingHorizontal: 15,
-  },
-  goBackButtonContainer: {
-    backgroundColor: colors.primary,
-    height: 75,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  goBackButtonText: {
-    fontSize: 20,
-    paddingHorizontal: 10,
-    color: colors.white,
   }
 });
