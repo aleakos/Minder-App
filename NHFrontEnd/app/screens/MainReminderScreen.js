@@ -7,7 +7,7 @@ import { Icon } from 'react-native-elements';
 import colors from '../config/colors';
 import CalendarModal from '../components/CalendarModal';
 
-export default function MainReminderScreen() {
+export default function MainReminderScreen({navigation}) {
   const day = 26;
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -111,6 +111,7 @@ export default function MainReminderScreen() {
               reminderStatus={item.status}
               reminderTime={item.time}
               reminderType={item.type}
+              navigation={navigation}
             />
           )}
         />
@@ -122,6 +123,7 @@ export default function MainReminderScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.white
   },
   pageTitleContainer: {
     backgroundColor: colors.primary,

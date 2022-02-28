@@ -10,6 +10,7 @@ const ReminderBadge = ({
   reminderContent,
   reminderType,
   reminderStatus,
+  navigation
 }) => {
   const [icon, setIcon] = useState('');
   const [iconColor, setIconColor] = useState('');
@@ -46,6 +47,7 @@ const ReminderBadge = ({
   const handlePressIn = () => {
     // do something like re route to the actual card - maybe pop a modal?
     console.log('Pressed');
+    navigation.navigate("AcceptReminderScreen");
   };
 
   return (

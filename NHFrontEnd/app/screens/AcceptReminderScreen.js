@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import colors from '../config/colors';
 
-const AcceptReminder = () => {
+const AcceptReminder = ({navigation}) => {
   const [pressed, setPressed] = useState(false);
 
   const handlePressIn = () => {
@@ -37,6 +37,12 @@ const AcceptReminder = () => {
         onPressOut={handlePressOut}
       >
         <Text style={styles.acceptText}>Accept</Text>
+      </Pressable>
+      <Pressable
+        style={styles.acceptButton}
+        onPressIn={() => navigation.navigate("Home")}
+      >
+        <Text style={styles.acceptText}>Back</Text>
       </Pressable>
     </View>
   );
