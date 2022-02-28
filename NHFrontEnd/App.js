@@ -11,8 +11,8 @@ export default function App() {
   return (
     <>
       <SafeAreaProvider>
-        {/* <MainReminderScreen /> */}
-        <SetReminderScreen />
+         <MainReminderScreen />
+        {/*<SetReminderScreen />*/}
       </SafeAreaProvider>
     </>
   );

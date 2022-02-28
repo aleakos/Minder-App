@@ -1,13 +1,30 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import ReminderBadge from '../components/ReminderBadge';
 import moment from 'moment';
 import { Icon } from 'react-native-elements';
 
+
 import colors from '../config/colors';
+import CalendarModal from "../components/CalendarModal";
 
 export default function MainReminderScreen() {
   const day = 26;
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    console.warn("A date has been picked: ", date);
+    hideDatePicker();
+  };
 
   const [reminders, setReminders] = useState([
     {
@@ -48,15 +65,29 @@ export default function MainReminderScreen() {
   ]);
   const [reminderDate, setReminderDate] = useState(new Date());
 
+  const decrementDate = () => {
+    setReminderDate(moment(reminderDate).subtract(1, 'days').toDate())
+  }
+
+  const incrementDate = () => {
+    setReminderDate(moment(reminderDate).add(1, 'days').toDate())
+  }
+
+  useEffect(()=>{
+    console.log("Date changed to :" + reminderDate)
+  },[reminderDate])
+
+
   return (
     <>
       <View style={styles.container}>
         <View style={styles.pageTitleContainer}>
-          <Icon name="left" type={'antdesign'} color={'white'} />
+          <Icon name="left" type={'antdesign'} color={'white'} onPress={decrementDate} />
           <Text style={styles.pageTitle}>
             {moment(reminderDate).format('MMMM Do YYYY')}
           </Text>
-          <Icon name="right" type={'antdesign'} color={'white'} />
+          <Icon name="right" type={'antdesign'} color={'white'} onPress={incrementDate}/>
+          <CalendarModal style={styles.calendarModalButton} reminderDate={reminderDate} setReminderDate={setReminderDate}/>
         </View>
 
         <FlatList
@@ -79,17 +110,6 @@ export default function MainReminderScreen() {
     </>
   );
 }
-
-const formatAMPM = (date) => {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let ampm = hours >= 12 ? 'pm' : 'am';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? '0' + minutes : minutes;
-  let strTime = hours + ':' + minutes + ' ' + ampm;
-  return strTime;
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -119,5 +139,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingHorizontal: 10,
     color: colors.white,
-  },
+  }
 });
