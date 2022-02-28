@@ -1,12 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import ReminderBadge from '../components/ReminderBadge';
 import moment from 'moment';
 import { Icon } from 'react-native-elements';
 
-
 import colors from '../config/colors';
-import CalendarModal from "../components/CalendarModal";
+import CalendarModal from '../components/CalendarModal';
 
 export default function MainReminderScreen() {
   const day = 26;
@@ -22,7 +21,7 @@ export default function MainReminderScreen() {
   };
 
   const handleConfirm = (date) => {
-    console.warn("A date has been picked: ", date);
+    console.warn('A date has been picked: ', date);
     hideDatePicker();
   };
 
@@ -66,28 +65,41 @@ export default function MainReminderScreen() {
   const [reminderDate, setReminderDate] = useState(new Date());
 
   const decrementDate = () => {
-    setReminderDate(moment(reminderDate).subtract(1, 'days').toDate())
-  }
+    setReminderDate(moment(reminderDate).subtract(1, 'days').toDate());
+  };
 
   const incrementDate = () => {
-    setReminderDate(moment(reminderDate).add(1, 'days').toDate())
-  }
+    setReminderDate(moment(reminderDate).add(1, 'days').toDate());
+  };
 
-  useEffect(()=>{
-    console.log("Date changed to :" + reminderDate)
-  },[reminderDate])
-
+  useEffect(() => {
+    console.log('Date changed to :' + reminderDate);
+  }, [reminderDate]);
 
   return (
     <>
       <View style={styles.container}>
         <View style={styles.pageTitleContainer}>
-          <Icon name="left" type={'antdesign'} color={'white'} onPress={decrementDate} />
+          <Icon
+            name="left"
+            type={'antdesign'}
+            color={'white'}
+            onPress={decrementDate}
+          />
           <Text style={styles.pageTitle}>
             {moment(reminderDate).format('MMMM Do YYYY')}
           </Text>
-          <Icon name="right" type={'antdesign'} color={'white'} onPress={incrementDate}/>
-          <CalendarModal style={styles.calendarModalButton} reminderDate={reminderDate} setReminderDate={setReminderDate}/>
+          <Icon
+            name="right"
+            type={'antdesign'}
+            color={'white'}
+            onPress={incrementDate}
+          />
+          <CalendarModal
+            style={styles.calendarModalButton}
+            reminderDate={reminderDate}
+            setReminderDate={setReminderDate}
+          />
         </View>
 
         <FlatList
@@ -113,15 +125,14 @@ const styles = StyleSheet.create({
   },
   pageTitleContainer: {
     backgroundColor: colors.primary,
-    height: 75,
+    height: 60,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    paddingTop: 15,
   },
   pageTitle: {
     color: '#fff',
     fontSize: 20,
     paddingHorizontal: 15,
-  }
+  },
 });

@@ -235,11 +235,11 @@ const DateTime = ({
 
   //TODO format
   return (
-    <List.Section>
+    <View>
       {startPickerList()}
       {timePickerList()}
       {recurring ? endPickerList() : null}
-    </List.Section>
+    </View>
   );
 };
 

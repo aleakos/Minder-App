@@ -53,15 +53,11 @@ const ReminderContent = () => {
 
   return (
     <>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={_goBack} />
-        <Appbar.Content title="Create Reminder" />
-      </Appbar.Header>
       <View style={styles.innerContainer}>
         <View style={styles.textBox}>
-          <Text style={styles.textTitle}>Push Notification Title:</Text>
+          <Text style={styles.textTitle}>Push Notification Message:</Text>
           <TextInput
-            label="Title"
+            label="Message"
             mode="outlined"
             multiline={false}
             value={title}
