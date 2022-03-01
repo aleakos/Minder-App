@@ -99,7 +99,7 @@ export default function MainReminderScreen({navigation}) {
       Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
         console.log(notification)
-        let reminderTime = new Date();
+        let reminderTime = moment(new Date()).format('h:mm a')
         let reminderContent = "asdf1"
         let icon="pill"
         let iconColor=colors.primary
