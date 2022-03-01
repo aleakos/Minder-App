@@ -4,6 +4,7 @@ import { TextInput, Switch, Button, Appbar } from 'react-native-paper';
 
 import RecurringDates from '../components/RecurringDates';
 import DateTime from '../components/DateTime';
+import colors from '../config/colors';
 
 const ReminderContent = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -52,7 +53,7 @@ const ReminderContent = () => {
   const _goBack = () => console.log('Went back');
 
   return (
-    <>
+    <View style={{backgroundColor: colors.white, flex: 1}}>
       <View style={styles.innerContainer}>
         <View style={styles.textBox}>
           <Text style={styles.textTitle}>Push Notification Message:</Text>
@@ -111,7 +112,7 @@ const ReminderContent = () => {
           <Text style={styles.textButton}>Create Reminder</Text>
         </Button>
       </View>
-    </>
+    </View>
   );
 };
 

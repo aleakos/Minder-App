@@ -1,43 +1,38 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { Avatar } from 'react-native-paper';
 import colors from '../config/colors';
+import moment from 'moment';
 
-const AcceptReminder = () => {
-  const [pressed, setPressed] = useState(false);
+const AcceptReminder = ({navigation, route}) => {
 
-  const handlePressIn = () => {
-    setPressed(true);
-    // send a response to the server
-    console.log('Pressed in');
-  };
-  const handlePressOut = () => {
-    setPressed(false);
-    console.log('Pressed out');
-  };
+  const {reminderTime, reminderContent, icon, iconColor} = route.params;
 
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.timeText}>7:00 AM</Text>
+        <Text style={styles.timeText}>{reminderTime}</Text>
       </View>
       <View>
-        <Text style={styles.reminderText}>Take AM Medications</Text>
+        <Text style={styles.reminderText}>{reminderContent}</Text>
       </View>
-      <Image
-        resizeMode="contain"
-        style={{
-          height: 250,
-          width: '50%',
-        }}
-        source={require('../assets/bottle.png')}
-      />
-      <Pressable
-        style={pressed ? styles.acceptPressed : styles.acceptButton}
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
+      <Avatar.Icon
+          icon={icon}
+          backgroundColor={iconColor}
+          style={styles.iconCircle}
+          size={144}
+        />
+      <TouchableOpacity
+        style={styles.acceptButton}
       >
         <Text style={styles.acceptText}>Accept</Text>
-      </Pressable>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.acceptButton}
+        onPress={() => navigation.navigate("Home")}
+      >
+        <Text style={styles.acceptText}>Back</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -81,6 +76,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     justifyContent: 'center',
+  },
+  iconCircle: {
+    width: 150,
+    height: 150,
+    borderRadius: 100,
   },
 });
 

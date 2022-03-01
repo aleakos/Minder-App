@@ -10,6 +10,7 @@ const ReminderBadge = ({
   reminderContent,
   reminderType,
   reminderStatus,
+  navigation
 }) => {
   const [icon, setIcon] = useState('');
   const [iconColor, setIconColor] = useState('');
@@ -43,13 +44,14 @@ const ReminderBadge = ({
     }
   }, [reminderStatus, reminderType]);
 
-  const handlePressIn = () => {
+  const handleOnPress = () => {
     // do something like re route to the actual card - maybe pop a modal?
-    console.log('Pressed');
+    let time = moment(reminderTime).format('h:mm a')
+    navigation.navigate("AcceptReminderScreen", {time, reminderContent, icon, iconColor});
   };
 
   return (
-    <Card onPress={handlePressIn}>
+    <Card onPress={handleOnPress}>
       <View style={styles.innerContainer}>
         <Avatar.Icon
           icon={icon}
