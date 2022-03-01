@@ -46,7 +46,8 @@ const ReminderBadge = ({
 
   const handleOnPress = () => {
     // do something like re route to the actual card - maybe pop a modal?
-    navigation.navigate("AcceptReminderScreen", {reminderTime, reminderContent, icon, iconColor});
+    let time = moment(reminderTime).format('h:mm a')
+    navigation.navigate("AcceptReminderScreen", {time, reminderContent, icon, iconColor});
   };
 
   return (

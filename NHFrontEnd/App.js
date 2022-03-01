@@ -11,19 +11,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './app/screens/LoginScreen/LoginScreen';
 import AcceptReminder from './app/screens/AcceptReminderScreen';
 
-// import { Platform} from 'react-native';
-// import * as Notifications from 'expo-notifications';
-// import React, { useState, useEffect, useRef } from 'react';
+import { Platform} from 'react-native';
+import * as Notifications from 'expo-notifications';
+import React, { useState, useEffect, useRef } from 'react';
 
 const Stack = createNativeStackNavigator();
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
+
 
 export default function App() {
   const [loaded, setLoaded] = useState(true);

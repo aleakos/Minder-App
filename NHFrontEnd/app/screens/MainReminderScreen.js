@@ -8,6 +8,14 @@ import colors from '../config/colors';
 import CalendarModal from '../components/CalendarModal';
 import * as Notifications from "expo-notifications";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
 export default function MainReminderScreen({navigation}) {
   const day = 26;
 
@@ -91,14 +99,23 @@ export default function MainReminderScreen({navigation}) {
       Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
         console.log(notification)
-        navigation.navigate("AcceptReminderScreen");
+        let reminderTime = new Date();
+        let reminderContent = "asdf1"
+        let icon="pill"
+        let iconColor=colors.primary
+        navigation.navigate("AcceptReminderScreen", {reminderTime, reminderContent, icon, iconColor});
       });
 
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
         console.log(response);
-        navigation.navigate("AcceptReminderScreen");
+        let reminderTime = moment(new Date()).format('h:mm a')
+        let reminderContent = "asdf2"
+        let icon="pill"
+        let iconColor=colors.primary
+        navigation.navigate("AcceptReminderScreen", {reminderTime, reminderContent, icon, iconColor});
+
       });
 
 

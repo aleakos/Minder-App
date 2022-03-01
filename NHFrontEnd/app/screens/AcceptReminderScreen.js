@@ -11,7 +11,7 @@ const AcceptReminder = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.timeText}>{moment(reminderTime).format('h:mm a')}</Text>
+        <Text style={styles.timeText}>{reminderTime}</Text>
       </View>
       <View>
         <Text style={styles.reminderText}>{reminderContent}</Text>
