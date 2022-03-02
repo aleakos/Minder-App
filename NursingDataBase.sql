@@ -4,7 +4,7 @@ USE NursingHackathon;
 
 DROP TABLE IF EXISTS APPUSER;
 CREATE TABLE APPUSER (
-	UID		integer not null,
+	UID		integer auto_increment not null,
     Username varchar(50) not null unique,
     PWord	varchar(50) not null,
     FName	varchar(50) not null,
@@ -46,7 +46,8 @@ VALUES
 
 DROP TABLE IF EXISTS RECURRINGREMINDER;
 CREATE TABLE RECURRINGREMINDER (
-	RecurringID integer not null,
+	RecurringID integer auto_increment not null,
+    PatientID integer not null,
     StartDate date not null,
     EndDate date not null,
     Monday boolean,
@@ -56,44 +57,47 @@ CREATE TABLE RECURRINGREMINDER (
     Friday boolean,
     Saturday boolean,
     Sunday boolean,
-    primary key(RecurringID)
+    primary key(RecurringID),
+    foreign key(PatientID) references DEPENDENT(PatientID)
 );
 
-INSERT INTO RECURRINGREMINDER(RecurringID, StartDate, EndDate, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday) 
+INSERT INTO RECURRINGREMINDER(RecurringID, PatientID, StartDate, EndDate, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday) 
 VALUES
-(1,"2022-02-20","2021-03-06",true,false,false,false,true,false,false),
-(2,"2022-02-20","2021-03-06",false,false,false,true,false,false,false);
+(1, 3, "2022-02-20","2021-03-06",true,false,false,false,true,false,false),
+(2, 3, "2022-02-20","2021-03-06",false,false,false,true,false,false,false);
 
 
 DROP TABLE IF EXISTS REMINDER;
 CREATE TABLE REMINDER (
-	ReminderID integer not null,
+	ReminderID integer auto_increment not null,
     PatientID integer not null,
     ReminderTitle varchar(50) not null,
     ReminderContent varchar(100),
     ReminderDate date,-- could combine CreationTime and TimeOfDay into a datetime object/type
     TimeOfDay time, 
-    Dismissed boolean, 
-    ReminderCount integer not null,
+    Dismissed boolean default false, 
+    ReminderCount integer not null default 0,
     RecurringID integer,
-    Deleted boolean,
+    Deleted boolean default false,
     ReminderType varchar(50),
     primary key(ReminderID),
     foreign key(PatientID) references DEPENDENT(PatientID)
 );
 
-INSERT INTO REMINDER(ReminderID, PatientID, ReminderTitle,ReminderContent,ReminderDate,TimeOfDay,Dismissed,ReminderCount,RecurringID,Deleted,ReminderType) 
+INSERT INTO REMINDER(PatientID, ReminderTitle,ReminderContent,ReminderDate,TimeOfDay,Dismissed,ReminderCount,RecurringID,Deleted,ReminderType) 
 VALUES
-(1,3,"Take AM Pills", "Take with food","2021-02-21","08:00:00",false, 0, 1, false,"medication"),  -- dummy-populated from recurring reminder 1
-(2,3,"Take AM Pills", "Take with food","2021-02-24","08:00:00",false, 0, 1, false,"medication"),  
-(3,3,"Take AM Pills", "Take with food","2021-02-28","08:00:00",false, 0, 1, false,"medication"),  
-(4,3,"Take AM Pills", "Take with food","2021-03-03","08:00:00",false, 0, 1, false,"medication"), 
-(5,4,"Perform Exercise", "Go for walk","2021-02-23","10:00:00",false, 0, 2, false,"exercise"),  -- autopopulated from recurring reminder 2
-(6,4,"Take AM Pills", "Take with food","2021-03-02","10:00:00",false, 0, 2, false,"exercise"),  
-(7,3,"Appointment", "With Dr. Nelson, PLC center","2021-03-04","16:00:00",false, 0, null, false,"calendar"), -- one-off  
-(8,4,"Eat Dinner", "Chicken Pasta, microwave","2021-03-05","17:00:00",false, 0, null, true,"diet"),  -- one-off, deleted
-(9,3,"test", "test","2021-02-24","08:00:00",false, 0, null, false,"other"),
-(10,3,"Take PM Pills", "Take with food","2021-02-21","16:00:00",false, 0, 1, false,"medication"),  -- dummy-populated from recurring reminder 1
-(11,3,"Take PM Pills", "Take with food","2021-02-24","16:00:00",false, 0, 1, false,"medication"),  
-(12,3,"Take PM Pills", "Take with food","2021-02-28","16:00:00",false, 0, 1, false,"medication"),  
-(13,3,"Take PM Pills", "Take with food","2021-03-03","16:00:00",false, 0, 1, false,"medication");
+(3,"Take AM Pills", "Take with food","2021-02-21","08:00:00",false, 0, 1, false,"medication"),  -- autopopulated from recurring reminder 1
+(3,"Take AM Pills", "Take with food","2021-02-24","08:00:00",false, 0, 1, false,"medication"),  
+(3,"Take AM Pills", "Take with food","2021-02-28","08:00:00",false, 0, 1, false,"medication"),  
+(3,"Take AM Pills", "Take with food","2021-03-03","08:00:00",false, 0, 1, false,"medication"), 
+(3,"Take AM Pills", "Take with food","2021-02-21","08:00:00",false, 0, 1, false,"medication"),  -- autopopulated from recurring reminder 1
+(3,"Take AM Pills", "Take with food","2021-02-24","08:00:00",false, 0, 1, false,"medication"),  
+(3,"Take AM Pills", "Take with food","2021-02-28","08:00:00",false, 0, 1, false,"medication"),  
+(3,"Take AM Pills", "Take with food","2021-03-03","08:00:00",false, 0, 1, false,"medication"), 
+
+(4,"Perform Exercise", "Go for walk","2021-02-23","10:00:00",false, 0, 2, false,"exercise"),  -- autopopulated from recurring reminder 2
+(4,"Take AM Pills", "Take with food","2021-03-02","10:00:00",false, 0, 2, false,"exercise"),  
+
+(3,"Appointment", "With Dr. Nelson, PLC center","2021-03-04","16:00:00",false, 0, null, false,"calendar"), -- one-off  
+(4,"Eat Dinner", "Chicken Pasta, microwave","2021-03-05","17:00:00",false, 0, null, true,"diet"),  -- one-off, deleted
+(3,"test", "test","2021-02-24","08:00:00",false, 0, null, false,"other");  
