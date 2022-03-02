@@ -1,12 +1,14 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {FlatList, Platform, StyleSheet, Text, View} from 'react-native';
-import ReminderBadge from '../components/ReminderBadge';
+import React, { useEffect, useRef, useState } from 'react';
+import { FlatList, Platform, StyleSheet, Text, View } from 'react-native';
+import * as Notifications from 'expo-notifications';
 import moment from 'moment';
 import { Icon } from 'react-native-elements';
 
 import colors from '../config/colors';
+import icons from '../config/icons';
+
+import ReminderBadge from '../components/ReminderBadge';
 import CalendarModal from '../components/CalendarModal';
-import * as Notifications from "expo-notifications";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -16,7 +18,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default function MainReminderScreen({navigation}) {
+export default function MainReminderScreen({ navigation }) {
   const day = 26;
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -98,27 +100,57 @@ export default function MainReminderScreen({navigation}) {
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
-        console.log(notification)
-        let reminderTime = new Date();
-        let reminderContent = "asdf1"
-        let icon="pill"
-        let iconColor=colors.primary
-        navigation.navigate("AcceptReminderScreen", {reminderTime, reminderContent, icon, iconColor});
+
+        // UNCOMMENT FOR PRODUCTION
+        // let reminderTile = notification.request.content.title;
+        // let reminderContent = notification.request.content.body;
+        // let data = notification.request.content.data;
+
+        // let reminderID = data.reminderID;
+        // let reminderType = data.reminderType;
+        // let reminderTime = data.reminderTime;
+        // let reminderDate = data.reminderDate;
+        // let icon = icons[reminderType];
+        let iconColor = colors.primary;
+
+        let reminderTime = moment(new Date()).format('h:mm a');
+        let reminderContent = 'asdf1';
+        let icon = 'pill';
+
+        navigation.navigate('AcceptReminderScreen', {
+          reminderTime,
+          reminderContent,
+          icon,
+          iconColor,
+        });
       });
 
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
-        let reminderTime = moment(new Date()).format('h:mm a')
-        let reminderContent = "asdf2"
-        let icon="pill"
-        let iconColor=colors.primary
-        navigation.navigate("AcceptReminderScreen", {reminderTime, reminderContent, icon, iconColor});
+        // UNCOMMENT FOR PRODUCTION
 
+        // let reminderTile = response.notification.request.content.title;
+        // let reminderContent = response.notification.request.content.body;
+        // let data = response.notification.request.content.data;
+
+        // let reminderID = data.reminderID;
+        // let reminderType = data.reminderType;
+        // let reminderTime = data.reminderTime;
+        // let reminderDate = data.reminderDate;
+        // let icon = icons[reminderType];
+        let iconColor = colors.primary;
+
+        let reminderTime = moment(new Date()).format('h:mm a');
+        let reminderContent = 'asdf2';
+        let icon = 'pill';
+        navigation.navigate('AcceptReminderScreen', {
+          reminderTime,
+          reminderContent,
+          icon,
+          iconColor,
+        });
       });
-
-
 
     return () => {
       Notifications.removeNotificationSubscription(
@@ -127,7 +159,6 @@ export default function MainReminderScreen({navigation}) {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
-
 
   return (
     <>
@@ -176,7 +207,7 @@ export default function MainReminderScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
   },
   pageTitleContainer: {
     backgroundColor: colors.primary,

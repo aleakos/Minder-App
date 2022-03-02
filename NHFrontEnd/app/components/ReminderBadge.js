@@ -4,50 +4,45 @@ import { Avatar, Card, Paragraph, Title } from 'react-native-paper';
 import moment from 'moment';
 
 import colors from '../config/colors';
+import icons from '../config/icons';
 
 const ReminderBadge = ({
   reminderTime,
   reminderContent,
   reminderType,
   reminderStatus,
-  navigation
+  navigation,
 }) => {
   const [icon, setIcon] = useState('');
   const [iconColor, setIconColor] = useState('');
 
-  const iconDictionary = {
-    medication: 'pill',
-    appointment: 'calendar',
-    exercise: 'walk',
-    diet: 'food',
-    alert: 'alert-circle-outline',
-    complete: 'check-bold',
-    missed: 'close-circle-outline',
-    other: 'help-circle-outline',
-  };
-
   useEffect(() => {
     if (reminderStatus === 'complete') {
       setIconColor(colors.accept);
-      setIcon(iconDictionary.complete);
+      setIcon(icons.complete);
     } else if (reminderStatus === 'missed') {
       setIconColor(colors.reject);
-      setIcon(iconDictionary.missed);
+      setIcon(icons.missed);
     } else {
       setIconColor(colors.caution);
 
-      if (reminderType in iconDictionary) {
-        setIcon(iconDictionary[reminderType]);
+      if (reminderType in icons) {
+        setIcon(icons[reminderType]);
       } else {
-        setIcon(iconDictionary.other);
+        setIcon(icons.other);
       }
     }
   }, [reminderStatus, reminderType]);
 
   const handleOnPress = () => {
     // do something like re route to the actual card - maybe pop a modal?
-    let time = moment(reminderTime).format('h:mm a')
-    navigation.navigate("AcceptReminderScreen", {time, reminderContent, icon, iconColor});
+    let time = moment(reminderTime).format('h:mm a');
+    navigation.navigate('AcceptReminderScreen', {
+      time,
+      reminderContent,
+      icon,
+      iconColor,
+    });
   };
 
   return (
