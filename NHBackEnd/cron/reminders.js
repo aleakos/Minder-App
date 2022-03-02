@@ -6,8 +6,8 @@ const getReminders = async () => {
   SELECT * FROM REMINDER R
   JOIN APPUSER A ON R.PatientID = A.UID
   WHERE STR_TO_DATE(CONCAT(ReminderDate, ' ', TimeOfDay), '%Y-%m-%d %H:%i:%s') < NOW()
-  AND Deleted = FALSE;`;
-  //   AND ReminderCount = 0;`;
+  AND Deleted = FALSE
+  AND ReminderCount = 0;`;
   const results = await db.promise().query(sql);
   return results[0];
 };

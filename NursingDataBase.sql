@@ -5,6 +5,7 @@ USE NursingHackathon;
 DROP TABLE IF EXISTS APPUSER;
 CREATE TABLE APPUSER (
 	UID		integer not null,
+    Username varchar(50) not null unique,
     PWord	varchar(50) not null,
     FName	varchar(50) not null,
     LName varchar(50) not null,
@@ -12,12 +13,12 @@ CREATE TABLE APPUSER (
     primary key(UID)
 );
 
-INSERT INTO APPUSER(UID, PWord, FName, LName, ExpoToken)
+INSERT INTO APPUSER(UID, Username, PWord, FName, LName, ExpoToken)
 VALUES
-(1, "password", "Zach", "Frena", "ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]"),
-(2, "password", "Jared", "Kraus (supreme ruler)", "ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]"),
-(3, "password", "Grady", "Hall", "ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]"),
-(4, "password", "Alex", "Leakos", "ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]");
+(1, "zfrena", "password", "Zach", "Frena", "ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]"),
+(2, "dyiao", "password", "Deylin", "Yiao", "ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]"),
+(3, "ghall", "password", "Grady", "Hall", "ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]"),
+(4, "aleakos", "password", "Alex", "Leakos", "ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]");
 
 DROP TABLE IF EXISTS DEPENDENT;
 CREATE TABLE DEPENDENT (
