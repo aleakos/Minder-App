@@ -6,17 +6,11 @@ let bodyparser = require('body-parser')
 let app = express()
 app.use(bodyparser.json())
 
-// router.get('/', async function (req, res, next) {
-//   const results = await db.promise().query('SELECT * FROM APPUSER')
-//   res.status(200).json(results[0])
-// })
-
 /* GET all reminders for specific date */
-router.get('/date', async function (req, res, next) {
-  let { date } = req.query
-  // date = new Date(date)
-  let sql = 'SELECT * FROM REMINDER WHERE ReminderDate = ?'
-  const results = await db.promise().query(sql, [date])
+router.get('/getReminder', async function (req, res, next) {
+  let { date, id } = req.query
+  let sql = 'SELECT * FROM REMINDER WHERE ReminderDate = ? AND PatientID = ?'
+  const results = await db.promise().query(sql, [date, id])
   res.status(200).json(results[0])
 })
 
@@ -28,41 +22,6 @@ router.get('/id', async function (req, res, next) {
   console.log(results[0])
   res.status(200).json(results[0])
 })
-
-// /* CREATE new one-off reminder */
-// router.post('/newReminder', async function (req, res, next) {
-//   let {
-//     ReminderID,
-//     PatientID,
-//     ReminderTitle,
-//     ReminderContent,
-//     ReminderDate,
-//     TimeOfDay,
-//     Dismissed,
-//     ReminderCount,
-//     RecurringID,
-//     Deleted,
-//     ReminderType
-//   } = req.body
-//   let sql = 'INSERT INTO REMINDER VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-//   const results = await db
-//     .promise()
-//     .query(sql, [
-//       ReminderID,
-//       PatientID,
-//       ReminderTitle,
-//       ReminderContent,
-//       ReminderDate,
-//       TimeOfDay,
-//       Dismissed,
-//       ReminderCount,
-//       RecurringID,
-//       Deleted,
-//       ReminderType
-//     ])
-
-//   res.status(200).send({ msg: 'added new reminder' })
-// })
 
 /* CREATE new one-off reminder */
 router.post('/newReminder', async function (req, res, next) {
