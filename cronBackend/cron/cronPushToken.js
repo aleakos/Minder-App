@@ -1,6 +1,12 @@
-import cron from 'node-cron';
-import fetch from 'node-fetch';
-import moment from 'moment';
+// import cron from 'node-cron';
+// import fetch from 'node-fetch';
+// import moment from 'moment';
+
+const fetch = (...args) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(...args));
+
+const cron = require('node-cron');
+const moment = require('moment');
 
 const EXPO_CODE = 'ExponentPushToken[LeeHIYOY4XXC6yOa5e4lx6]'; // alex
 // const EXPO_CODE = 'ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]'; // Jared
