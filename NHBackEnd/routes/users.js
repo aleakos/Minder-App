@@ -7,8 +7,9 @@ let app = express()
 app.use(bodyparser.json())
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.send('respond with a resource');
+  res.status(200);
 });
 
 router.post('/login', async function (req, res, next) {

@@ -1,11 +1,11 @@
-const mysql2 = require('mysql2')
+const mysql2 = require('mysql2');
 const connection = mysql2.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'Teck5Taillight!',
+  password: 'albessie',
   database: 'NursingHackathon',
-  dateStrings: true
-})
+  dateStrings: true,
+});
 
 // connection.connect()
 
@@ -17,4 +17,4 @@ const connection = mysql2.createConnection({
 
 // connection.end()
 
-module.exports = connection
+module.exports = connection;
