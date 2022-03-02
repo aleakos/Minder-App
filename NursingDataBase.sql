@@ -18,7 +18,7 @@ VALUES
 (1, "zfrena", "password", "Zach", "Frena", "ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]"),
 (2, "dyiao", "password", "Deylin", "Yiao", "ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]"),
 (3, "ghall", "password", "Grady", "Hall", "ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]"),
-(4, "aleakos", "password", "Alex", "Leakos", "ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]");
+(4, "aleakos", "password", "Jared", "Kraus", "ExponentPushToken[mgjDOXKcDE3hvd5cGhZMc7]");
 
 DROP TABLE IF EXISTS DEPENDENT;
 CREATE TABLE DEPENDENT (
