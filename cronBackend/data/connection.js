@@ -1,11 +1,11 @@
-import mysql2 from 'mysql2/promise';
+import mysql2 from 'mysql2/promise'
 
 const db = mysql2.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'albessie',
   database: 'NursingHackathon',
-  dateStrings: true,
-});
+  dateStrings: true
+})
 
-export default db;
+export default db

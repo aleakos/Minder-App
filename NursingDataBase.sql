@@ -84,14 +84,16 @@ CREATE TABLE REMINDER (
 
 INSERT INTO REMINDER(ReminderID, PatientID, ReminderTitle,ReminderContent,ReminderDate,TimeOfDay,Dismissed,ReminderCount,RecurringID,Deleted,ReminderType) 
 VALUES
-(1,3,"Take AM Pills", "Take with food","2021-02-21","08:00:00",false, 0, 1, false,"medication"),  -- autopopulated from recurring reminder 1
+(1,3,"Take AM Pills", "Take with food","2021-02-21","08:00:00",false, 0, 1, false,"medication"),  -- dummy-populated from recurring reminder 1
 (2,3,"Take AM Pills", "Take with food","2021-02-24","08:00:00",false, 0, 1, false,"medication"),  
 (3,3,"Take AM Pills", "Take with food","2021-02-28","08:00:00",false, 0, 1, false,"medication"),  
 (4,3,"Take AM Pills", "Take with food","2021-03-03","08:00:00",false, 0, 1, false,"medication"), 
-
 (5,4,"Perform Exercise", "Go for walk","2021-02-23","10:00:00",false, 0, 2, false,"exercise"),  -- autopopulated from recurring reminder 2
 (6,4,"Take AM Pills", "Take with food","2021-03-02","10:00:00",false, 0, 2, false,"exercise"),  
-
 (7,3,"Appointment", "With Dr. Nelson, PLC center","2021-03-04","16:00:00",false, 0, null, false,"calendar"), -- one-off  
 (8,4,"Eat Dinner", "Chicken Pasta, microwave","2021-03-05","17:00:00",false, 0, null, true,"diet"),  -- one-off, deleted
-(9,3,"test", "test","2021-02-24","08:00:00",false, 0, null, false,"other");  
+(9,3,"test", "test","2021-02-24","08:00:00",false, 0, null, false,"other"),
+(10,3,"Take PM Pills", "Take with food","2021-02-21","16:00:00",false, 0, 1, false,"medication"),  -- dummy-populated from recurring reminder 1
+(11,3,"Take PM Pills", "Take with food","2021-02-24","16:00:00",false, 0, 1, false,"medication"),  
+(12,3,"Take PM Pills", "Take with food","2021-02-28","16:00:00",false, 0, 1, false,"medication"),  
+(13,3,"Take PM Pills", "Take with food","2021-03-03","16:00:00",false, 0, 1, false,"medication");
