@@ -13,24 +13,25 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/login', async function (req, res, next) {
-
+  
   // Response values
   let resNum, status, user, message;
-
+  console.log(req.body);
   // GET USER
   let sql = 'SELECT * FROM APPUSER WHERE Username = ?'
   const results = await db.promise().query(sql, [req.body.username])
+  
 
   // User not found
   if(!results[0][0]){
-    resNum = 404;
+    resNum = 200;
     status = "DENIED"
     message = "User not found";
     user = null;
   }
   // Password Incorrect
   else if(results[0][0].PWord != req.body.password){
-    resNum = 404;
+    resNum = 200;
     status = "DENIED"
     message = "Password incorrect";
     user = null;

@@ -65,9 +65,13 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 20,
-        //fontFamily: "Corbel",
         color: '#fff'
+    },
+    // --- 2 keyboard container ---
+    keyboardContainer: {
+        flex: 3
     }
+
 })
 
 export default styles;

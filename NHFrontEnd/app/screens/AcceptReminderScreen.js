@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import colors from '../config/colors';
-import moment from 'moment';
 
 const AcceptReminder = ({navigation, route}) => {
 
