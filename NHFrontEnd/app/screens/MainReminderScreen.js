@@ -102,20 +102,21 @@ export default function MainReminderScreen({ navigation }) {
         setNotification(notification);
 
         // UNCOMMENT FOR PRODUCTION
-        // let reminderTile = notification.request.content.title;
-        // let reminderContent = notification.request.content.body;
-        // let data = notification.request.content.data;
+        let reminderTile = notification.request.content.title;
+        let reminderContent = notification.request.content.body;
+        let data = notification.request.content.data;
 
-        // let reminderID = data.reminderID;
-        // let reminderType = data.reminderType;
-        // let reminderTime = data.reminderTime;
-        // let reminderDate = data.reminderDate;
-        // let icon = icons[reminderType];
+        let reminderID = data.reminderID;
+        let reminderType = data.reminderType;
+        let reminderTime = data.reminderTime;
+        let reminderDate = data.reminderDate;
+        let icon = icons[reminderType];
         let iconColor = colors.primary;
 
-        let reminderTime = moment(new Date()).format('h:mm a');
-        let reminderContent = 'asdf1';
-        let icon = 'pill';
+        //COMMENT OUT FOR PRODUCTION
+        // let reminderTime = moment(new Date()).format('h:mm a');
+        // let reminderContent = 'asdf1';
+        // let icon = 'pill';
 
         navigation.navigate('AcceptReminderScreen', {
           reminderTime,
@@ -130,20 +131,21 @@ export default function MainReminderScreen({ navigation }) {
       Notifications.addNotificationResponseReceivedListener((response) => {
         // UNCOMMENT FOR PRODUCTION
 
-        // let reminderTile = response.notification.request.content.title;
-        // let reminderContent = response.notification.request.content.body;
-        // let data = response.notification.request.content.data;
+        let reminderTile = response.notification.request.content.title;
+        let reminderContent = response.notification.request.content.body;
+        let data = response.notification.request.content.data;
 
-        // let reminderID = data.reminderID;
-        // let reminderType = data.reminderType;
-        // let reminderTime = data.reminderTime;
-        // let reminderDate = data.reminderDate;
-        // let icon = icons[reminderType];
+        let reminderID = data.reminderID;
+        let reminderType = data.reminderType;
+        let reminderTime = data.reminderTime;
+        let reminderDate = data.reminderDate;
+        let icon = icons[reminderType];
         let iconColor = colors.primary;
 
-        let reminderTime = moment(new Date()).format('h:mm a');
-        let reminderContent = 'asdf2';
-        let icon = 'pill';
+        // COMMENT OUT FOR PRODUCTION
+        // let reminderTime = moment(new Date()).format('h:mm a');
+        // let reminderContent = 'asdf2';
+        // let icon = 'pill';
         navigation.navigate('AcceptReminderScreen', {
           reminderTime,
           reminderContent,
