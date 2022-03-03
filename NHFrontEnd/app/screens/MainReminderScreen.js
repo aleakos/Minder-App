@@ -8,6 +8,7 @@ import { IPV4 } from '@env';
 import { useIsFocused } from '@react-navigation/native';
 
 import colors from '../config/colors';
+import icons from '../config/icons';
 
 import ReminderBadge from '../components/ReminderBadge';
 import CalendarModal from '../components/CalendarModal';
@@ -78,7 +79,7 @@ export default function MainReminderScreen({ navigation, user }) {
   const notificationListener = useRef();
   const responseListener = useRef();
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
+    registerForPushNotificationsAsync(user.UID).then((token) =>
       setExpoPushToken(token)
     );
 
@@ -88,23 +89,23 @@ export default function MainReminderScreen({ navigation, user }) {
         setNotification(notification);
 
         // UNCOMMENT FOR PRODUCTION
-        // let reminderTile = notification.request.content.title;
-        // let reminderContent = notification.request.content.body;
-        // let data = notification.request.content.data;
+        let reminderTile = notification.request.content.title;
+        let reminderContent = notification.request.content.body;
+        let data = notification.request.content.data;
 
-        // let reminderID = data.reminderID;
-        // let reminderType = data.reminderType;
-        // let reminderTime = data.reminderTime;
-        // let reminderDate = data.reminderDate;
-        // let icon = icons[reminderType];
+        let reminderID = data.reminderID;
+        let reminderType = data.reminderType;
+        let reminderTime = data.reminderTime;
+        let reminderDate = data.reminderDate;
+        let icon = icons[reminderType];
 
         // UNCOMMENT FOR PRODUCTION
         let iconColor = colors.primary;
 
         //COMMENT OUT FOR PRODUCTION
-        let reminderTime = moment(new Date()).format('h:mm a');
-        let reminderContent = 'asdf1';
-        let icon = 'pill';
+        // let reminderTime = moment(new Date()).format('h:mm a');
+        // let reminderContent = 'asdf1';
+        // let icon = 'pill';
 
         //COMMENT OUT FOR PRODUCTION
 
@@ -121,23 +122,23 @@ export default function MainReminderScreen({ navigation, user }) {
       Notifications.addNotificationResponseReceivedListener((response) => {
         // UNCOMMENT FOR PRODUCTION
 
-        // let reminderTile = response.notification.request.content.title;
-        // let reminderContent = response.notification.request.content.body;
-        // let data = response.notification.request.content.data;
+        let reminderTile = response.notification.request.content.title;
+        let reminderContent = response.notification.request.content.body;
+        let data = response.notification.request.content.data;
 
-        // let reminderID = data.reminderID;
-        // let reminderType = data.reminderType;
-        // let reminderTime = data.reminderTime;
-        // let reminderDate = data.reminderDate;
-        // let icon = icons[reminderType];
+        let reminderID = data.reminderID;
+        let reminderType = data.reminderType;
+        let reminderTime = data.reminderTime;
+        let reminderDate = data.reminderDate;
+        let icon = icons[reminderType];
 
         // UNCOMMENT FOR PRODUCTION
 
         let iconColor = colors.primary;
         // COMMENT OUT FOR PRODUCTION
-        let reminderTime = moment(new Date()).format('h:mm a');
-        let reminderContent = 'asdf2';
-        let icon = 'pill';
+        // let reminderTime = moment(new Date()).format('h:mm a');
+        // let reminderContent = 'asdf2';
+        // let icon = 'pill';
 
         // COMMENT OUT FOR PRODUCTION
         navigation.navigate('AcceptReminderScreen', {
@@ -160,26 +161,28 @@ export default function MainReminderScreen({ navigation, user }) {
     <>
       <View style={styles.container}>
         <View style={styles.pageTitleContainer}>
-          <Icon
-            name="left"
-            type={'antdesign'}
-            color={'white'}
-            onPress={decrementDate}
-          />
-          <Text style={styles.pageTitle}>
-            {moment(reminderDate).format('MMMM Do YYYY')}
-          </Text>
-          <Icon
-            name="right"
-            type={'antdesign'}
-            color={'white'}
-            onPress={incrementDate}
-          />
-          <CalendarModal
-            style={styles.calendarModalButton}
-            reminderDate={reminderDate}
-            setReminderDate={setReminderDate}
-          />
+          <View style={styles.titleContent}>
+            <Icon
+              name="left"
+              type={'antdesign'}
+              color={'white'}
+              onPress={decrementDate}
+            />
+            <Text style={styles.pageTitle}>
+              {moment(reminderDate).format('MMMM Do YYYY')}
+            </Text>
+            <Icon
+              name="right"
+              type={'antdesign'}
+              color={'white'}
+              onPress={incrementDate}
+            />
+            <CalendarModal
+              style={styles.calendarModalButton}
+              reminderDate={reminderDate}
+              setReminderDate={setReminderDate}
+            />
+          </View>
         </View>
 
         {reminders.length === 0 && !loading && (
@@ -199,9 +202,7 @@ export default function MainReminderScreen({ navigation, user }) {
                 reminderDate={item.ReminderDate}
                 reminderTime={item.TimeOfDay}
                 reminderType={item.ReminderType}
-                navigation={navigation}
-                reminder={item}
-                loading={loading}
+                titleContent
               />
             )}
           />
@@ -218,11 +219,19 @@ const styles = StyleSheet.create({
   },
   pageTitleContainer: {
     backgroundColor: colors.primary,
-    height: 60,
-    alignItems: 'center',
+    height: 90,
+    alignItems: 'flex-end',
     justifyContent: 'center',
     flexDirection: 'row',
   },
+  titleContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginBottom: 15,
+  },
+
   pageTitle: {
     color: '#fff',
     fontSize: 20,
@@ -235,8 +244,9 @@ const styles = StyleSheet.create({
   },
 });
 
-async function registerForPushNotificationsAsync() {
+async function registerForPushNotificationsAsync(userID) {
   let token;
+  let myIP = IPV4;
   // if (Constants.isDevice || Device.isDevice) {
   if (true) {
     const { status: existingStatus } =
@@ -252,6 +262,16 @@ async function registerForPushNotificationsAsync() {
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
+    try {
+      let res = await axios({
+        url: `http://${myIP}/updateToken?token=${token}&uid=${userID}`,
+        method: 'put',
+        headers: {},
+      });
+      console.log(res.data);
+    } catch (err) {
+      console.error(err);
+    }
   } else {
     alert('Must use physical device for Push Notifications');
   }
