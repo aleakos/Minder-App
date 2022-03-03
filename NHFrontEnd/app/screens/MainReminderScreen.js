@@ -20,7 +20,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default function MainReminderScreen({ navigation }) {
+export default function MainReminderScreen({ navigation, user }) {
   const day = 26;
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -56,9 +56,10 @@ export default function MainReminderScreen({ navigation }) {
 
     async function getReminders() {
       let myIP = IPV4;
+      let userID = user.UID;
       try {
         let res = await axios({
-          url: `http://${myIP}/getReminder?date=${queryDate}&id=3`,
+          url: `http://${myIP}/getReminder?date=${queryDate}&id=${userID}`,
           method: 'get',
           headers: {},
         });
@@ -74,7 +75,7 @@ export default function MainReminderScreen({ navigation }) {
   }, [reminderDate]);
 
   useEffect(() => {
-    console.log(reminders)
+    // console.log(reminders)
   }, [reminders]);
 
   const [expoPushToken, setExpoPushToken] = useState('');
