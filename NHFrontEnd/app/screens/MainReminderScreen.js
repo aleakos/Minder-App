@@ -38,7 +38,7 @@ export default function MainReminderScreen({ navigation }) {
     hideDatePicker();
   };
 
-  const [reminders, setReminders] = useState([
+  const [remindersOld, setRemindersOld] = useState([
     {
       id: 1,
       content: 'Take Advil',
@@ -75,6 +75,7 @@ export default function MainReminderScreen({ navigation }) {
       type: 'medication',
     },
   ]);
+  const [reminders, setReminders] = useState([]);
   const [reminderDate, setReminderDate] = useState(new Date());
 
   const decrementDate = () => {
@@ -86,45 +87,36 @@ export default function MainReminderScreen({ navigation }) {
   };
 
   useEffect(() => {
-    console.log('Date changed to :' + reminderDate);
+    let queryDate = moment(reminderDate).format('YYYY-MM-DD')
+    // let testDate = '2021-02-24'
+    // console.log(queryDate)
 
-    // axios.get('http://localhost:3001/getReminder?date=2021-02-24&id=3')
-    //   .then(function(response) {
-    //     console.log(response)
-    //   }).catch(function(error) {
-    //   console.log(error)
-    // })
+    async function getReminders() {
+      let myIP = IPV4;
+      try {
+        let res = await axios({
+          url: `http://${myIP}/getReminder?date=${queryDate}&id=3`,
+          method: 'get',
+          headers: {}
+        })
 
-    // const fetchData = async () => {
-    //   try {
-    //     const { data: response } = await axios.get('http://localhost:3001/getReminder?date=2021-02-24&id=3');
-    //     console.log(response);
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // };
-    // fetchData();
+        setReminders(res.data)
+      }
+      catch (err) {
+        console.error(err);
+        setReminders([]);
+      }
+    }
 
-    // let myIP = '192.168.1.68:3001'
-    let myIP = IPV4;
-
-
-    var config = {
-      method: 'get',
-      url: `http://${myIP}/getReminder?date=2021-02-24&id=3`,
-      headers: { }
-    };
-
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-
+    getReminders()
   }, [reminderDate]);
+
+  useEffect(() => {
+    // console.log(reminders)
+  }, [reminders]);
+
+
+
 
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
@@ -227,19 +219,27 @@ export default function MainReminderScreen({ navigation }) {
           />
         </View>
 
-        <FlatList
-          data={reminders}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <ReminderBadge
-              reminderContent={item.content}
-              reminderStatus={item.status}
-              reminderTime={item.time}
-              reminderType={item.type}
-              navigation={navigation}
-            />
-          )}
-        />
+        {reminders.length === 0 &&
+          <Text>No reminders today :)</Text>
+        }
+        {reminders.length > 0 &&
+          // <Text>{reminders[0]["ReminderTitle"]}</Text>
+          <FlatList
+            data={reminders}
+            keyExtractor={(item) => item.ReminderID}
+            renderItem={({item}) => (
+              <ReminderBadge
+                reminderContent={item.ReminderTitle}
+                reminderStatus={item.status}
+                reminderTime={item.TimeOfDay}
+                reminderType={item.ReminderType}
+                navigation={navigation}
+              />
+            )}
+          />
+        }
+
+
       </View>
     </>
   );
