@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Icon } from 'react-native-elements';
 import axios from 'axios';
 import { IPV4 } from '@env';
-import { useIsFocused } from '@react-navigation/native'
+import { useIsFocused } from '@react-navigation/native';
 
 import colors from '../config/colors';
 
@@ -21,11 +21,8 @@ Notifications.setNotificationHandler({
 });
 
 export default function MainReminderScreen({ navigation, user }) {
-
-
-
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -50,14 +47,14 @@ export default function MainReminderScreen({ navigation, user }) {
     setReminderDate(moment(reminderDate).add(1, 'days').toDate());
   };
 
-  const isFocused = useIsFocused()
+  const isFocused = useIsFocused();
   useEffect(() => {
-    getReminders()
+    getReminders();
   }, [reminderDate, isFocused]);
 
   async function getReminders() {
-    setLoading(true)
-    setReminders([])
+    setLoading(true);
+    setReminders([]);
     let queryDate = moment(reminderDate).format('YYYY-MM-DD');
     let myIP = IPV4;
     let userID = user.UID;
@@ -73,7 +70,7 @@ export default function MainReminderScreen({ navigation, user }) {
       console.error(err);
       setReminders([]);
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -81,7 +78,7 @@ export default function MainReminderScreen({ navigation, user }) {
   const notificationListener = useRef();
   const responseListener = useRef();
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
+    registerForPushNotificationsAsync(user.UID).then((token) =>
       setExpoPushToken(token)
     );
 
@@ -91,23 +88,23 @@ export default function MainReminderScreen({ navigation, user }) {
         setNotification(notification);
 
         // UNCOMMENT FOR PRODUCTION
-        // let reminderTile = notification.request.content.title;
-        // let reminderContent = notification.request.content.body;
-        // let data = notification.request.content.data;
+        let reminderTile = notification.request.content.title;
+        let reminderContent = notification.request.content.body;
+        let data = notification.request.content.data;
 
-        // let reminderID = data.reminderID;
-        // let reminderType = data.reminderType;
-        // let reminderTime = data.reminderTime;
-        // let reminderDate = data.reminderDate;
-        // let icon = icons[reminderType];
+        let reminderID = data.reminderID;
+        let reminderType = data.reminderType;
+        let reminderTime = data.reminderTime;
+        let reminderDate = data.reminderDate;
+        let icon = icons[reminderType];
 
         // UNCOMMENT FOR PRODUCTION
         let iconColor = colors.primary;
 
         //COMMENT OUT FOR PRODUCTION
-        let reminderTime = moment(new Date()).format('h:mm a');
-        let reminderContent = 'asdf1';
-        let icon = 'pill';
+        // let reminderTime = moment(new Date()).format('h:mm a');
+        // let reminderContent = 'asdf1';
+        // let icon = 'pill';
 
         //COMMENT OUT FOR PRODUCTION
 
@@ -124,23 +121,23 @@ export default function MainReminderScreen({ navigation, user }) {
       Notifications.addNotificationResponseReceivedListener((response) => {
         // UNCOMMENT FOR PRODUCTION
 
-        // let reminderTile = response.notification.request.content.title;
-        // let reminderContent = response.notification.request.content.body;
-        // let data = response.notification.request.content.data;
+        let reminderTile = response.notification.request.content.title;
+        let reminderContent = response.notification.request.content.body;
+        let data = response.notification.request.content.data;
 
-        // let reminderID = data.reminderID;
-        // let reminderType = data.reminderType;
-        // let reminderTime = data.reminderTime;
-        // let reminderDate = data.reminderDate;
-        // let icon = icons[reminderType];
+        let reminderID = data.reminderID;
+        let reminderType = data.reminderType;
+        let reminderTime = data.reminderTime;
+        let reminderDate = data.reminderDate;
+        let icon = icons[reminderType];
 
         // UNCOMMENT FOR PRODUCTION
 
         let iconColor = colors.primary;
         // COMMENT OUT FOR PRODUCTION
-        let reminderTime = moment(new Date()).format('h:mm a');
-        let reminderContent = 'asdf2';
-        let icon = 'pill';
+        // let reminderTime = moment(new Date()).format('h:mm a');
+        // let reminderContent = 'asdf2';
+        // let icon = 'pill';
 
         // COMMENT OUT FOR PRODUCTION
         navigation.navigate('AcceptReminderScreen', {
@@ -163,31 +160,33 @@ export default function MainReminderScreen({ navigation, user }) {
     <>
       <View style={styles.container}>
         <View style={styles.pageTitleContainer}>
-          <Icon
-            name="left"
-            type={'antdesign'}
-            color={'white'}
-            onPress={decrementDate}
-          />
-          <Text style={styles.pageTitle}>
-            {moment(reminderDate).format('MMMM Do YYYY')}
-          </Text>
-          <Icon
-            name="right"
-            type={'antdesign'}
-            color={'white'}
-            onPress={incrementDate}
-          />
-          <CalendarModal
-            style={styles.calendarModalButton}
-            reminderDate={reminderDate}
-            setReminderDate={setReminderDate}
-          />
+          <View style={styles.titleContent}>
+            <Icon
+              name="left"
+              type={'antdesign'}
+              color={'white'}
+              onPress={decrementDate}
+            />
+            <Text style={styles.pageTitle}>
+              {moment(reminderDate).format('MMMM Do YYYY')}
+            </Text>
+            <Icon
+              name="right"
+              type={'antdesign'}
+              color={'white'}
+              onPress={incrementDate}
+            />
+            <CalendarModal
+              style={styles.calendarModalButton}
+              reminderDate={reminderDate}
+              setReminderDate={setReminderDate}
+            />
+          </View>
         </View>
 
-        {reminders.length === 0 && !loading &&
+        {reminders.length === 0 && !loading && (
           <Text style={styles.fillerText}>No reminders today 😊</Text>
-        }
+        )}
 
         {reminders.length > 0 && (
           // <Text>{reminders[0]["ReminderTitle"]}</Text>
@@ -222,25 +221,34 @@ const styles = StyleSheet.create({
   },
   pageTitleContainer: {
     backgroundColor: colors.primary,
-    height: 60,
-    alignItems: 'center',
+    height: 90,
+    alignItems: 'flex-end',
     justifyContent: 'center',
     flexDirection: 'row',
   },
+  titleContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginBottom: 15,
+  },
+
   pageTitle: {
     color: '#fff',
     fontSize: 20,
     paddingHorizontal: 15,
   },
-  fillerText:{
+  fillerText: {
     fontSize: 20,
-    textAlign:"center",
-    paddingTop:20
-  }
+    textAlign: 'center',
+    paddingTop: 20,
+  },
 });
 
-async function registerForPushNotificationsAsync() {
+async function registerForPushNotificationsAsync(userID) {
   let token;
+  let myIP = IPV4;
   // if (Constants.isDevice || Device.isDevice) {
   if (true) {
     const { status: existingStatus } =
@@ -256,6 +264,16 @@ async function registerForPushNotificationsAsync() {
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
+    try {
+      let res = await axios({
+        url: `http://${myIP}/updateToken?token=${token}&uid=${userID}`,
+        method: 'put',
+        headers: {},
+      });
+      console.log(res.data);
+    } catch (err) {
+      console.error(err);
+    }
   } else {
     alert('Must use physical device for Push Notifications');
   }

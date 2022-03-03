@@ -20,20 +20,21 @@ const ReminderBadge = ({
   const [icon, setIcon] = useState('');
   const [iconColor, setIconColor] = useState('');
 
-
   // pass dismissed instead of status
   // future ones are grey and not yellow
 
   useEffect(() => {
-    let reminderDateTime = moment.utc(reminderDate + " " + reminderTime)  // convert to usable dateTime
-    let currentLocalTime = moment(new Date()).local().subtract(7, 'hours')  // hard coded for mountain time
-    let pastReminder = reminderDateTime.isBefore(currentLocalTime)  // true if reminder is from the past
+    let reminderDateTime = moment.utc(reminderDate + ' ' + reminderTime); // convert to usable dateTime
+    let currentLocalTime = moment(new Date()).local().subtract(7, 'hours'); // hard coded for mountain time
+    let pastReminder = reminderDateTime.isBefore(currentLocalTime); // true if reminder is from the past
 
-    let reminderStatus
-    if(reminder.Dismissed === 1){  // reminder already completed
-      reminderStatus='complete'
-    } else if(pastReminder){  // reminder incompleted and in past, therefore missed
-      reminderStatus='missed'
+    let reminderStatus;
+    if (reminder.Dismissed === 1) {
+      // reminder already completed
+      reminderStatus = 'complete';
+    } else if (pastReminder) {
+      // reminder incompleted and in past, therefore missed
+      reminderStatus = 'missed';
     }
 
     if (reminderStatus === 'complete') {
@@ -65,13 +66,12 @@ const ReminderBadge = ({
         icon,
         iconColor,
         id,
+        user
       });
     }
     else {
       navigation.navigate('EditReminderScreen');
     }
-
-    
   };
 
   return (
@@ -120,15 +120,18 @@ const styles = StyleSheet.create({
 
 export default ReminderBadge;
 
-function tConvert (time) {
+function tConvert(time) {
   // Check correct time format and split into components
-  time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+  time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [
+    time,
+  ];
 
-  if (time.length > 1) { // If time format correct
-    time = time.slice (1);  // Remove full string match value
+  if (time.length > 1) {
+    // If time format correct
+    time = time.slice(1); // Remove full string match value
     time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
     time[0] = +time[0] % 12 || 12; // Adjust hours
   }
-  return time[0]+time[1]+time[2]+time[5]
+  return time[0] + time[1] + time[2] + time[5];
   // return time.join (''); // return adjusted time or original string
 }
