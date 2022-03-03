@@ -204,6 +204,7 @@ export default function MainReminderScreen({ navigation, user }) {
                 navigation={navigation}
                 reminder={item}
                 loading={loading}
+                user={user}
               />
             )}
           />
