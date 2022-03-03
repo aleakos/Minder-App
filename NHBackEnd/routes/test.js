@@ -1,19 +1,6 @@
 // console.log(new Date('2022-02-27').getUTCDay());
 const moment = require('moment');
 
-// var start = moment('2016-09-01'), // Sept. 1st
-//   end = moment('2016-11-02'), // Nov. 2nd
-//   day = 1; // Sunday
-
-// var result = [];
-// var current = start.clone();
-
-// while (current.day(7 + day).isBefore(end)) {
-//   result.push(current.clone());
-// }
-
-// console.log(result.map((m) => m.format('LLLL')));
-
 const generateSingleDate = (start, end, day) => {
   var result = [];
   var current = moment(start);
@@ -39,3 +26,28 @@ const generateDates = (start, end, days) => {
 console.log(
   generateDates('2022-02-01', '2022-02-25', [0, 1]).map((m) => m.format('LLLL'))
 );
+
+const generateReminder = () => {
+  return {
+    reminderID: null,
+    description: null,
+    endDate: null,
+    patientID: null,
+    recurring: false,
+    recurringDates: {
+      fridays: false,
+      mondays: false,
+      saturdays: false,
+      sundays: false,
+      thursdays: false,
+      tuesdays: false,
+      wednesdays: false,
+    },
+    reminderType: 'Other',
+    startDate: '',
+    time: '',
+    title: '',
+  };
+};
+
+console.log(generateReminder());
