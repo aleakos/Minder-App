@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import styles from './LoginStyles';
 
-function LoginScreen({navigation}) {
+function LoginScreen({navigation, login}) {
 
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('');
 
-    function onLoginIn() {
+    let setUser = async (user) => {
+        try{
+            await AsyncStorage.setItem('user', JSON.stringify(user));
+        } catch(err) {
+            console.log(err);
+        }
+    }
 
-        if(email.length === 0){
-            setErrorMessage("Please enter an email adress");
+    let onLoginIn = async () => {
+
+        if(username.length === 0){
+            setErrorMessage("Please enter an username adress");
             return
         }
         if(password.length === 0){
@@ -19,7 +29,19 @@ function LoginScreen({navigation}) {
             return
         }
 
-        console.log("Email: " + email + "  |  Password: " + password);
+        await axios.post("http://192.168.0.43:3001/users/login", {username, password})
+            .then(res => {
+                if(res.data.status === "APPROVED"){
+                    setUser(res.data.user);
+                    login();
+                }
+                else {
+                    setErrorMessage(res.data.message + " Please try again.");
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
 
     }
 
@@ -29,14 +51,13 @@ function LoginScreen({navigation}) {
                 <View style={styles.titleBox} >
                     <Text style={styles.title}>MINDER</Text>
                 </View>
-    
             </View>
 
             <View style={styles.inputContainer} >
                 <TextInput
                     style={styles.textInput}
-                    placeholder="Email"
-                    onChangeText={(email) => setEmail(email)}
+                    placeholder="Username"
+                    onChangeText={(username) => setUsername(username)}
                 />
                 <TextInput
                     style={styles.textInput}
@@ -55,6 +76,8 @@ function LoginScreen({navigation}) {
                 </TouchableOpacity>
                 <Text style={{ color: '#FF0000', fontSize: 18 }}>{errorMessage}</Text>
             </View>
+
+            <View style={styles.keyboardContainer} />
             
         </View>
     )

@@ -1,14 +1,17 @@
-import * as React from "react";
+import React, { useState } from 'react';
 import {StyleSheet, View, Text} from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-elements';
 import colors from '../config/colors';
 import MainReminderScreen from "./MainReminderScreen";
 import SetReminderScreen from "./SetReminderScreen";
+import LogoutScreen from "./LogoutScreen";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ navigation, logout, user }) {
+
   return (
     <Tab.Navigator 
       initialRouteName="ViewReminders"
@@ -19,7 +22,7 @@ export default function HomeScreen({ navigation }) {
       >
       <Tab.Screen 
           name="ViewReminders" 
-          component={MainReminderScreen} 
+          children={() => <MainReminderScreen user={user} navigation={navigation}/>} 
           options={{ 
               headerShown: false, 
               tabBarIcon: () => (
@@ -30,11 +33,22 @@ export default function HomeScreen({ navigation }) {
       />
       <Tab.Screen 
           name="CreateReminders" 
-          component={SetReminderScreen} 
+          children={() => <SetReminderScreen user={user} navigation={navigation}/>} 
           options={{ 
               headerShown: false, 
               tabBarIcon: () => (
                 <Icon name="add-circle-outline" type={'ionicon'} size={48}/>
+              ),
+              tabBarShowLabel: false
+          }}
+      />
+      <Tab.Screen 
+          name="Logout" 
+          children={() => <LogoutScreen logout={logout} navigation={navigation}/>} 
+          options={{ 
+              headerShown: false, 
+              tabBarIcon: () => (
+                <Icon name="log-out-outline" type={'ionicon'} size={48}/>
               ),
               tabBarShowLabel: false
           }}
@@ -55,20 +69,3 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary
   }
 })
-
-{/* <>
-<View style={styles.container}>
-  <Button
-    onPress={() => navigation.navigate('MainReminderScreen')}
-    title="Main Reminders Screen"
-    buttonStyle={styles.button}
-    containerStyle={{ margin: 5 }}
-  />
-  <Button
-    onPress={() => navigation.navigate('SetReminderScreen')}
-    title="Create New Reminder"
-    buttonStyle={styles.button}
-    containerStyle={{ margin: 5 }}
-  />
-</View>
-</> */}
