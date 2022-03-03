@@ -46,6 +46,8 @@ const insertRecurringReminder = async () => {
 }
 
 // module.exports = generateDates;
-console.log(generateDates('2022-03-23', '2022-04-23', [0, 3, 4]))
+console.log(
+  generateDates('2022-01-27', '2022-02-27', [0, 1]).map(m => m.format('LLLL'))
+)
 
 // insertRecurringReminder();
