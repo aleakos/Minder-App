@@ -24,6 +24,8 @@ const ReminderContent = () => {
 
   const [recurring, setRecurring] = React.useState(false);
 
+  // TODO un hardcode reminderType and patientID
+
   let reminderData = {
     title: title,
     recurring: recurring,
@@ -37,11 +39,13 @@ const ReminderContent = () => {
       saturdays: saturdays,
       sundays: sundays,
     },
-    startDate: startDate.toDateString(),
-    endDate: endDate.toDateString(),
+    startDate: startDate.toISOString().split('T')[0],
+    endDate: endDate.toISOString().split('T')[0],
     time: `${time.getHours()}:${
       (time.getMinutes() < 10 ? '0' : '') + time.getMinutes()
     }`,
+    patientID: 3,
+    reminderType: 'medication',
   };
 
   const onToggleSwitch = () => setRecurring(!recurring);
@@ -50,10 +54,8 @@ const ReminderContent = () => {
     console.log(reminderData);
   };
 
-  const _goBack = () => console.log('Went back');
-
   return (
-    <View style={{backgroundColor: colors.white, flex: 1}}>
+    <View style={{ backgroundColor: colors.white, flex: 1 }}>
       <View style={styles.innerContainer}>
         <View style={styles.textBox}>
           <Text style={styles.textTitle}>Push Notification Message:</Text>
