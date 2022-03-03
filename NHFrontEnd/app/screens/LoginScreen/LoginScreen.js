@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { IPV4 } from '@env';
 import styles from './LoginStyles';
 
 function LoginScreen({navigation, login}) {
@@ -29,7 +30,7 @@ function LoginScreen({navigation, login}) {
             return
         }
 
-        await axios.post("http://192.168.0.43:3001/users/login", {username, password})
+        await axios.post(`http://${IPV4}/users/login`, {username, password})
             .then(res => {
                 if(res.data.status === "APPROVED"){
                     setUser(res.data.user);
