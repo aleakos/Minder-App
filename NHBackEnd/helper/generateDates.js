@@ -1,32 +1,32 @@
-const moment = require('moment')
-const db = require('../data/index')
+const moment = require('moment');
+const db = require('../data/index');
 
 const generateSingleDate = (start, end, day) => {
-  var result = []
-  var current = moment(start)
+  var result = [];
+  var current = moment(start);
 
   while (current.day(7 + day).isBefore(end)) {
-    result.push(current.clone())
+    result.push(current.clone());
   }
 
-  return result
-}
+  return result;
+};
 
 // where sunday is 0 and saturday is 6
 const generateDates = (start, end, days) => {
-  var result = []
+  var result = [];
   for (let weekday of days) {
-    generateSingleDate(start, end, weekday).forEach(date => {
-      result.push(date)
-    })
+    generateSingleDate(start, end, weekday).forEach((date) => {
+      result.push(date);
+    });
   }
-  return result
-}
+  return result;
+};
 
 const insertRecurringReminder = async () => {
   let sql = `INSERT INTO RECURRINGREMINDER
   (PatientID, StartDate, EndDate, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday) 
-  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   const results = await db
     .promise()
     .query(sql, [
@@ -39,18 +39,18 @@ const insertRecurringReminder = async () => {
       true,
       true,
       true,
-      true
-    ])
+      true,
+    ]);
 
-  console.log(results)
-}
+  console.log(results);
+};
 
 const something = async () => {
-  let recIDSql = 'SELECT MAX((RecurringID)) FROM RECURRINGREMINDER'
-  const recIDResults = await db.promise().query(recIDSql)
-  console.log(recIDResults[0])
+  let recIDSql = 'SELECT MAX((RecurringID)) FROM RECURRINGREMINDER';
+  const recIDResults = await db.promise().query(recIDSql);
+  console.log(recIDResults[0]);
 
-  let sql = 'INSERT INTO REMINDER VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  let sql = 'INSERT INTO REMINDER VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
   const results = await db
     .promise()
     .query(sql, [
@@ -64,26 +64,18 @@ const something = async () => {
       0,
       null,
       0,
-      req.body.type
-    ])
-  res.status(200).send({ msg: 'added new one-off reminder' })
-}
+      req.body.type,
+    ]);
+  res.status(200).send({ msg: 'added new one-off reminder' });
+};
 
-module.exports = generateDates
+module.exports = generateDates;
 // console.log(generateDates('2022-03-23', '2022-04-23', [0, 3, 4]))
 
 // insertRecurringReminder();
-<<<<<<< HEAD
 let dates = generateDates('2022-01-27', '2022-02-27', [0, 1]).map((m) =>
   m.format('YYYY-MM-DD')
 );
-=======
-console.log(
-  generateDates('2022-01-27', '2022-02-27', [0, 1]).map(m =>
-    m.format('YYYY-MM-DD')
-  )
-)
->>>>>>> 017b164c89c64053ef8b60071b71803614f473b6
 
 console.log(dates);
 
@@ -100,16 +92,11 @@ thing = {
     sundays: false,
     thursdays: false,
     tuesdays: true,
-    wednesdays: false
+    wednesdays: false,
   },
   startDate: 'Mon Feb 28 2022',
   time: '6:22',
-  title: 'fd'
-}
+  title: 'fd',
+};
 
 // console.log(new Date(thing.startDate).format('YYYY-MM-DD'));
-<<<<<<< HEAD
-=======
-
-console.log(new Date().toISOString())
->>>>>>> 017b164c89c64053ef8b60071b71803614f473b6
