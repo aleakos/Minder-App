@@ -8,15 +8,32 @@ import icons from '../config/icons';
 
 const ReminderBadge = ({
   reminderTime,
+  reminderDate,
   reminderContent,
   reminderType,
   reminderStatus,
   navigation,
+  dismissed,
 }) => {
   const [icon, setIcon] = useState('');
   const [iconColor, setIconColor] = useState('');
 
+
+  // pass dismissed instead of status
+  // future ones are grey and not yellow
+
   useEffect(() => {
+    let reminderDateTime = moment.utc(reminderDate + " " + reminderTime)  // convert to usable dateTime
+    let currentLocalTime = moment(new Date()).local().subtract(7, 'hours')  // hard coded for mountain time
+    let pastReminder = reminderDateTime.isBefore(currentLocalTime)  // true if reminder is from the past
+
+    let reminderStatus
+    if(dismissed === 1){  // reminder already completed
+      reminderStatus='complete'
+    } else if(pastReminder){  // reminder incompleted and in past, therefore missed
+      reminderStatus='missed'
+    }
+
     if (reminderStatus === 'complete') {
       setIconColor(colors.accept);
       setIcon(icons.complete);
@@ -24,7 +41,7 @@ const ReminderBadge = ({
       setIconColor(colors.reject);
       setIcon(icons.missed);
     } else {
-      setIconColor(colors.caution);
+      setIconColor(colors.grey);
 
       if (reminderType in icons) {
         setIcon(icons[reminderType]);

@@ -38,45 +38,8 @@ export default function MainReminderScreen({ navigation }) {
     hideDatePicker();
   };
 
-  const [remindersOld, setRemindersOld] = useState([
-    {
-      id: 1,
-      content: 'Take Advil',
-      status: 'complete',
-      time: new Date(2022, 2, day, 7, 0, 0),
-      type: 'medication',
-    },
-    {
-      id: 2,
-      content: 'Apply Rub A5-35 to knee',
-      status: 'missed',
-      time: new Date(2022, 2, day, 7, 0, 0),
-      type: 'medication',
-    },
-    {
-      id: 3,
-      content: 'Do phyiso exercises',
-      status: 'pending',
-      time: new Date(2022, 2, day, 12, 0, 0),
-      type: 'exercise',
-    },
-    {
-      id: 4,
-      content: 'Dr. Noiles Appointment',
-      status: 'pending',
-      time: new Date(2022, 2, day, 12, 0, 0),
-      type: 'appointment',
-    },
-    {
-      id: 5,
-      content: 'Take melatonin',
-      status: 'pending',
-      time: new Date(2022, 2, day, 20, 0, 0),
-      type: 'medication',
-    },
-  ]);
   const [reminders, setReminders] = useState([]);
-  const [reminderDate, setReminderDate] = useState(new Date("2021-02-24"));
+  const [reminderDate, setReminderDate] = useState(new Date());
 
   const decrementDate = () => {
     setReminderDate(moment(reminderDate).subtract(1, 'days').toDate());
@@ -110,7 +73,7 @@ export default function MainReminderScreen({ navigation }) {
   }, [reminderDate]);
 
   useEffect(() => {
-    // console.log(reminders)
+    console.log(reminders)
   }, [reminders]);
 
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -232,6 +195,8 @@ export default function MainReminderScreen({ navigation }) {
               <ReminderBadge
                 reminderContent={item.ReminderTitle}
                 reminderStatus={item.status}
+                dismissed={item.Dismissed}
+                reminderDate={item.ReminderDate}
                 reminderTime={item.TimeOfDay}
                 reminderType={item.ReminderType}
                 navigation={navigation}
