@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Icon } from 'react-native-elements';
 import axios from 'axios';
 import { IPV4 } from '@env';
-import { useIsFocused } from '@react-navigation/native'
+import { useIsFocused } from '@react-navigation/native';
 
 import colors from '../config/colors';
 import icons from '../config/icons';
@@ -22,11 +22,8 @@ Notifications.setNotificationHandler({
 });
 
 export default function MainReminderScreen({ navigation, user }) {
-
-
-
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -51,14 +48,14 @@ export default function MainReminderScreen({ navigation, user }) {
     setReminderDate(moment(reminderDate).add(1, 'days').toDate());
   };
 
-  const isFocused = useIsFocused()
+  const isFocused = useIsFocused();
   useEffect(() => {
-    getReminders()
+    getReminders();
   }, [reminderDate, isFocused]);
 
   async function getReminders() {
-    setLoading(true)
-    setReminders([])
+    setLoading(true);
+    setReminders([]);
     let queryDate = moment(reminderDate).format('YYYY-MM-DD');
     let myIP = IPV4;
     let userID = user.UID;
@@ -74,7 +71,7 @@ export default function MainReminderScreen({ navigation, user }) {
       console.error(err);
       setReminders([]);
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -186,9 +183,9 @@ export default function MainReminderScreen({ navigation, user }) {
           />
         </View>
 
-        {reminders.length === 0 && !loading &&
+        {reminders.length === 0 && !loading && (
           <Text style={styles.fillerText}>No reminders today 😊</Text>
-        }
+        )}
 
         {reminders.length > 0 && (
           // <Text>{reminders[0]["ReminderTitle"]}</Text>
@@ -232,11 +229,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingHorizontal: 15,
   },
-  fillerText:{
+  fillerText: {
     fontSize: 20,
-    textAlign:"center",
-    paddingTop:20
-  }
+    textAlign: 'center',
+    paddingTop: 20,
+  },
 });
 
 async function registerForPushNotificationsAsync() {
