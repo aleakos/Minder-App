@@ -175,8 +175,8 @@ router.put('/accept', async function (req, res, next) {
   res.status(200).json(results[0]);
 });
 
-/* ACCEPT a particular reminder */
-router.put('/changeToken', async function (req, res, next) {
+/* UPDATE expo token */
+router.put('/updateToken', async function (req, res, next) {
   let { username, token } = req.query;
   let sql = 'UPDATE APPUSER SET ExpoToken = ? WHERE Username = ?';
   const results = await db.promise().query(sql, [token, username]);
