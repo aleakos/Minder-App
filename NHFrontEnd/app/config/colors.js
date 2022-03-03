@@ -9,4 +9,5 @@ export default {
   black: '#000000',
   primary: '#6200EE',
   primaryPressed: '#4200a2',
+  grey:'#979797',
 };
