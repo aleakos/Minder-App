@@ -1,4 +1,4 @@
-module.exports.populateDaysArray = (reminder) => {
+const populateDaysArray = (reminder) => {
   let results = [];
   if (reminder.recurringDates.sundays) results.push(0);
   if (reminder.recurringDates.mondays) results.push(1);
@@ -9,3 +9,5 @@ module.exports.populateDaysArray = (reminder) => {
   if (reminder.recurringDates.saturdays) results.push(6);
   return results;
 };
+
+module.exports = populateDaysArray;
