@@ -177,9 +177,9 @@ router.put('/accept', async function (req, res, next) {
 
 /* UPDATE expo token */
 router.put('/updateToken', async function (req, res, next) {
-  let { username, token } = req.query;
-  let sql = 'UPDATE APPUSER SET ExpoToken = ? WHERE Username = ?';
-  const results = await db.promise().query(sql, [token, username]);
+  let { token, uid } = req.query;
+  let sql = 'UPDATE APPUSER SET ExpoToken = ? WHERE UID = ?';
+  const results = await db.promise().query(sql, [token, uid]);
   console.log(results[0]);
   res.status(200).json(results[0]);
 });

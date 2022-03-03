@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import colors from '../config/colors';
-import axios from "axios";
+import axios from 'axios';
 import { IPV4 } from '@env';
 
-const AcceptReminder = ({navigation, route, user}) => {
-
-  const {time, reminderContent, icon, iconColor, id} = route.params;
+const AcceptReminder = ({ navigation, route, user }) => {
+  const { time, reminderContent, icon, iconColor, id } = route.params;
 
   const handleAccept = () => {
     async function acceptReminder(reminderId) {
@@ -15,17 +14,17 @@ const AcceptReminder = ({navigation, route, user}) => {
       // let userID = user.UID;
       try {
         let res = await axios({
-          url: `http://${myIP}/accept?PatientID=3&ReminderID=${reminderId}`,
+          url: `http://dedf-70-72-208-238.ngrok.io/accept?PatientID=3&ReminderID=${reminderId}`,
           method: 'put',
           headers: {},
         });
-        navigation.navigate("Home")
+        navigation.navigate('Home');
       } catch (err) {
         console.error(err);
       }
     }
     acceptReminder(id);
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -36,23 +35,20 @@ const AcceptReminder = ({navigation, route, user}) => {
         <Text style={styles.reminderText}>{reminderContent}</Text>
       </View>
       <Avatar.Icon
-          icon={icon}
-          backgroundColor={iconColor}
-          style={styles.iconCircle}
-          size={144}
-        />
-      <TouchableOpacity
-        style={styles.acceptButton}
-        onPress={handleAccept}
-      >
+        icon={icon}
+        backgroundColor={iconColor}
+        style={styles.iconCircle}
+        size={144}
+      />
+      <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
         <Text style={styles.acceptText}>Accept</Text>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.acceptButton}
         onPress={() => navigation.navigate("Home")}
       >
         <Text style={styles.acceptText}>Back</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
