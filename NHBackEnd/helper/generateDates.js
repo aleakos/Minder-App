@@ -73,11 +73,19 @@ module.exports = generateDates
 // console.log(generateDates('2022-03-23', '2022-04-23', [0, 3, 4]))
 
 // insertRecurringReminder();
+<<<<<<< HEAD
+let dates = generateDates('2022-01-27', '2022-02-27', [0, 1]).map((m) =>
+  m.format('YYYY-MM-DD')
+);
+=======
 console.log(
   generateDates('2022-01-27', '2022-02-27', [0, 1]).map(m =>
     m.format('YYYY-MM-DD')
   )
 )
+>>>>>>> 017b164c89c64053ef8b60071b71803614f473b6
+
+console.log(dates);
 
 // something();
 
@@ -100,5 +108,8 @@ thing = {
 }
 
 // console.log(new Date(thing.startDate).format('YYYY-MM-DD'));
+<<<<<<< HEAD
+=======
 
 console.log(new Date().toISOString())
+>>>>>>> 017b164c89c64053ef8b60071b71803614f473b6
