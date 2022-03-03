@@ -7,7 +7,6 @@ import axios from 'axios';
 import { IPV4 } from '@env';
 
 import colors from '../config/colors';
-import icons from '../config/icons';
 
 import ReminderBadge from '../components/ReminderBadge';
 import CalendarModal from '../components/CalendarModal';
