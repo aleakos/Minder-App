@@ -1,22 +1,22 @@
-var express = require('express')
-var router = express.Router()
-const db = require('../data/index')
-let mysql = require('mysql')
-let bodyparser = require('body-parser')
-let app = express()
-app.use(bodyparser.json())
+var express = require('express');
+var router = express.Router();
+const db = require('../data/index');
+let mysql = require('mysql');
+let bodyparser = require('body-parser');
+let app = express();
+app.use(bodyparser.json());
 
 /* GET all reminders for specific date */
 router.get('/getReminder', async function (req, res, next) {
-  let { date, id } = req.query
-  let sql = 'SELECT * FROM REMINDER WHERE ReminderDate = ? AND PatientID = ?'
-  const results = await db.promise().query(sql, [date, id])
-  res.status(200).json(results[0])
-})
+  let { date, id } = req.query;
+  let sql = 'SELECT * FROM REMINDER WHERE ReminderDate = ? AND PatientID = ?';
+  const results = await db.promise().query(sql, [date, id]);
+  res.status(200).json(results[0]);
+});
 
 /* CREATE new one-off reminder */
 router.post('/newReminder', async function (req, res, next) {
-  let reminder = await generateReminder(req)
+  let reminder = await generateReminder(req);
 
   if (reminder.recurring === false) {
     let sql = `
@@ -29,7 +29,7 @@ router.post('/newReminder', async function (req, res, next) {
       RecurringID,
       ReminderType
       )
-    VALUES(?, ?, ?, ?, ?, ?, ?)`
+    VALUES(?, ?, ?, ?, ?, ?, ?)`;
 
     const results = await db
       .promise()
@@ -40,9 +40,9 @@ router.post('/newReminder', async function (req, res, next) {
         reminder.startDate,
         reminder.time,
         null,
-        reminder.reminderType
-      ])
-    res.status(200).send({ msg: 'added new one-off reminder' })
+        reminder.reminderType,
+      ]);
+    res.status(200).send({ msg: 'added new one-off reminder' });
   } else {
     let reqSql = `
         INSERT INTO RECURRINGREMINDER(
@@ -56,7 +56,7 @@ router.post('/newReminder', async function (req, res, next) {
         Friday, 
         Saturday, 
         Sunday) 
-        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     const results = await db
       .promise()
       .query(reqSql, [
@@ -69,16 +69,16 @@ router.post('/newReminder', async function (req, res, next) {
         reminder.recurringDates.thursdays,
         reminder.recurringDates.fridays,
         reminder.recurringDates.saturdays,
-        reminder.recurringDates.sundays
-      ])
-    let recIDSql = 'SELECT MAX((RecurringID)) FROM RECURRINGREMINDER'
-    const recIDResults = await db.promise().query(recIDSql)
+        reminder.recurringDates.sundays,
+      ]);
+    let recIDSql = 'SELECT MAX((RecurringID)) FROM RECURRINGREMINDER';
+    const recIDResults = await db.promise().query(recIDSql);
 
-    res.status(200).send({ msg: 'added new recurring reminder' })
+    res.status(200).send({ msg: 'added new recurring reminder' });
   }
-})
+});
 
-async function insertSingleReminder (reminder) {
+async function insertSingleReminder(reminder) {
   let sql = `
       INSERT INTO REMINDER (
       PatientID, 
@@ -89,7 +89,7 @@ async function insertSingleReminder (reminder) {
       RecurringID,
       ReminderType
       )
-    VALUES(?, ?, ?, ?, ?, ?, ?)`
+    VALUES(?, ?, ?, ?, ?, ?, ?)`;
 
   const results = await db
     .promise()
@@ -100,12 +100,12 @@ async function insertSingleReminder (reminder) {
       reminder.startDate,
       reminder.time,
       null,
-      reminder.reminderType
-    ])
-  res.status(200).send({ msg: 'added new one-off reminder' })
+      reminder.reminderType,
+    ]);
+  res.status(200).send({ msg: 'added new one-off reminder' });
 }
 
-async function insertMultiReminder (reminder) {
+async function insertMultiReminder(reminder) {
   let sql = `
       INSERT INTO REMINDER (
       PatientID, 
@@ -116,7 +116,7 @@ async function insertMultiReminder (reminder) {
       RecurringID,
       ReminderType
       )
-    VALUES(?, ?, ?, ?, ?, ?, ?)`
+    VALUES(?, ?, ?, ?, ?, ?, ?)`;
 
   const results = await db
     .promise()
@@ -127,12 +127,12 @@ async function insertMultiReminder (reminder) {
       reminder.startDate,
       reminder.time,
       null,
-      reminder.reminderType
-    ])
-  res.status(200).send({ msg: 'added new one-off reminder' })
+      reminder.reminderType,
+    ]);
+  res.status(200).send({ msg: 'added new one-off reminder' });
 }
 
-const generateReminder = async req => {
+const generateReminder = async (req) => {
   return {
     reminderID: null,
     description: req.body.description,
@@ -146,14 +146,14 @@ const generateReminder = async req => {
       sundays: req.body.recurringDates.sundays,
       thursdays: req.body.recurringDates.thursdays,
       tuesdays: req.body.recurringDates.tuesdays,
-      wednesdays: req.body.recurringDates.wednesdays
+      wednesdays: req.body.recurringDates.wednesdays,
     },
     reminderType: req.body.reminderType,
     startDate: req.body.startDate,
     time: req.body.time,
-    title: req.body.title
-  }
-}
+    title: req.body.title,
+  };
+};
 
 // /* CREATE new recurring reminder*/
 // router.post('/newRecurringReminder', async function (req, res, next) {
@@ -212,12 +212,12 @@ const generateReminder = async req => {
 
 /* ACCEPT a particular reminder */
 router.put('/accept', async function (req, res, next) {
-  let { PatientID, ReminderID } = req.query
+  let { PatientID, ReminderID } = req.query;
   let sql =
-    'UPDATE REMINDER SET Dismissed = 1 WHERE PatientID = ? AND ReminderID = ?'
-  const results = await db.promise().query(sql, [PatientID, ReminderID])
-  console.log(results[0])
-  res.status(200).json(results[0])
-})
+    'UPDATE REMINDER SET Dismissed = 1 WHERE PatientID = ? AND ReminderID = ?';
+  const results = await db.promise().query(sql, [PatientID, ReminderID]);
+  console.log(results[0]);
+  res.status(200).json(results[0]);
+});
 
-module.exports = router
+module.exports = router;
