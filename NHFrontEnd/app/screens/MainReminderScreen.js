@@ -3,6 +3,8 @@ import { FlatList, Platform, StyleSheet, Text, View } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import moment from 'moment';
 import { Icon } from 'react-native-elements';
+import axios from 'axios';
+import { IPV4 } from '@env';
 
 import colors from '../config/colors';
 import icons from '../config/icons';
@@ -36,7 +38,7 @@ export default function MainReminderScreen({ navigation }) {
     hideDatePicker();
   };
 
-  const [reminders, setReminders] = useState([
+  const [remindersOld, setRemindersOld] = useState([
     {
       id: 1,
       content: 'Take Advil',
@@ -73,6 +75,7 @@ export default function MainReminderScreen({ navigation }) {
       type: 'medication',
     },
   ]);
+  const [reminders, setReminders] = useState([]);
   const [reminderDate, setReminderDate] = useState(new Date());
 
   const decrementDate = () => {
@@ -84,8 +87,32 @@ export default function MainReminderScreen({ navigation }) {
   };
 
   useEffect(() => {
-    console.log('Date changed to :' + reminderDate);
+    let queryDate = moment(reminderDate).format('YYYY-MM-DD');
+    // let testDate = '2021-02-24'
+    // console.log(queryDate)
+
+    async function getReminders() {
+      let myIP = IPV4;
+      try {
+        let res = await axios({
+          url: `http://${myIP}/getReminder?date=${queryDate}&id=3`,
+          method: 'get',
+          headers: {},
+        });
+
+        setReminders(res.data);
+      } catch (err) {
+        console.error(err);
+        setReminders([]);
+      }
+    }
+
+    getReminders();
   }, [reminderDate]);
+
+  useEffect(() => {
+    // console.log(reminders)
+  }, [reminders]);
 
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
@@ -111,11 +138,16 @@ export default function MainReminderScreen({ navigation }) {
         // let reminderTime = data.reminderTime;
         // let reminderDate = data.reminderDate;
         // let icon = icons[reminderType];
+
+        // UNCOMMENT FOR PRODUCTION
         let iconColor = colors.primary;
 
+        //COMMENT OUT FOR PRODUCTION
         let reminderTime = moment(new Date()).format('h:mm a');
         let reminderContent = 'asdf1';
         let icon = 'pill';
+
+        //COMMENT OUT FOR PRODUCTION
 
         navigation.navigate('AcceptReminderScreen', {
           reminderTime,
@@ -139,11 +171,16 @@ export default function MainReminderScreen({ navigation }) {
         // let reminderTime = data.reminderTime;
         // let reminderDate = data.reminderDate;
         // let icon = icons[reminderType];
-        let iconColor = colors.primary;
 
+        // UNCOMMENT FOR PRODUCTION
+
+        let iconColor = colors.primary;
+        // COMMENT OUT FOR PRODUCTION
         let reminderTime = moment(new Date()).format('h:mm a');
         let reminderContent = 'asdf2';
         let icon = 'pill';
+
+        // COMMENT OUT FOR PRODUCTION
         navigation.navigate('AcceptReminderScreen', {
           reminderTime,
           reminderContent,
@@ -186,19 +223,23 @@ export default function MainReminderScreen({ navigation }) {
           />
         </View>
 
-        <FlatList
-          data={reminders}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <ReminderBadge
-              reminderContent={item.content}
-              reminderStatus={item.status}
-              reminderTime={item.time}
-              reminderType={item.type}
-              navigation={navigation}
-            />
-          )}
-        />
+        {reminders.length === 0 && <Text>No reminders today :)</Text>}
+        {reminders.length > 0 && (
+          // <Text>{reminders[0]["ReminderTitle"]}</Text>
+          <FlatList
+            data={reminders}
+            keyExtractor={(item) => item.ReminderID}
+            renderItem={({ item }) => (
+              <ReminderBadge
+                reminderContent={item.ReminderTitle}
+                reminderStatus={item.status}
+                reminderTime={item.TimeOfDay}
+                reminderType={item.ReminderType}
+                navigation={navigation}
+              />
+            )}
+          />
+        )}
       </View>
     </>
   );
