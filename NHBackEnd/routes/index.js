@@ -53,7 +53,7 @@ router.post('/newReminder', async function (req, res, next) {
         req.body.recurringDates.sundays
       ])
     let recurringID = 0
-    let recIDSql = 'SELECT LAST_INSERT_ID()'
+    let recIDSql = 'SELECT MAX((RecurringID))'
 
     res.status(200).send({ msg: 'added new recurring reminder' })
   }

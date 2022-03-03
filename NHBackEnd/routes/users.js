@@ -13,34 +13,50 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/login', async function (req, res, next) {
-  //console.log(req.body)
+
+  // Response values
+  let resNum, status, user, message;
+
+  // GET USER
   let sql = 'SELECT * FROM APPUSER WHERE Username = ?'
   const results = await db.promise().query(sql, [req.body.username])
-  console.log(results[0][0]);
 
-  // response values
-  let resNum, status, user, message;
-  // check to see if user exists
-  if(results[0].length < 0){
+  // User not found
+  if(!results[0][0]){
     resNum = 404;
     status = "DENIED"
     message = "User not found";
     user = null;
   }
-  else if(results[0][0].PWord != req.password){
+  // Password Incorrect
+  else if(results[0][0].PWord != req.body.password){
     resNum = 404;
     status = "DENIED"
     message = "Password incorrect";
     user = null;
   }
+  // Valid Username / Password
   else {
     resNum = 200;
-    status = "APPROVED"
+    status = "APPROVED";
     message = "Welcome";
+    user = results[0][0];
 
+    // Check if patient
     let patientSQL = 'SELECT * FROM DEPENDENT WHERE PatientID = ?'
-    const patientResults = await db.promise().query(sql, [results[0][0].UID])
-    console.log(patientResults);
+    const patientResults = await db.promise().query(patientSQL, [user.UID])
+    if(patientResults[0][0]){
+      user.role = "patient"
+    }
+    
+    //if not patient check if caregiver
+    else {
+      let caregiverSQL = 'SELECT * FROM CAREGIVER WHERE CaregiverID = ?'
+      const caregiverResults = await db.promise().query(caregiverSQL, [user.UID])
+      if(caregiverResults[0][0]){
+        user.role = "caregiver"
+      }
+    }
   }
 
   res.status(resNum).send({ status, user, message })

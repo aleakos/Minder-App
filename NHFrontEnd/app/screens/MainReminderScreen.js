@@ -3,6 +3,8 @@ import { FlatList, Platform, StyleSheet, Text, View } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import moment from 'moment';
 import { Icon } from 'react-native-elements';
+import axios from 'axios'
+import {IPV4} from "@env"
 
 import colors from '../config/colors';
 import icons from '../config/icons';
@@ -85,6 +87,43 @@ export default function MainReminderScreen({ navigation }) {
 
   useEffect(() => {
     console.log('Date changed to :' + reminderDate);
+
+    // axios.get('http://localhost:3001/getReminder?date=2021-02-24&id=3')
+    //   .then(function(response) {
+    //     console.log(response)
+    //   }).catch(function(error) {
+    //   console.log(error)
+    // })
+
+    // const fetchData = async () => {
+    //   try {
+    //     const { data: response } = await axios.get('http://localhost:3001/getReminder?date=2021-02-24&id=3');
+    //     console.log(response);
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // };
+    // fetchData();
+
+    // let myIP = '192.168.1.68:3001'
+    let myIP = IPV4;
+
+
+    var config = {
+      method: 'get',
+      url: `http://${myIP}/getReminder?date=2021-02-24&id=3`,
+      headers: { }
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+
   }, [reminderDate]);
 
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -102,20 +141,21 @@ export default function MainReminderScreen({ navigation }) {
         setNotification(notification);
 
         // UNCOMMENT FOR PRODUCTION
-        // let reminderTile = notification.request.content.title;
-        // let reminderContent = notification.request.content.body;
-        // let data = notification.request.content.data;
+        let reminderTile = notification.request.content.title;
+        let reminderContent = notification.request.content.body;
+        let data = notification.request.content.data;
 
-        // let reminderID = data.reminderID;
-        // let reminderType = data.reminderType;
-        // let reminderTime = data.reminderTime;
-        // let reminderDate = data.reminderDate;
-        // let icon = icons[reminderType];
+        let reminderID = data.reminderID;
+        let reminderType = data.reminderType;
+        let reminderTime = data.reminderTime;
+        let reminderDate = data.reminderDate;
+        let icon = icons[reminderType];
         let iconColor = colors.primary;
 
-        let reminderTime = moment(new Date()).format('h:mm a');
-        let reminderContent = 'asdf1';
-        let icon = 'pill';
+        //COMMENT OUT FOR PRODUCTION
+        // let reminderTime = moment(new Date()).format('h:mm a');
+        // let reminderContent = 'asdf1';
+        // let icon = 'pill';
 
         navigation.navigate('AcceptReminderScreen', {
           reminderTime,
@@ -130,20 +170,21 @@ export default function MainReminderScreen({ navigation }) {
       Notifications.addNotificationResponseReceivedListener((response) => {
         // UNCOMMENT FOR PRODUCTION
 
-        // let reminderTile = response.notification.request.content.title;
-        // let reminderContent = response.notification.request.content.body;
-        // let data = response.notification.request.content.data;
+        let reminderTile = response.notification.request.content.title;
+        let reminderContent = response.notification.request.content.body;
+        let data = response.notification.request.content.data;
 
-        // let reminderID = data.reminderID;
-        // let reminderType = data.reminderType;
-        // let reminderTime = data.reminderTime;
-        // let reminderDate = data.reminderDate;
-        // let icon = icons[reminderType];
+        let reminderID = data.reminderID;
+        let reminderType = data.reminderType;
+        let reminderTime = data.reminderTime;
+        let reminderDate = data.reminderDate;
+        let icon = icons[reminderType];
         let iconColor = colors.primary;
 
-        let reminderTime = moment(new Date()).format('h:mm a');
-        let reminderContent = 'asdf2';
-        let icon = 'pill';
+        // COMMENT OUT FOR PRODUCTION
+        // let reminderTime = moment(new Date()).format('h:mm a');
+        // let reminderContent = 'asdf2';
+        // let icon = 'pill';
         navigation.navigate('AcceptReminderScreen', {
           reminderTime,
           reminderContent,

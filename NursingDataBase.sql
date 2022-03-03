@@ -90,10 +90,10 @@ VALUES
 (3,"Take AM Pills", "Take with food","2021-02-24","08:00:00",false, 0, 1, false,"medication"),  
 (3,"Take AM Pills", "Take with food","2021-02-28","08:00:00",false, 0, 1, false,"medication"),  
 (3,"Take AM Pills", "Take with food","2021-03-03","08:00:00",false, 0, 1, false,"medication"), 
-(3,"Take AM Pills", "Take with food","2021-02-21","08:00:00",false, 0, 1, false,"medication"),  -- autopopulated from recurring reminder 1
-(3,"Take AM Pills", "Take with food","2021-02-24","08:00:00",false, 0, 1, false,"medication"),  
-(3,"Take AM Pills", "Take with food","2021-02-28","08:00:00",false, 0, 1, false,"medication"),  
-(3,"Take AM Pills", "Take with food","2021-03-03","08:00:00",false, 0, 1, false,"medication"), 
+(3,"Take PM Pills", "Take with food","2021-02-21","18:00:00",false, 0, 1, false,"medication"),  -- autopopulated from recurring reminder 1
+(3,"Take PM Pills", "Take with food","2021-02-24","18:00:00",false, 0, 1, false,"medication"),  
+(3,"Take PM Pills", "Take with food","2021-02-28","18:00:00",false, 0, 1, false,"medication"),  
+(3,"Take PM Pills", "Take with food","2021-03-03","18:00:00",false, 0, 1, false,"medication"), 
 
 (4,"Perform Exercise", "Go for walk","2021-02-23","10:00:00",false, 0, 2, false,"exercise"),  -- autopopulated from recurring reminder 2
 (4,"Take AM Pills", "Take with food","2021-03-02","10:00:00",false, 0, 2, false,"exercise"),  
