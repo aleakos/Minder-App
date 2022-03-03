@@ -116,10 +116,10 @@ router.post('/newReminder', async function (req, res, next) {
 
 /* ACCEPT a particular reminder */
 router.put('/accept', async function (req, res, next) {
-  let { PatientID, ReminderID } = req.query
+  let { patientID, reminderID } = req.query
   let sql =
     'UPDATE REMINDER SET Dismissed = 1 WHERE PatientID = ? AND ReminderID = ?'
-  const results = await db.promise().query(sql, [PatientID, ReminderID])
+  const results = await db.promise().query(sql, [patientID, reminderID])
   console.log(results[0])
   res.status(200).json(results[0])
 })
