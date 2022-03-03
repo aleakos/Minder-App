@@ -6,6 +6,7 @@ import LoginScreen from './app/screens/LoginScreen/LoginScreen';
 import AcceptReminder from './app/screens/AcceptReminderScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setStatusBarHidden } from 'expo-status-bar';
+import EditReminderContent from './app/screens/EditReminderScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -44,6 +45,7 @@ export default function App() {
           </Stack.Screen>
           
           <Stack.Screen name="AcceptReminderScreen" component={AcceptReminder} />
+          <Stack.Screen name="EditReminderScreen" component={EditReminderContent} />
         </Stack.Navigator>
       </NavigationContainer>
     )

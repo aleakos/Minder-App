@@ -14,7 +14,8 @@ const ReminderBadge = ({
   reminderStatus,
   navigation,
   dismissed,
-  reminder
+  reminder,
+  user
 }) => {
   const [icon, setIcon] = useState('');
   const [iconColor, setIconColor] = useState('');
@@ -57,13 +58,20 @@ const ReminderBadge = ({
     // let time = moment(reminderTime).format('h:mm a');
     let time = tConvert(reminderTime);
     let id = reminder.ReminderID
-    navigation.navigate('AcceptReminderScreen', {
-      time,
-      reminderContent,
-      icon,
-      iconColor,
-      id,
-    });
+    if(user.role === "patient"){
+      navigation.navigate('AcceptReminderScreen', {
+        time,
+        reminderContent,
+        icon,
+        iconColor,
+        id,
+      });
+    }
+    else {
+      navigation.navigate('EditReminderScreen');
+    }
+
+    
   };
 
   return (
