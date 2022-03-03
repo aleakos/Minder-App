@@ -14,6 +14,7 @@ const ReminderBadge = ({
   reminderStatus,
   navigation,
   dismissed,
+  reminder
 }) => {
   const [icon, setIcon] = useState('');
   const [iconColor, setIconColor] = useState('');
@@ -28,7 +29,7 @@ const ReminderBadge = ({
     let pastReminder = reminderDateTime.isBefore(currentLocalTime)  // true if reminder is from the past
 
     let reminderStatus
-    if(dismissed === 1){  // reminder already completed
+    if(reminder.Dismissed === 1){  // reminder already completed
       reminderStatus='complete'
     } else if(pastReminder){  // reminder incompleted and in past, therefore missed
       reminderStatus='missed'
@@ -54,12 +55,14 @@ const ReminderBadge = ({
   const handleOnPress = () => {
     // do something like re route to the actual card - maybe pop a modal?
     // let time = moment(reminderTime).format('h:mm a');
-    let time = reminderTime
+    let time = tConvert(reminderTime);
+    let id = reminder.ReminderID
     navigation.navigate('AcceptReminderScreen', {
       time,
       reminderContent,
       icon,
       iconColor,
+      id,
     });
   };
 
@@ -76,7 +79,6 @@ const ReminderBadge = ({
             fontSize: 30,
           }}
         >
-          {/*{moment(reminderTime).format('h:mm a')}*/}
           {tConvert(reminderTime)}
         </Title>
       </View>

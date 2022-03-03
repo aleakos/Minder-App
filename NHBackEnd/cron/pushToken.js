@@ -19,12 +19,10 @@ async function sendPushNotification(reminderObject) {
         new Date(reminderObject.ReminderDate + ' ' + reminderObject.TimeOfDay)
       )
         .format('h:mm a')
-        .toString(), // replace with actual time in db
+        .toString(),
       reminderDate: reminderObject.ReminderDate,
     },
   };
-
-  // console.log('message', message);
 
   const res = await fetch('https://exp.host/--/api/v2/push/send', {
     method: 'POST',
