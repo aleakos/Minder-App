@@ -9,6 +9,7 @@ const AcceptReminder = ({ navigation, route, user }) => {
   const { time, reminderContent, icon, iconColor, id } = route.params;
 
   const handleAccept = () => {
+    console.log(id);
     async function acceptReminder(reminderId) {
       let myIP = IPV4;
       // let userID = user.UID;
