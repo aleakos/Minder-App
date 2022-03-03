@@ -76,7 +76,7 @@ export default function MainReminderScreen({ navigation }) {
     },
   ]);
   const [reminders, setReminders] = useState([]);
-  const [reminderDate, setReminderDate] = useState(new Date());
+  const [reminderDate, setReminderDate] = useState(new Date("2021-02-24"));
 
   const decrementDate = () => {
     setReminderDate(moment(reminderDate).subtract(1, 'days').toDate());
@@ -107,7 +107,6 @@ export default function MainReminderScreen({ navigation }) {
         setReminders([]);
       }
     }
-
     getReminders()
   }, [reminderDate]);
 
