@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Icon } from 'react-native-elements';
 import axios from 'axios';
 import { IPV4 } from '@env';
+import { useIsFocused } from '@react-navigation/native'
 
 import colors from '../config/colors';
 import icons from '../config/icons';
@@ -21,9 +22,11 @@ Notifications.setNotificationHandler({
 });
 
 export default function MainReminderScreen({ navigation, user }) {
-  const day = 26;
+
+
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -34,7 +37,6 @@ export default function MainReminderScreen({ navigation, user }) {
   };
 
   const handleConfirm = (date) => {
-    console.warn('A date has been picked: ', date);
     hideDatePicker();
   };
 
@@ -49,34 +51,31 @@ export default function MainReminderScreen({ navigation, user }) {
     setReminderDate(moment(reminderDate).add(1, 'days').toDate());
   };
 
+  const isFocused = useIsFocused()
   useEffect(() => {
+    getReminders()
+  }, [reminderDate, isFocused]);
+
+  async function getReminders() {
+    setLoading(true)
+    setReminders([])
     let queryDate = moment(reminderDate).format('YYYY-MM-DD');
-    // let testDate = '2021-02-24'
-    // console.log(queryDate)
+    let myIP = IPV4;
+    let userID = user.UID;
+    try {
+      let res = await axios({
+        url: `http://${myIP}/getReminder?date=${queryDate}&id=${userID}`,
+        method: 'get',
+        headers: {},
+      });
 
-    async function getReminders() {
-      let myIP = IPV4;
-      let userID = user.UID;
-      try {
-        let res = await axios({
-          url: `http://${myIP}/getReminder?date=${queryDate}&id=${userID}`,
-          method: 'get',
-          headers: {},
-        });
-
-        setReminders(res.data);
-      } catch (err) {
-        console.error(err);
-        setReminders([]);
-      }
+      setReminders(res.data);
+    } catch (err) {
+      console.error(err);
+      setReminders([]);
     }
-
-    getReminders();
-  }, [reminderDate]);
-
-  useEffect(() => {
-    // console.log(reminders)
-  }, [reminders]);
+    setLoading(false)
+  }
 
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
@@ -187,7 +186,10 @@ export default function MainReminderScreen({ navigation, user }) {
           />
         </View>
 
-        {reminders.length === 0 && <Text>No reminders today :)</Text>}
+        {reminders.length === 0 && !loading &&
+          <Text style={styles.fillerText}>No reminders today 😊</Text>
+        }
+
         {reminders.length > 0 && (
           // <Text>{reminders[0]["ReminderTitle"]}</Text>
           <FlatList
@@ -202,6 +204,8 @@ export default function MainReminderScreen({ navigation, user }) {
                 reminderTime={item.TimeOfDay}
                 reminderType={item.ReminderType}
                 navigation={navigation}
+                reminder={item}
+                loading={loading}
               />
             )}
           />
@@ -228,6 +232,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingHorizontal: 15,
   },
+  fillerText:{
+    fontSize: 20,
+    textAlign:"center",
+    paddingTop:20
+  }
 });
 
 async function registerForPushNotificationsAsync() {
