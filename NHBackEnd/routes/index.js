@@ -6,7 +6,7 @@ let bodyparser = require('body-parser');
 let app = express();
 app.use(bodyparser.json());
 let generateDates = require('../helper/generateDates');
-let populatedaysArray = require('../helper/populatedaysArrays');
+let populateDaysArray = require('../helper/populateDaysArrays');
 
 /* GET all reminders for specific date for a specific patient */
 router.get('/getReminder', async function (req, res, next) {
@@ -30,7 +30,7 @@ router.post('/newReminder', async function (req, res, next) {
     let dates = generateDates(
       reminder.startDate,
       reminder.endDate,
-      populatedaysArray(reminder)
+      populateDaysArray(reminder)
     ).map((m) => m.format('YYYY-MM-DD'));
     for (let date of dates) {
       insertMultiReminder(
