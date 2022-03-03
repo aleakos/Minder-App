@@ -15,7 +15,7 @@ const ReminderBadge = ({
   navigation,
   dismissed,
   reminder,
-  user
+  user,
 }) => {
   const [icon, setIcon] = useState('');
   const [iconColor, setIconColor] = useState('');
@@ -58,19 +58,21 @@ const ReminderBadge = ({
     // do something like re route to the actual card - maybe pop a modal?
     // let time = moment(reminderTime).format('h:mm a');
     let time = tConvert(reminderTime);
-    let id = reminder.ReminderID
-    if(user.role === "patient"){
+    let id = reminder.ReminderID;
+    if (user.role === 'patient') {
       navigation.navigate('AcceptReminderScreen', {
         time,
         reminderContent,
         icon,
         iconColor,
         id,
-        user
+        user,
       });
-    }
-    else {
-      navigation.navigate('EditReminderScreen');
+    } else {
+      navigation.navigate('EditReminderScreen', {
+        user,
+        id,
+      });
     }
   };
 

@@ -6,7 +6,8 @@ import RecurringDates from '../components/RecurringDates';
 import DateTime from '../components/DateTime';
 import colors from '../config/colors';
 
-const EditReminderContent = ({navigation}) => {
+const EditReminderContent = ({ navigation, route }) => {
+  const { id, user } = route.params;
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
@@ -114,7 +115,7 @@ const EditReminderContent = ({navigation}) => {
           <Text style={styles.textButton}>Create Reminder</Text>
         </Button>
 
-        <Button mode="contained" onPress={() => navigation.navigate("Home")}>
+        <Button mode="contained" onPress={() => navigation.navigate('Home')}>
           <Text style={styles.textButton}>Back</Text>
         </Button>
       </View>
