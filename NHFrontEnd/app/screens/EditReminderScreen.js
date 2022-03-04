@@ -13,7 +13,6 @@ import {
   Portal,
   Paragraph,
   Provider,
-  Avatar,
 } from 'react-native-paper';
 import axios from 'axios';
 import { IPV4 } from '@env';
@@ -24,7 +23,7 @@ import DateTime from '../components/DateTime';
 import colors from '../config/colors';
 
 const EditReminderContent = ({ navigation, route }) => {
-  const { id, user } = route.params;
+  const { id } = route.params;
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
@@ -50,24 +49,34 @@ const EditReminderContent = ({ navigation, route }) => {
   const [dialogContent, setDialogContent] = React.useState('');
   const [dialogTitle, setDialogTitle] = React.useState('');
 
-  // set all info from reminder in db
+  // TODO ARE THE DATES UDATING AS UTC???
   useEffect(() => {
+    let myIP = IPV4;
     async function getReminder() {
       try {
+        console.log(id);
         let res = await axios({
-          url: `http://${IPV4}/getReminderData?id=${id}`,
+          url: `http://${myIP}/getReminderData?id=${id}`,
           method: 'get',
           headers: {},
         });
 
+        console.log('res.data');
+        console.log(JSON.stringify(res.data));
+
         let hours = res.data.TimeOfDay.split(':')[0];
         let minutes = res.data.TimeOfDay.split(':')[1];
         let timeOfDay = new Date(new Date().setHours(hours, minutes, 0, 0));
+        setTime(timeOfDay);
         console.log('timeOfDay:', timeOfDay);
 
-        setStartDate(new Date(res.data.StartDate));
-        setEndDate(new Date(res.data.EndDate));
-        setTime(timeOfDay);
+        if (res.data.startDate !== null) {
+          setStartDate(new Date(res.data.StartDate));
+          setEndDate(new Date(res.data.EndDate));
+        } else {
+          setStartDate(new Date(res.data.ReminderDate));
+          setEndDate(new Date(res.data.ReminderDate));
+        }
         setReminderContent(res.data.ReminderContent);
         setTitle(res.data.Title);
         setReminderType(res.data.ReminderType);
@@ -82,6 +91,7 @@ const EditReminderContent = ({ navigation, route }) => {
         res.data.Saturday ? setSaturdays(true) : setSaturdays(false);
         res.data.Sunday ? setSundays(true) : setSundays(false);
       } catch (err) {
+        console.log('ERROR:');
         console.log(err);
       }
     }
@@ -133,22 +143,6 @@ const EditReminderContent = ({ navigation, route }) => {
     },
   ];
 
-  const clearState = () => {
-    setStartDate(new Date());
-    setEndDate(new Date());
-    setTime(new Date());
-    setMondays(false);
-    setTuesdays(false);
-    setWednesdays(false);
-    setThursdays(false);
-    setFridays(false);
-    setSaturdays(false);
-    setSundays(false);
-    setReminderContent('');
-    setTitle('');
-    setRecurring(false);
-  };
-
   const onToggleSwitch = () => setRecurring(!recurring);
 
   const showDialog = () => setVisibleDialog(true);
@@ -174,6 +168,9 @@ const EditReminderContent = ({ navigation, route }) => {
       showDialog();
     } else {
       let data = JSON.stringify(reminderData);
+      console.log('data//', data);
+      console.log('//data:');
+
       let myIP = IPV4;
       let config = {
         method: 'post',
@@ -184,24 +181,43 @@ const EditReminderContent = ({ navigation, route }) => {
         data: data,
       };
 
-      //TODO DELETE OLD REMINDERS
-      //TODO do we want to be able to edit a single reminder within a recurring event?
-
       axios(config)
         .then(function (response) {
-          console.log(JSON.stringify(response.data));
-          clearState();
           setDialogTitle('Success!');
           setDialogContent('Reminder created edited');
           showDialog();
           navigation.navigate('Home');
         })
+        .then(deleteOldReminder)
         .catch(function (error) {
           console.log(error);
         });
-      console.log(reminderData);
     }
   };
+
+  //TODO DELETE OLD REMINDERS
+  //TODO do we want to be able to edit a single reminder within a recurring event?
+
+  const deleteOldReminder = async () => {
+    let myIP = IPV4;
+    // If someone is editing all recurring events, then delete all recurring events
+    let deleteEndPoint = recurring
+      ? 'deleteRecurringReminder'
+      : 'deleteSingleReminder';
+
+    try {
+      let res = await axios({
+        url: `http://${myIP}/${deleteEndPoint}?reminderID=${id}`,
+        method: 'put',
+        headers: {},
+      });
+    } catch (err) {
+      console.log('ERROR DELETING OLD REMINDER:');
+      console.log(err);
+    }
+  };
+
+  // A USER CANNOT CHANGE A SINGLE REMINDER IN A RECURRING EVENT IN THIS VERSION
 
   return (
     <Provider>

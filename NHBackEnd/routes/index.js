@@ -19,21 +19,28 @@ router.get('/getReminder', async function (req, res, next) {
 
 //  GET all data for either single or recurring reminders
 router.get('/getReminderData', async function (req, res, next) {
-  let { id } = req.query;
-  let sql = `
+  try {
+    let { id } = req.query;
+    let sql = `
   SELECT * FROM RECURRINGREMINDER RR
   JOIN REMINDER R ON R.RecurringID = RR.RecurringID
-  WHERE R.ReminderID = ?;
+  WHERE R.ReminderID = ?
+  ORDER BY R.TimeOfDay;
   `;
-  const results = await db.promise().query(sql, [id]);
-  if (results[0].length === 0) {
-    let sqlSequel = `
+    const results = await db.promise().query(sql, [id]);
+    if (results[0].length === 0) {
+      let sqlSequel = `
     SELECT * FROM REMINDER WHERE ReminderID = ?;
     `;
-    const resultsSequel = await db.promise().query(sqlSequel, [id]);
-    res.status(200).json(resultsSequel[0][0]);
+      const resultsSequel = await db.promise().query(sqlSequel, [id]);
+      res.status(200).json(resultsSequel[0][0]);
+    } else {
+      res.status(200).json(results[0][0]);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err });
+    console.log(err);
   }
-  res.status(200).json(results[0][0]);
 });
 
 /* GET all reminders for specific date for a specific caregiver */
@@ -44,7 +51,9 @@ router.get('/caregiverReminders', async function (req, res, next) {
     LEFT JOIN CAREGIVER as c ON c.PatientID = r.PatientID
     WHERE c.CaregiverID=? 
     AND r.ReminderDate=? 
-    AND r.Deleted=0;`;
+    AND r.Deleted=0
+    ORDER BY r.TimeOfDay;
+    `;
   const results = await db.promise().query(sql, [caregiverID, date]);
   res.status(200).json(results[0]);
 });
@@ -143,6 +152,7 @@ async function insertRecurringReminder(reminder) {
 
 //helper function to insert single reminder into DB
 async function insertMultiReminder(reminder, date, recurringID) {
+  console.log('CALLING INSERT MUILTI REMIDER');
   let sql = `
       INSERT INTO REMINDER (
       PatientID, 
