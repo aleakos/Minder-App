@@ -70,7 +70,7 @@ const EditReminderContent = ({ navigation, route }) => {
         setTime(timeOfDay);
         console.log('timeOfDay:', timeOfDay);
 
-        if (res.data.startDate !== null) {
+        if ('StartDate' in res.data) {
           setStartDate(new Date(res.data.StartDate));
           setEndDate(new Date(res.data.EndDate));
         } else {
