@@ -29,9 +29,9 @@ const AcceptReminder = ({ navigation, route }) => {
 
   const reminderDateTime = moment
     .utc(reminderDate + ' ' + reminderTime)
-    .subtract(7, 'hours'); // convert to usable dateTime
+    // .subtract(7, 'hours'); // convert to usable dateTime
 
-  const [visible, setVisible] = useState(moment().isBefore(reminderDateTime));
+  const [visible, setVisible] = useState(moment(new Date()).local().subtract(7, 'hours').isBefore(reminderDateTime));
 
   const handleAccept = () => {
     async function acceptReminder(reminderId) {
@@ -55,7 +55,8 @@ const AcceptReminder = ({ navigation, route }) => {
   //TODO need to pass in date - getting undefined
 
   const renderButton = () => {
-    let now = moment();
+    // let now = moment();
+    let now = moment(new Date()).local().subtract(7, 'hours');
 
     if (icon === icons.complete) {
       return (
@@ -91,7 +92,7 @@ const AcceptReminder = ({ navigation, route }) => {
 
   return (
     <>
-      {moment().isBefore(reminderDateTime) ? (
+      {moment(new Date()).local().subtract(7, 'hours').isBefore(reminderDateTime) ? (
         <Banner
           visible={visible}
           actions={[

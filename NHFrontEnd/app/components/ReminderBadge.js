@@ -75,6 +75,7 @@ const ReminderBadge = ({
       navigation.navigate('EditReminderScreen', {
         user,
         id,
+        reminderDate
       });
     }
   };
