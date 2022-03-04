@@ -9,6 +9,7 @@ async function sendPushNotification(reminderObject) {
     to: reminderObject.ExpoToken,
     sound: 'default',
     title: reminderObject.ReminderTitle,
+    body: reminderObject.ReminderContent,
     data: {
       reminderID: reminderObject.ReminderID,
       reminderType: reminderObject.ReminderType,
