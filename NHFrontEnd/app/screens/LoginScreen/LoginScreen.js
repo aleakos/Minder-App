@@ -6,7 +6,6 @@ import { IPV4 } from '@env';
 import styles from './LoginStyles';
 
 function LoginScreen({ navigation, login }) {
-  console.log(login);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

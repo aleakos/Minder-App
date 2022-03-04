@@ -31,7 +31,8 @@ export default function HomeScreen({ navigation, logout, user }) {
               tabBarShowLabel: false
           }}
       />
-      <Tab.Screen 
+      {user.role === "caregiver" && (
+        <Tab.Screen 
           name="CreateReminders" 
           children={() => <SetReminderScreen user={user} navigation={navigation}/>}
           listeners={{
@@ -48,7 +49,9 @@ export default function HomeScreen({ navigation, logout, user }) {
               ),
               tabBarShowLabel: false
           }}
-      />
+        />
+      )}
+      
       <Tab.Screen 
           name="Logout" 
           children={() => <LogoutScreen logout={logout} navigation={navigation}/>} 
