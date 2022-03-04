@@ -17,6 +17,7 @@ router.get('/getReminder', async function (req, res, next) {
   res.status(200).json(results[0]);
 });
 
+//  GET all data for either single or recurring reminders
 router.get('/getReminderData', async function (req, res, next) {
   let { id } = req.query;
   let sql = `

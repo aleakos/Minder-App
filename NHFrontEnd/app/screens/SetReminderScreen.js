@@ -22,7 +22,6 @@ import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 import RecurringDates from '../components/RecurringDates';
 import DateTime from '../components/DateTime';
 import colors from '../config/colors';
-import icons from '../config/icons';
 
 const ReminderContent = ({ user }) => {
   const [startDate, setStartDate] = useState(new Date());
