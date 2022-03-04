@@ -58,6 +58,7 @@ const ReminderBadge = ({
     // do something like re route to the actual card - maybe pop a modal?
     // let time = moment(reminderTime).format('h:mm a');
     let time = tConvert(reminderTime);
+
     let id = reminder.ReminderID;
     if (user.role === 'patient') {
       navigation.navigate('AcceptReminderScreen', {
@@ -67,6 +68,8 @@ const ReminderBadge = ({
         iconColor,
         id,
         user,
+        reminderDate,
+        reminderTime,
       });
     } else {
       navigation.navigate('EditReminderScreen', {

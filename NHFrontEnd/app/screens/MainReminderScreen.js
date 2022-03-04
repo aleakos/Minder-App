@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, Platform, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Platform, StyleSheet, Text, View, StatusBar } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import moment from 'moment';
 import { Icon } from 'react-native-elements';
@@ -24,7 +24,19 @@ Notifications.setNotificationHandler({
 export default function MainReminderScreen({ navigation, user }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [loading, setLoading] = useState(false);
+<<<<<<< HEAD
   
+=======
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+  const [reminders, setReminders] = useState([]);
+  const [reminderDate, setReminderDate] = useState(new Date());
+  const isFocused = useIsFocused();  // true if this is the screen in focus for the app
+
+
+>>>>>>> b0bec65bb42ed27dfeceef470bad5ba7fbc8196e
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -37,9 +49,6 @@ export default function MainReminderScreen({ navigation, user }) {
     hideDatePicker();
   };
 
-  const [reminders, setReminders] = useState([]);
-  const [reminderDate, setReminderDate] = useState(new Date());
-
   const decrementDate = () => {
     setReminderDate(moment(reminderDate).subtract(1, 'days').toDate());
   };
@@ -48,7 +57,7 @@ export default function MainReminderScreen({ navigation, user }) {
     setReminderDate(moment(reminderDate).add(1, 'days').toDate());
   };
 
-  const isFocused = useIsFocused();
+
   useEffect(() => {
     getReminders();
   }, [reminderDate, isFocused]);
@@ -59,9 +68,13 @@ export default function MainReminderScreen({ navigation, user }) {
     let queryDate = moment(reminderDate).format('YYYY-MM-DD');
     let myIP = IPV4;
     let userID = user.UID;
+
+    // switch endpoint based on if caregiver or patient
+    let endpointName = user.role === 'caregiver' ? 'caregiverReminders' : 'getReminder'
+    let IdName = user.role === 'caregiver' ? 'caregiverID' : 'id'
     try {
       let res = await axios({
-        url: `http://${myIP}/getReminder?date=${queryDate}&id=${userID}`,
+        url: `http://${myIP}/${endpointName}?date=${queryDate}&${IdName}=${userID}`,
         method: 'get',
         headers: {},
       });
@@ -74,10 +87,6 @@ export default function MainReminderScreen({ navigation, user }) {
     setLoading(false);
   }
 
-  const [expoPushToken, setExpoPushToken] = useState('');
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
   useEffect(() => {
     registerForPushNotificationsAsync(user.UID).then((token) =>
       setExpoPushToken(token)
@@ -222,10 +231,10 @@ const styles = StyleSheet.create({
   },
   pageTitleContainer: {
     backgroundColor: colors.primary,
-    height: 90,
     alignItems: 'flex-end',
     justifyContent: 'center',
     flexDirection: 'row',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 20
   },
   titleContent: {
     flex: 1,

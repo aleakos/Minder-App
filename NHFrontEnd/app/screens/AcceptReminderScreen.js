@@ -1,20 +1,42 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native';
 import { Avatar } from 'react-native-paper';
 import colors from '../config/colors';
+import icons from '../config/icons';
 import axios from 'axios';
 import { IPV4 } from '@env';
+import moment from 'moment';
+import { Banner } from 'react-native-paper';
 
 const AcceptReminder = ({ navigation, route }) => {
-  const { time, reminderContent, icon, iconColor, id, user } = route.params;
+  const {
+    time,
+    reminderContent,
+    icon,
+    iconColor,
+    id,
+    user,
+    reminderDate,
+    reminderTime,
+  } = route.params;
+
+  const reminderDateTime = moment
+    .utc(reminderDate + ' ' + reminderTime)
+    .subtract(7, 'hours'); // convert to usable dateTime
+
+  const [visible, setVisible] = useState(moment().isBefore(reminderDateTime));
 
   const handleAccept = () => {
-    console.log(id);
-    // console.log(user.UID);
     async function acceptReminder(reminderId) {
       let myIP = IPV4;
       let userID = user.UID;
-      console.log(userID);
       try {
         let res = await axios({
           url: `http://${myIP}/accept?PatientID=${userID}&ReminderID=${reminderId}`,
@@ -29,30 +51,86 @@ const AcceptReminder = ({ navigation, route }) => {
     acceptReminder(id);
   };
 
+  //TODO lock the accept reminder if date + time in the future
+  //TODO need to pass in date - getting undefined
+
+  const renderButton = () => {
+    let now = moment();
+
+    if (icon === icons.complete) {
+      return (
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => {
+            navigation.navigate('Home');
+          }}
+        >
+          <Text style={styles.acceptText}>Back</Text>
+        </TouchableOpacity>
+      );
+    } else if (now.isAfter(reminderDateTime)) {
+      return (
+        <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
+          <Text style={styles.acceptText}>Accept</Text>
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity
+          style={styles.backButtonGrey}
+          onPress={() => {
+            navigation.navigate('Home');
+            console.log(reminderDateTime);
+          }}
+        >
+          <Text style={styles.acceptText}>Back</Text>
+        </TouchableOpacity>
+      );
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.timeText}>{time}</Text>
+    <>
+      {moment().isBefore(reminderDateTime) ? (
+        <Banner
+          visible={visible}
+          actions={[
+            {
+              label: 'Go Back',
+              onPress: () => navigation.navigate('Home'),
+            },
+            {
+              label: 'OK',
+              onPress: () => setVisible(false),
+            },
+          ]}
+          icon={() => (
+            <Avatar.Icon icon={icons.alert} backgroundColor={colors.caution} />
+          )}
+          style={{
+            paddingTop:
+              Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 20,
+          }}
+        >
+          This reminder is in the future and cannot be accepted.
+        </Banner>
+      ) : null}
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.timeText}>{time}</Text>
+        </View>
+        <View>
+          <Text style={styles.reminderText}>{reminderContent}</Text>
+        </View>
+        <Avatar.Icon
+          icon={icon}
+          backgroundColor={iconColor}
+          style={styles.iconCircle}
+          size={144}
+        />
+        {renderButton()}
       </View>
-      <View>
-        <Text style={styles.reminderText}>{reminderContent}</Text>
-      </View>
-      <Avatar.Icon
-        icon={icon}
-        backgroundColor={iconColor}
-        style={styles.iconCircle}
-        size={144}
-      />
-      <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
-        <Text style={styles.acceptText}>Accept</Text>
-      </TouchableOpacity>
-      {/* <TouchableOpacity
-        style={styles.acceptButton}
-        onPress={() => navigation.navigate("Home")}
-      >
-        <Text style={styles.acceptText}>Back</Text>
-      </TouchableOpacity> */}
-    </View>
+    </>
   );
 };
 
@@ -100,6 +178,24 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 100,
+  },
+  backButton: {
+    height: 120,
+    width: '75%',
+    backgroundColor: colors.primary,
+    padding: 10,
+    borderRadius: 10,
+    margin: 10,
+    justifyContent: 'center',
+  },
+  backButtonGrey: {
+    height: 120,
+    width: '75%',
+    backgroundColor: colors.grey,
+    padding: 10,
+    borderRadius: 10,
+    margin: 10,
+    justifyContent: 'center',
   },
 });
 

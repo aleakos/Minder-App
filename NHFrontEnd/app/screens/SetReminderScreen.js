@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
+
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import {
   TextInput,
@@ -13,13 +17,13 @@ import {
 } from 'react-native-paper';
 import axios from 'axios';
 import { IPV4 } from '@env';
+import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 
 import RecurringDates from '../components/RecurringDates';
 import DateTime from '../components/DateTime';
 import colors from '../config/colors';
-import icons from '../config/icons';
 
-const ReminderContent = () => {
+const ReminderContent = ({ user }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
@@ -34,6 +38,8 @@ const ReminderContent = () => {
 
   const [reminderContent, setReminderContent] = useState('');
   const [title, setTitle] = useState('');
+  const [reminderType, setReminderType] = useState('other');
+  const [patientID, setPatientID] = useState(null);
 
   const [recurring, setRecurring] = React.useState(false);
 
@@ -41,10 +47,28 @@ const ReminderContent = () => {
   const [dialogContent, setDialogContent] = React.useState('');
   const [dialogTitle, setDialogTitle] = React.useState('');
 
+  // get patient id from user id in db
+  useEffect(() => {
+    async function getPatientID() {
+      try {
+        let res = await axios({
+          url: `http://${IPV4}/getPatientID?caregiverID=${user.UID}`,
+          method: 'get',
+          headers: {},
+        });
+        setPatientID(res.data.PatientID);
+        console.log('patient id fetched:', res.data.PatientID);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    getPatientID();
+  }, []);
+
   // TODO un hardcode reminderType and patientID
 
   let reminderData = {
-    title: title,
+    title: reminderContent,
     recurring: recurring,
     description: reminderContent,
     recurringDates: {
@@ -61,9 +85,32 @@ const ReminderContent = () => {
     time: `${time.getHours()}:${
       (time.getMinutes() < 10 ? '0' : '') + time.getMinutes()
     }`,
-    patientID: 3,
-    reminderType: 'medication',
+    patientID: patientID,
+    reminderType: reminderType,
   };
+
+  let reminderTypeOptions = [
+    {
+      value: 'medication',
+      label: 'Medication',
+    },
+    {
+      value: 'appointment',
+      label: 'Appointment',
+    },
+    {
+      value: 'exercise',
+      label: 'Exercise',
+    },
+    {
+      value: 'diet',
+      label: 'Diet',
+    },
+    {
+      value: 'other',
+      label: 'Other',
+    },
+  ];
 
   const clearSate = () => {
     setStartDate(new Date());
@@ -78,6 +125,7 @@ const ReminderContent = () => {
     setSundays(false);
     setReminderContent('');
     setTitle('');
+    setRecurring(false);
   };
 
   const onToggleSwitch = () => setRecurring(!recurring);
@@ -88,12 +136,25 @@ const ReminderContent = () => {
   const handleSubmit = () => {
     if (title === '' || reminderContent === '') {
       setDialogTitle('Error');
-      setDialogContent('Please fill in title and instructions');
+      setDialogContent('Please fill in message to patient');
+      showDialog();
+    } else if (
+      recurring &&
+      mondays === false &&
+      tuesdays === false &&
+      wednesdays === false &&
+      thursdays === false &&
+      fridays === false &&
+      saturdays === false &&
+      sundays === false
+    ) {
+      setDialogTitle('Error');
+      setDialogContent('Please select at least one day for recurring events');
       showDialog();
     } else {
-      var data = JSON.stringify(reminderData);
+      let data = JSON.stringify(reminderData);
       let myIP = IPV4;
-      var config = {
+      let config = {
         method: 'post',
         url: `http://${myIP}/newReminder`,
         headers: {
@@ -125,21 +186,22 @@ const ReminderContent = () => {
         </Appbar.Header>
         <View style={styles.innerContainer}>
           <View style={styles.textBox}>
-            <Text style={styles.textTitle}>Push Notification Message:</Text>
+            <Text style={styles.textTitle}>Message To Patient:</Text>
             <TextInput
               label="Message"
               mode="outlined"
               multiline={false}
-              value={title}
-              onChangeText={(e) => setTitle(e)}
-            />
-            <Text style={styles.textTitle}>Detailed Instructions:</Text>
-            <TextInput
-              label="Detailed Instructions"
-              mode="outlined"
-              multiline={true}
               value={reminderContent}
-              onChangeText={(e) => setReminderContent(e)}
+              onChangeText={(e) => {
+                setReminderContent(e);
+                setTitle(e);
+              }}
+            />
+            <Dropdown
+              label="Reminder Type"
+              data={reminderTypeOptions}
+              onChangeText={(e) => setReminderType(e)}
+              value={reminderType}
             />
             <View style={styles.checkContainer}>
               <Text style={styles.textTitle}>Recurring Event:</Text>
@@ -185,13 +247,6 @@ const ReminderContent = () => {
             <Dialog visible={visibleDialog} onDismiss={hideDialog}>
               <Dialog.Title>{dialogTitle}</Dialog.Title>
               <Dialog.Content>
-                <Avatar.Icon
-                  size={50}
-                  icon={dialogTitle === 'Error' ? icons.alert : icons.complete}
-                  backgroundColor={
-                    dialogTitle === 'Error' ? colors.caution : colors.accept
-                  }
-                />
                 <Paragraph>{dialogContent}</Paragraph>
               </Dialog.Content>
               <Dialog.Actions>
