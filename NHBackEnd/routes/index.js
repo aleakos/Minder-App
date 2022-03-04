@@ -199,9 +199,16 @@ router.put('/deleteSingleReminder', async function (req, res, next) {
 });
 
 router.put('/deleteRecurringReminder', async function (req, res, next) {
-  let { recurringID } = req.query;
-  let sql = 'UPDATE REMINDER SET Deleted = 1 WHERE RecurringID = ?';
-  const results = await db.promise().query(sql, [recurringID]);
+  let { reminderID } = req.query;
+  let sql = `
+  UPDATE REMINDER AS A, 
+  (SELECT RecurringID FROM REMINDER WHERE ReminderID = ?) AS B
+  SET A.Deleted = 1
+  WHERE A.RecurringID = B.RecurringID;
+`;
+  // let sql = 'UPDATE REMINDER SET Deleted = 1 WHERE RecurringID = ?';
+  const results = await db.promise().query(sql, [reminderID]);
+  console.log(results);
   res.status(200).send({ msg: 'deleted recurring reminder' });
 });
 

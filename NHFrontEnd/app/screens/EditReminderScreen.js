@@ -43,6 +43,8 @@ const EditReminderContent = ({ navigation, route }) => {
   const [patientID, setPatientID] = useState(null);
 
   const [recurring, setRecurring] = React.useState(false);
+  // this will make it so the recurring slider gets rendered
+  const [canRecur, setCanRecur] = React.useState(false);
 
   const [visibleDialog, setVisibleDialog] = React.useState(false);
   const [dialogContent, setDialogContent] = React.useState('');
@@ -71,6 +73,7 @@ const EditReminderContent = ({ navigation, route }) => {
         setReminderType(res.data.ReminderType);
         setPatientID(res.data.PatientID);
         res.data.RecurringID ? setRecurring(true) : setRecurring(false);
+        res.data.RecurringID ? setCanRecur(true) : setCanRecur(false);
         res.data.Monday ? setMondays(true) : setMondays(false);
         res.data.Tuesday ? setTuesdays(true) : setTuesdays(false);
         res.data.Wednesday ? setWednesdays(true) : setWednesdays(false);
@@ -226,10 +229,13 @@ const EditReminderContent = ({ navigation, route }) => {
               onChangeText={(e) => setReminderType(e)}
               value={reminderType}
             />
-            <View style={styles.checkContainer}>
-              <Text style={styles.textTitle}>Recurring Event:</Text>
-              <Switch value={recurring} onValueChange={onToggleSwitch} />
-            </View>
+            {canRecur ? (
+              <View style={styles.checkContainer}>
+                <Text style={styles.textTitle}>Edit All Recurring Events:</Text>
+                <Switch value={recurring} onValueChange={onToggleSwitch} />
+              </View>
+            ) : null}
+
             <Text style={styles.textTitle}>Set Schedule:</Text>
             <DateTime
               recurring={recurring}
