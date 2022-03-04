@@ -19,17 +19,25 @@ const DateTime = ({
   const [showTimeAndroid, setShowTimeAndroid] = useState(false);
   const [showStartDateAndroid, setShowStartDateAndroid] = useState(false);
   const [showEndDateAndroid, setShowEndDateAndroid] = useState(false);
+  const [chosenReminderDate, setChosenReminderDate] = useState(null)
+
+
+  useEffect(()=>{
+    let x = recurring? startDate.toDateString() : initialReminderDate.toDateString()
+    setChosenReminderDate(x)
+  },[])
 
   useEffect(() => {
-    console.log(time)
+
     setStartDate(startDate);
     setEndDate(endDate);
-    setTime(time);
+
   }, [startDate, endDate, time]);
 
   const saveStartDate = (event, selectedDate) => {
     const currentDate = selectedDate || startDate;
     setStartDate(currentDate);
+    setChosenReminderDate(currentDate.toDateString())
     console.log(selectedDate + 'IS THE SELECTED DATE')
     console.log(currentDate);
     console.log(endDate);
@@ -105,7 +113,8 @@ const DateTime = ({
                   alignSelf: 'center',
                 }}
               >
-                {recurring? startDate.toDateString() : initialReminderDate.toDateString()}
+                {/*{recurring? startDate.toDateString() : initialReminderDate.toDateString()}*/}
+                {chosenReminderDate}
               </Text>
             )}
           />
