@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, Platform, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Platform, StyleSheet, Text, View, StatusBar } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import moment from 'moment';
 import { Icon } from 'react-native-elements';
@@ -222,10 +222,10 @@ const styles = StyleSheet.create({
   },
   pageTitleContainer: {
     backgroundColor: colors.primary,
-    height: 90,
     alignItems: 'flex-end',
     justifyContent: 'center',
     flexDirection: 'row',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 20
   },
   titleContent: {
     flex: 1,
