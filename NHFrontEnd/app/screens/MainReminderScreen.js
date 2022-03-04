@@ -24,9 +24,6 @@ Notifications.setNotificationHandler({
 export default function MainReminderScreen({ navigation, user }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [loading, setLoading] = useState(false);
-<<<<<<< HEAD
-  
-=======
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
@@ -36,7 +33,6 @@ export default function MainReminderScreen({ navigation, user }) {
   const isFocused = useIsFocused();  // true if this is the screen in focus for the app
 
 
->>>>>>> b0bec65bb42ed27dfeceef470bad5ba7fbc8196e
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
