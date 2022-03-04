@@ -119,13 +119,21 @@ export default function MainReminderScreen({ navigation, user }) {
         // let icon = 'pill';
 
         //COMMENT OUT FOR PRODUCTION
-
+        let time = reminderTime
+        let id = reminderID
         navigation.navigate('AcceptReminderScreen', {
-          reminderTime,
+          time,
           reminderContent,
           icon,
           iconColor,
+          id,
+          user,
+          reminderDate,
+          reminderTime,
         });
+
+        console.log(user + id)
+
       });
 
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
@@ -152,11 +160,18 @@ export default function MainReminderScreen({ navigation, user }) {
         // let icon = 'pill';
 
         // COMMENT OUT FOR PRODUCTION
+
+        let time = reminderTime
+        let id = reminderID
         navigation.navigate('AcceptReminderScreen', {
-          reminderTime,
+          time,
           reminderContent,
           icon,
           iconColor,
+          id,
+          user,
+          reminderDate,
+          reminderTime,
         });
       });
 

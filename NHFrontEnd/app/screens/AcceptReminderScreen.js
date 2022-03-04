@@ -43,6 +43,7 @@ const AcceptReminder = ({ navigation, route }) => {
           method: 'put',
           headers: {},
         });
+        console.log(res)
         navigation.navigate('Home');
       } catch (err) {
         console.error(err);
@@ -69,13 +70,7 @@ const AcceptReminder = ({ navigation, route }) => {
           <Text style={styles.acceptText}>Back</Text>
         </TouchableOpacity>
       );
-    } else if (now.isAfter(reminderDateTime)) {
-      return (
-        <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
-          <Text style={styles.acceptText}>Accept</Text>
-        </TouchableOpacity>
-      );
-    } else {
+    } else if (now.isBefore(reminderDateTime)) {
       return (
         <TouchableOpacity
           style={styles.backButtonGrey}
@@ -85,6 +80,12 @@ const AcceptReminder = ({ navigation, route }) => {
           }}
         >
           <Text style={styles.acceptText}>Back</Text>
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
+          <Text style={styles.acceptText}>Accept</Text>
         </TouchableOpacity>
       );
     }
