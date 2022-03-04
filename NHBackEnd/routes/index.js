@@ -17,6 +17,17 @@ router.get('/getReminder', async function (req, res, next) {
   res.status(200).json(results[0]);
 });
 
+router.get('/recurringReminder', async function (req, res, next) {
+  let { id } = req.query;
+  let sql = `
+  SELECT * FROM RECURRINGREMINDER RR
+  JOIN REMINDER R ON R.RecurringID = RR.RecurringID
+  WHERE R.ReminderID = ?;
+  `;
+  const results = await db.promise().query(sql, [id]);
+  res.status(200).json(results[0][0]);
+});
+
 /* GET all reminders for specific date for a specific caregiver */
 router.get('/caregiverReminders', async function (req, res, next) {
   let { date, caregiverID } = req.query;
