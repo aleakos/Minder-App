@@ -181,6 +181,9 @@ const EditReminderContent = ({ navigation, route }) => {
         data: data,
       };
 
+      //TODO DELETE OLD REMINDERS
+      //TODO do we want to be able to edit a single reminder within a recurring event?
+
       axios(config)
         .then(function (response) {
           console.log(JSON.stringify(response.data));
