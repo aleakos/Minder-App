@@ -100,8 +100,7 @@ export default function MainReminderScreen({ navigation, user }) {
         setNotification(notification);
 
         // UNCOMMENT FOR PRODUCTION
-        let reminderTile = notification.request.content.title;
-        let reminderContent = notification.request.content.body;
+        let reminderContent = notification.request.content.title;
         let data = notification.request.content.data;
 
         let reminderID = data.reminderID;
@@ -112,7 +111,6 @@ export default function MainReminderScreen({ navigation, user }) {
 
         let iconColor = colors.primary;
 
-        //COMMENT OUT FOR PRODUCTION
         let time = reminderTime;
         let id = reminderID;
         navigation.navigate('AcceptReminderScreen', {
@@ -132,8 +130,7 @@ export default function MainReminderScreen({ navigation, user }) {
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        let reminderTile = response.notification.request.content.title;
-        let reminderContent = response.notification.request.content.body;
+        let reminderContent = response.notification.request.content.title;
         let data = response.notification.request.content.data;
 
         let reminderID = data.reminderID;

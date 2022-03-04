@@ -3,15 +3,12 @@ const fetch = (...args) =>
 
 const moment = require('moment');
 
-const EXPO_CODE = 'ExponentPushToken[LeeHIYOY4XXC6yOa5e4lx6]'; // alex
-
 async function sendPushNotification(reminderObject) {
   console.log('sendPushNotification', reminderObject);
   const message = {
     to: reminderObject.ExpoToken,
     sound: 'default',
     title: reminderObject.ReminderTitle,
-    body: reminderObject.ReminderContent,
     data: {
       reminderID: reminderObject.ReminderID,
       reminderType: reminderObject.ReminderType,
