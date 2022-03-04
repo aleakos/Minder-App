@@ -63,7 +63,6 @@ const AcceptReminder = ({ navigation, route }) => {
           style={styles.backButton}
           onPress={() => {
             navigation.navigate('Home');
-            console.log(reminderDateTime);
           }}
         >
           <Text style={styles.acceptText}>Back</Text>
@@ -92,28 +91,30 @@ const AcceptReminder = ({ navigation, route }) => {
 
   return (
     <>
-      <Banner
-        visible={visible}
-        actions={[
-          {
-            label: 'Go Back',
-            onPress: () => navigation.navigate('Home'),
-          },
-          {
-            label: 'OK',
-            onPress: () => setVisible(false),
-          },
-        ]}
-        icon={() => (
-          <Avatar.Icon icon={icons.alert} backgroundColor={colors.caution} />
-        )}
-        style={{
-          paddingTop:
-            Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 20,
-        }}
-      >
-        This reminder is in the future and cannot be accepted.
-      </Banner>
+      {moment().isBefore(reminderDateTime) ? (
+        <Banner
+          visible={visible}
+          actions={[
+            {
+              label: 'Go Back',
+              onPress: () => navigation.navigate('Home'),
+            },
+            {
+              label: 'OK',
+              onPress: () => setVisible(false),
+            },
+          ]}
+          icon={() => (
+            <Avatar.Icon icon={icons.alert} backgroundColor={colors.caution} />
+          )}
+          style={{
+            paddingTop:
+              Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 20,
+          }}
+        >
+          This reminder is in the future and cannot be accepted.
+        </Banner>
+      ) : null}
       <View style={styles.container}>
         <View>
           <Text style={styles.timeText}>{time}</Text>
