@@ -17,7 +17,7 @@ router.get('/getReminder', async function (req, res, next) {
   res.status(200).json(results[0]);
 });
 
-router.get('/recurringReminder', async function (req, res, next) {
+router.get('/getReminderData', async function (req, res, next) {
   let { id } = req.query;
   let sql = `
   SELECT * FROM RECURRINGREMINDER RR
@@ -25,6 +25,13 @@ router.get('/recurringReminder', async function (req, res, next) {
   WHERE R.ReminderID = ?;
   `;
   const results = await db.promise().query(sql, [id]);
+  if (results[0].length === 0) {
+    let sqlSequel = `
+    SELECT * FROM REMINDER WHERE ReminderID = ?;
+    `;
+    const resultsSequel = await db.promise().query(sqlSequel, [id]);
+    res.status(200).json(resultsSequel[0][0]);
+  }
   res.status(200).json(results[0][0]);
 });
 
