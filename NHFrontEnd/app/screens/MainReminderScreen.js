@@ -110,17 +110,11 @@ export default function MainReminderScreen({ navigation, user }) {
         let reminderDate = data.reminderDate;
         let icon = icons[reminderType];
 
-        // UNCOMMENT FOR PRODUCTION
         let iconColor = colors.primary;
 
         //COMMENT OUT FOR PRODUCTION
-        // let reminderTime = moment(new Date()).format('h:mm a');
-        // let reminderContent = 'asdf1';
-        // let icon = 'pill';
-
-        //COMMENT OUT FOR PRODUCTION
-        let time = reminderTime
-        let id = reminderID
+        let time = reminderTime;
+        let id = reminderID;
         navigation.navigate('AcceptReminderScreen', {
           time,
           reminderContent,
@@ -132,15 +126,12 @@ export default function MainReminderScreen({ navigation, user }) {
           reminderTime,
         });
 
-        console.log(user + id)
-
+        console.log(user + id);
       });
 
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        // UNCOMMENT FOR PRODUCTION
-
         let reminderTile = response.notification.request.content.title;
         let reminderContent = response.notification.request.content.body;
         let data = response.notification.request.content.data;
@@ -151,18 +142,10 @@ export default function MainReminderScreen({ navigation, user }) {
         let reminderDate = data.reminderDate;
         let icon = icons[reminderType];
 
-        // UNCOMMENT FOR PRODUCTION
-
         let iconColor = colors.primary;
-        // COMMENT OUT FOR PRODUCTION
-        // let reminderTime = moment(new Date()).format('h:mm a');
-        // let reminderContent = 'asdf2';
-        // let icon = 'pill';
 
-        // COMMENT OUT FOR PRODUCTION
-
-        let time = reminderTime
-        let id = reminderID
+        let time = reminderTime;
+        let id = reminderID;
         navigation.navigate('AcceptReminderScreen', {
           time,
           reminderContent,
