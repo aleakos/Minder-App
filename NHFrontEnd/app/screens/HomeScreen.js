@@ -33,7 +33,14 @@ export default function HomeScreen({ navigation, logout, user }) {
       />
       <Tab.Screen 
           name="CreateReminders" 
-          children={() => <SetReminderScreen user={user} navigation={navigation}/>} 
+          children={() => <SetReminderScreen user={user} navigation={navigation}/>}
+          listeners={{
+            tabPress: (e) => {
+              if(user.role != "caregiver"){
+                e.preventDefault();
+              }
+            }
+          }}
           options={{ 
               headerShown: false, 
               tabBarIcon: () => (

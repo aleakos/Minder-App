@@ -5,16 +5,19 @@ import colors from '../config/colors';
 import axios from 'axios';
 import { IPV4 } from '@env';
 
-const AcceptReminder = ({ navigation, route, user }) => {
-  const { time, reminderContent, icon, iconColor, id } = route.params;
+const AcceptReminder = ({ navigation, route }) => {
+  const { time, reminderContent, icon, iconColor, id, user } = route.params;
 
   const handleAccept = () => {
+    console.log(id);
+    // console.log(user.UID);
     async function acceptReminder(reminderId) {
       let myIP = IPV4;
-      // let userID = user.UID;
+      let userID = user.UID;
+      console.log(userID);
       try {
         let res = await axios({
-          url: `http://${myIP}/accept?PatientID=3&ReminderID=${reminderId}`,
+          url: `http://${myIP}/accept?PatientID=${userID}&ReminderID=${reminderId}`,
           method: 'put',
           headers: {},
         });
