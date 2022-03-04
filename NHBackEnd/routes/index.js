@@ -17,13 +17,43 @@ router.get('/getReminder', async function (req, res, next) {
   res.status(200).json(results[0])
 })
 
+//  GET all data for either single or recurring reminders
+router.get('/getReminderData', async function (req, res, next) {
+  try {
+    let { id } = req.query
+    let sql = `
+  SELECT * FROM RECURRINGREMINDER RR
+  JOIN REMINDER R ON R.RecurringID = RR.RecurringID
+  WHERE R.ReminderID = ?
+  ORDER BY R.TimeOfDay;
+  `
+    const results = await db.promise().query(sql, [id])
+    if (results[0].length === 0) {
+      let sqlSequel = `
+    SELECT * FROM REMINDER WHERE ReminderID = ?;
+    `
+      const resultsSequel = await db.promise().query(sqlSequel, [id])
+      res.status(200).json(resultsSequel[0][0])
+    } else {
+      res.status(200).json(results[0][0])
+    }
+  } catch (err) {
+    res.status(500).json({ error: err })
+    console.log(err)
+  }
+})
+
 /* GET all reminders for specific date for a specific caregiver */
 router.get('/caregiverReminders', async function (req, res, next) {
   let { date, caregiverID } = req.query
-  let sql =
-    'SELECT * FROM nursinghackathon.reminder as r ' +
-    'LEFT JOIN nursinghackathon.caregiver as c ON c.PatientID = r.PatientID ' +
-    'WHERE c.CaregiverID=? AND r.ReminderDate=? AND r.Deleted=0;'
+  let sql = `
+    SELECT * FROM REMINDER as r 
+    LEFT JOIN CAREGIVER as c ON c.PatientID = r.PatientID
+    WHERE c.CaregiverID=? 
+    AND r.ReminderDate=? 
+    AND r.Deleted=0
+    ORDER BY r.TimeOfDay;
+    `
   const results = await db.promise().query(sql, [caregiverID, date])
   res.status(200).json(results[0])
 })
@@ -31,9 +61,9 @@ router.get('/caregiverReminders', async function (req, res, next) {
 /* GET patientID as a caregiverID */
 router.get('/getPatientID', async function (req, res, next) {
   let { caregiverID } = req.query
-  let sql = 'SELECT * FROM nursinghackathon.caregiver WHERE CaregiverID = ?;'
+  let sql = 'SELECT PatientID FROM CAREGIVER WHERE CaregiverID = ?;'
   const results = await db.promise().query(sql, [caregiverID])
-  res.status(200).json(results[0])
+  res.status(200).json(results[0][0])
 })
 
 /* CREATE new reminder */
@@ -122,6 +152,7 @@ async function insertRecurringReminder (reminder) {
 
 //helper function to insert single reminder into DB
 async function insertMultiReminder (reminder, date, recurringID) {
+  console.log('CALLING INSERT MUILTI REMIDER')
   let sql = `
       INSERT INTO REMINDER (
       PatientID, 
@@ -178,9 +209,16 @@ router.put('/deleteSingleReminder', async function (req, res, next) {
 })
 
 router.put('/deleteRecurringReminder', async function (req, res, next) {
-  let { recurringID } = req.query
-  let sql = 'UPDATE REMINDER SET Deleted = 1 WHERE RecurringID = ?'
-  const results = await db.promise().query(sql, [recurringID])
+  let { reminderID } = req.query
+  let sql = `
+  UPDATE REMINDER AS A, 
+  (SELECT RecurringID FROM REMINDER WHERE ReminderID = ?) AS B
+  SET A.Deleted = 1
+  WHERE A.RecurringID = B.RecurringID;
+`
+  // let sql = 'UPDATE REMINDER SET Deleted = 1 WHERE RecurringID = ?';
+  const results = await db.promise().query(sql, [reminderID])
+  console.log(results)
   res.status(200).send({ msg: 'deleted recurring reminder' })
 })
 
@@ -190,6 +228,7 @@ router.put('/accept', async function (req, res, next) {
   let sql =
     'UPDATE REMINDER SET Dismissed = 1 WHERE PatientID = ? AND ReminderID = ?'
   const results = await db.promise().query(sql, [PatientID, ReminderID])
+  console.log(results[0])
   res.status(200).json(results[0])
 })
 
@@ -198,6 +237,7 @@ router.put('/updateToken', async function (req, res, next) {
   let { token, uid } = req.query
   let sql = 'UPDATE APPUSER SET ExpoToken = ? WHERE UID = ?'
   const results = await db.promise().query(sql, [token, uid])
+  console.log(results[0])
   res.status(200).json(results[0])
 })
 
