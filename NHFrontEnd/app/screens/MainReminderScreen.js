@@ -24,7 +24,7 @@ Notifications.setNotificationHandler({
 export default function MainReminderScreen({ navigation, user }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
