@@ -218,7 +218,7 @@ export default function MainReminderScreen({ navigation, user }) {
         {reminders.length > 0 && (
           // <Text>{reminders[0]["ReminderTitle"]}</Text>
           <FlatList
-            data={reminders}
+            data={reminders.sort((a,b) => (a.TimeOfDay > b.TimeOfDay) ? 1 : ((b.TimeOfDay > a.TimeOfDay) ? -1 : 0))}
             keyExtractor={(item) => item.ReminderID}
             renderItem={({ item }) => (
               <ReminderBadge
