@@ -29,6 +29,7 @@ const DateTime = ({
 
   useEffect(() => {
     setStartDate(startDateTruth);
+    console.log(startDateTruth);
     let x = recurring
       ? startDate.toDateString()
       : initialReminderDate.toDateString();

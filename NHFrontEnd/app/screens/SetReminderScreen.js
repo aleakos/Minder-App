@@ -22,12 +22,11 @@ import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 import RecurringDates from '../components/RecurringDates';
 import DateTime from '../components/DateTime';
 import colors from '../config/colors';
-import moment from "moment";
+import moment from 'moment';
 
 const ReminderContent = ({ user }) => {
-
   // let now = moment(new Date()).local().subtract(7, 'hours').toDate();
-  let now = new Date()
+  let now = new Date();
   const [startDate, setStartDate] = useState(now);
   const [endDate, setEndDate] = useState(now);
   const [time, setTime] = useState(now);
@@ -220,7 +219,10 @@ const ReminderContent = ({ user }) => {
               setEndDate={setEndDate}
               time={time}
               setTime={setTime}
-              initialReminderDate={new moment(new Date()).local().subtract(7, 'hours').toDate()}
+              initialReminderDate={new moment(new Date())
+                .local()
+                .subtract(7, 'hours')
+                .toDate()}
             />
             {recurring ? (
               <Text style={styles.textTitle}>Days Scheduled:</Text>

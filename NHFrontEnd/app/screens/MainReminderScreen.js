@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, Platform, StyleSheet, Text, View, StatusBar } from 'react-native';
+import {
+  FlatList,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+} from 'react-native';
 import * as Notifications from 'expo-notifications';
 import moment from 'moment';
 import { Icon } from 'react-native-elements';
@@ -30,8 +37,7 @@ export default function MainReminderScreen({ navigation, user }) {
   const responseListener = useRef();
   const [reminders, setReminders] = useState([]);
   const [reminderDate, setReminderDate] = useState(new Date());
-  const isFocused = useIsFocused();  // true if this is the screen in focus for the app
-
+  const isFocused = useIsFocused(); // true if this is the screen in focus for the app
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -53,7 +59,6 @@ export default function MainReminderScreen({ navigation, user }) {
     setReminderDate(moment(reminderDate).add(1, 'days').toDate());
   };
 
-
   useEffect(() => {
     getReminders();
   }, [reminderDate, isFocused]);
@@ -66,8 +71,9 @@ export default function MainReminderScreen({ navigation, user }) {
     let userID = user.UID;
 
     // switch endpoint based on if caregiver or patient
-    let endpointName = user.role === 'caregiver' ? 'caregiverReminders' : 'getReminder'
-    let IdName = user.role === 'caregiver' ? 'caregiverID' : 'id'
+    let endpointName =
+      user.role === 'caregiver' ? 'caregiverReminders' : 'getReminder';
+    let IdName = user.role === 'caregiver' ? 'caregiverID' : 'id';
     try {
       let res = await axios({
         url: `http://${myIP}/${endpointName}?date=${queryDate}&${IdName}=${userID}`,
@@ -174,7 +180,7 @@ export default function MainReminderScreen({ navigation, user }) {
               onPress={decrementDate}
             />
             <Text style={styles.pageTitle}>
-              {moment(reminderDate).format('MMMM Do YYYY')}
+              {moment(reminderDate).format('ddd MMMM Do YYYY')}
             </Text>
             <Icon
               name="right"
@@ -230,7 +236,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     flexDirection: 'row',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 20
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 20,
   },
   titleContent: {
     flex: 1,
