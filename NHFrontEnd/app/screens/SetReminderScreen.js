@@ -220,6 +220,7 @@ const ReminderContent = ({ user }) => {
               setEndDate={setEndDate}
               time={time}
               setTime={setTime}
+              initialReminderDate={new moment(new Date()).local().subtract(7, 'hours').toDate()}
             />
             {recurring ? (
               <Text style={styles.textTitle}>Days Scheduled:</Text>

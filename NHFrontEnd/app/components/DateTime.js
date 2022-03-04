@@ -23,10 +23,8 @@ const DateTime = ({
   useEffect(() => {
     console.log(time)
     setStartDate(startDate);
-    // console.log("START DATE FROM THE DATEIME COMPONENT IS" + startDate)
     setEndDate(endDate);
     setTime(time);
-    console.log(new moment(initialReminderDate).toDate()+ "IS THIS INITIAL REMINDER DATE")
   }, [startDate, endDate, time]);
 
   const saveStartDate = (event, selectedDate) => {
