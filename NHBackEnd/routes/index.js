@@ -190,7 +190,6 @@ router.put('/accept', async function (req, res, next) {
   let sql =
     'UPDATE REMINDER SET Dismissed = 1 WHERE PatientID = ? AND ReminderID = ?'
   const results = await db.promise().query(sql, [PatientID, ReminderID])
-  console.log(results[0])
   res.status(200).json(results[0])
 })
 
@@ -199,7 +198,6 @@ router.put('/updateToken', async function (req, res, next) {
   let { token, uid } = req.query
   let sql = 'UPDATE APPUSER SET ExpoToken = ? WHERE UID = ?'
   const results = await db.promise().query(sql, [token, uid])
-  console.log(results[0])
   res.status(200).json(results[0])
 })
 
