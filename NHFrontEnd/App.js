@@ -7,53 +7,55 @@ import AcceptReminder from './app/screens/AcceptReminderScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setStatusBarHidden } from 'expo-status-bar';
 import EditReminderContent from './app/screens/EditReminderScreen';
-
+import SetReminderScreen from './app/screens/SetReminderScreen';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-
   const [user, setUser] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
 
   let login = () => {
     setAuthenticated(true);
-  }
+  };
 
   let logout = () => {
     setAuthenticated(false);
-  }
+  };
 
   let getUser = async () => {
-    try{
+    try {
       const response = await AsyncStorage.getItem('user');
       setUser(JSON.parse(response));
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
     getUser();
   }, [authenticated]);
 
   return user ? (
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home" screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Home" logout={logout}>
-            {props => <HomeScreen {...props} logout={logout} user={user} />}
-          </Stack.Screen>
-          
-          <Stack.Screen name="AcceptReminderScreen" component={AcceptReminder} />
-          <Stack.Screen name="EditReminderScreen" component={EditReminderContent} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    )
-    :
-    (
-      <LoginScreen login={login} />
-    )
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="Home" logout={logout}>
+          {(props) => <HomeScreen {...props} logout={logout} user={user} />}
+        </Stack.Screen>
 
+        <Stack.Screen name="AcceptReminderScreen" component={AcceptReminder} />
+        <Stack.Screen
+          name="EditReminderScreen"
+          component={EditReminderContent}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  ) : (
+    <LoginScreen login={login} />
+  );
 }
 
 // async function registerForPushNotificationsAsync() {
@@ -90,33 +92,33 @@ export default function App() {
 // }
 
 // const [expoPushToken, setExpoPushToken] = useState('');
-  // const [notification, setNotification] = useState(false);
-  // const notificationListener = useRef();
-  // const responseListener = useRef();
-  // useEffect(() => {
-  //   registerForPushNotificationsAsync().then((token) =>
-  //     setExpoPushToken(token)
-  //   );
-  //
-  //   // This listener is fired whenever a notification is received while the app is foregrounded
-  //   notificationListener.current =
-  //     Notifications.addNotificationReceivedListener((notification) => {
-  //       setNotification(notification);
-  //       console.log(notification)
-  //     });
-  //
-  //   // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-  //   responseListener.current =
-  //     Notifications.addNotificationResponseReceivedListener((response) => {
-  //       console.log(response);
-  //     });
-  //
-  //
-  //
-  //   return () => {
-  //     Notifications.removeNotificationSubscription(
-  //       notificationListener.current
-  //     );
-  //     Notifications.removeNotificationSubscription(responseListener.current);
-  //   };
-  // }, []);
+// const [notification, setNotification] = useState(false);
+// const notificationListener = useRef();
+// const responseListener = useRef();
+// useEffect(() => {
+//   registerForPushNotificationsAsync().then((token) =>
+//     setExpoPushToken(token)
+//   );
+//
+//   // This listener is fired whenever a notification is received while the app is foregrounded
+//   notificationListener.current =
+//     Notifications.addNotificationReceivedListener((notification) => {
+//       setNotification(notification);
+//       console.log(notification)
+//     });
+//
+//   // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+//   responseListener.current =
+//     Notifications.addNotificationResponseReceivedListener((response) => {
+//       console.log(response);
+//     });
+//
+//
+//
+//   return () => {
+//     Notifications.removeNotificationSubscription(
+//       notificationListener.current
+//     );
+//     Notifications.removeNotificationSubscription(responseListener.current);
+//   };
+// }, []);
