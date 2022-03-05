@@ -16,7 +16,7 @@ export default function HomeScreen({ navigation, logout, user }) {
     <Tab.Navigator 
       initialRouteName="ViewReminders"
       screenOptions={{
-        tabBarStyle: {height: 80},
+        tabBarStyle: {height: 105},
         tabBarActiveTintColor: '#000000',
       }}
       >
@@ -28,7 +28,9 @@ export default function HomeScreen({ navigation, logout, user }) {
               tabBarIcon: () => (
                 <Icon name="time-outline" type={'ionicon'} size={48}/>
               ),
-              tabBarShowLabel: false
+              tabBarShowLabel: true,
+              tabBarLabel: "View",
+              tabBarLabelStyle: {fontSize: 18, color: colors.black}
           }}
       />
       {user.role === "caregiver" && (
@@ -47,7 +49,9 @@ export default function HomeScreen({ navigation, logout, user }) {
               tabBarIcon: () => (
                 <Icon name="add-circle-outline" type={'ionicon'} size={48}/>
               ),
-              tabBarShowLabel: false
+              tabBarShowLabel: true,
+              tabBarLabel: "Create",
+              tabBarLabelStyle: {fontSize: 18, color: colors.black}
           }}
         />
       )}
@@ -60,7 +64,9 @@ export default function HomeScreen({ navigation, logout, user }) {
               tabBarIcon: () => (
                 <Icon name="log-out-outline" type={'ionicon'} size={48}/>
               ),
-              tabBarShowLabel: false
+              tabBarShowLabel: false,
+              tabBarLabel: "Logout",
+              tabBarLabelStyle: {fontSize: 18, color: colors.black}
           }}
       />
     </Tab.Navigator>

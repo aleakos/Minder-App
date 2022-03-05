@@ -27,11 +27,12 @@ const AcceptReminder = ({ navigation, route }) => {
     reminderTime,
   } = route.params;
 
-  const reminderDateTime = moment
-    .utc(reminderDate + ' ' + reminderTime)
-    .subtract(7, 'hours'); // convert to usable dateTime
+  const reminderDateTime = moment.utc(reminderDate + ' ' + reminderTime);
+  // .subtract(7, 'hours'); // convert to usable dateTime
 
-  const [visible, setVisible] = useState(moment().isBefore(reminderDateTime));
+  const [visible, setVisible] = useState(
+    moment(new Date()).local().subtract(7, 'hours').isBefore(reminderDateTime)
+  );
 
   const handleAccept = () => {
     async function acceptReminder(reminderId) {
@@ -43,6 +44,7 @@ const AcceptReminder = ({ navigation, route }) => {
           method: 'put',
           headers: {},
         });
+        console.log(res);
         navigation.navigate('Home');
       } catch (err) {
         console.error(err);
@@ -55,7 +57,8 @@ const AcceptReminder = ({ navigation, route }) => {
   //TODO need to pass in date - getting undefined
 
   const renderButton = () => {
-    let now = moment();
+    // let now = moment();
+    let now = moment(new Date()).local().subtract(7, 'hours');
 
     if (icon === icons.complete) {
       return (
@@ -68,13 +71,7 @@ const AcceptReminder = ({ navigation, route }) => {
           <Text style={styles.acceptText}>Back</Text>
         </TouchableOpacity>
       );
-    } else if (now.isAfter(reminderDateTime)) {
-      return (
-        <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
-          <Text style={styles.acceptText}>Accept</Text>
-        </TouchableOpacity>
-      );
-    } else {
+    } else if (now.isBefore(reminderDateTime)) {
       return (
         <TouchableOpacity
           style={styles.backButtonGrey}
@@ -86,30 +83,39 @@ const AcceptReminder = ({ navigation, route }) => {
           <Text style={styles.acceptText}>Back</Text>
         </TouchableOpacity>
       );
+    } else {
+      return (
+        <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
+          <Text style={styles.acceptText}>Done</Text>
+        </TouchableOpacity>
+      );
     }
   };
 
+  // {
+  //   label: 'OK',
+  //   onPress: () => setVisible(false),
+  // },
+  // {
+  //   label: 'Go Back',
+  //   onPress: () => navigation.navigate('Home'),
+  // },
+
   return (
     <>
-      {moment().isBefore(reminderDateTime) ? (
+      {moment(new Date())
+        .local()
+        .subtract(7, 'hours')
+        .isBefore(reminderDateTime) ? (
         <Banner
           visible={visible}
-          actions={[
-            {
-              label: 'Go Back',
-              onPress: () => navigation.navigate('Home'),
-            },
-            {
-              label: 'OK',
-              onPress: () => setVisible(false),
-            },
-          ]}
+          actions={[]}
           icon={() => (
             <Avatar.Icon icon={icons.alert} backgroundColor={colors.caution} />
           )}
           style={{
             paddingTop:
-              Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 20,
+              Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 50,
           }}
         >
           This reminder is in the future and cannot be accepted.

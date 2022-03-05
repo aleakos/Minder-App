@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, Platform, StyleSheet, Text, View, StatusBar } from 'react-native';
+import {
+  FlatList,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+} from 'react-native';
 import * as Notifications from 'expo-notifications';
 import moment from 'moment';
 import { Icon } from 'react-native-elements';
@@ -30,8 +37,7 @@ export default function MainReminderScreen({ navigation, user }) {
   const responseListener = useRef();
   const [reminders, setReminders] = useState([]);
   const [reminderDate, setReminderDate] = useState(new Date());
-  const isFocused = useIsFocused();  // true if this is the screen in focus for the app
-
+  const isFocused = useIsFocused(); // true if this is the screen in focus for the app
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -53,7 +59,6 @@ export default function MainReminderScreen({ navigation, user }) {
     setReminderDate(moment(reminderDate).add(1, 'days').toDate());
   };
 
-
   useEffect(() => {
     getReminders();
   }, [reminderDate, isFocused]);
@@ -66,8 +71,9 @@ export default function MainReminderScreen({ navigation, user }) {
     let userID = user.UID;
 
     // switch endpoint based on if caregiver or patient
-    let endpointName = user.role === 'caregiver' ? 'caregiverReminders' : 'getReminder'
-    let IdName = user.role === 'caregiver' ? 'caregiverID' : 'id'
+    let endpointName =
+      user.role === 'caregiver' ? 'caregiverReminders' : 'getReminder';
+    let IdName = user.role === 'caregiver' ? 'caregiverID' : 'id';
     try {
       let res = await axios({
         url: `http://${myIP}/${endpointName}?date=${queryDate}&${IdName}=${userID}`,
@@ -94,8 +100,7 @@ export default function MainReminderScreen({ navigation, user }) {
         setNotification(notification);
 
         // UNCOMMENT FOR PRODUCTION
-        let reminderTile = notification.request.content.title;
-        let reminderContent = notification.request.content.body;
+        let reminderContent = notification.request.content.title;
         let data = notification.request.content.data;
 
         let reminderID = data.reminderID;
@@ -104,31 +109,28 @@ export default function MainReminderScreen({ navigation, user }) {
         let reminderDate = data.reminderDate;
         let icon = icons[reminderType];
 
-        // UNCOMMENT FOR PRODUCTION
         let iconColor = colors.primary;
 
-        //COMMENT OUT FOR PRODUCTION
-        // let reminderTime = moment(new Date()).format('h:mm a');
-        // let reminderContent = 'asdf1';
-        // let icon = 'pill';
-
-        //COMMENT OUT FOR PRODUCTION
-
+        let time = reminderTime;
+        let id = reminderID;
         navigation.navigate('AcceptReminderScreen', {
-          reminderTime,
+          time,
           reminderContent,
           icon,
           iconColor,
+          id,
+          user,
+          reminderDate,
+          reminderTime,
         });
+
+        console.log(user + id);
       });
 
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        // UNCOMMENT FOR PRODUCTION
-
-        let reminderTile = response.notification.request.content.title;
-        let reminderContent = response.notification.request.content.body;
+        let reminderContent = response.notification.request.content.title;
         let data = response.notification.request.content.data;
 
         let reminderID = data.reminderID;
@@ -137,20 +139,19 @@ export default function MainReminderScreen({ navigation, user }) {
         let reminderDate = data.reminderDate;
         let icon = icons[reminderType];
 
-        // UNCOMMENT FOR PRODUCTION
-
         let iconColor = colors.primary;
-        // COMMENT OUT FOR PRODUCTION
-        // let reminderTime = moment(new Date()).format('h:mm a');
-        // let reminderContent = 'asdf2';
-        // let icon = 'pill';
 
-        // COMMENT OUT FOR PRODUCTION
+        let time = reminderTime;
+        let id = reminderID;
         navigation.navigate('AcceptReminderScreen', {
-          reminderTime,
+          time,
           reminderContent,
           icon,
           iconColor,
+          id,
+          user,
+          reminderDate,
+          reminderTime,
         });
       });
 
@@ -174,7 +175,7 @@ export default function MainReminderScreen({ navigation, user }) {
               onPress={decrementDate}
             />
             <Text style={styles.pageTitle}>
-              {moment(reminderDate).format('MMMM Do YYYY')}
+              {moment(reminderDate).format('ddd MMMM Do YYYY')}
             </Text>
             <Icon
               name="right"
@@ -197,7 +198,7 @@ export default function MainReminderScreen({ navigation, user }) {
         {reminders.length > 0 && (
           // <Text>{reminders[0]["ReminderTitle"]}</Text>
           <FlatList
-            data={reminders}
+            data={reminders.sort((a,b) => (a.TimeOfDay > b.TimeOfDay) ? 1 : ((b.TimeOfDay > a.TimeOfDay) ? -1 : 0))}
             keyExtractor={(item) => item.ReminderID}
             renderItem={({ item }) => (
               <ReminderBadge
@@ -230,7 +231,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     flexDirection: 'row',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 20
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 50,
   },
   titleContent: {
     flex: 1,

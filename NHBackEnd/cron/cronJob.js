@@ -4,10 +4,9 @@ const fetch = (...args) =>
 const cron = require('node-cron');
 const moment = require('moment');
 
-const sendPushNotification = require('./pushToken');
 const getRemindersForPatient = require('./reminders');
 
-cron.schedule('* * * * *', function () {
+cron.schedule('* * * * * *', function () {
   console.log('running a task every minute');
   getRemindersForPatient().then(() => {
     console.log('getRemindersForPatient ran');

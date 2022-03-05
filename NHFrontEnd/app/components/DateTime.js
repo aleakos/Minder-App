@@ -4,6 +4,7 @@ import { Button, List } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import colors from '../config/colors';
+import moment from 'moment';
 
 const DateTime = ({
   recurring,
@@ -13,20 +14,33 @@ const DateTime = ({
   setStartDate,
   setEndDate,
   setTime,
+  initialReminderDate,
 }) => {
   const [showTimeAndroid, setShowTimeAndroid] = useState(false);
   const [showStartDateAndroid, setShowStartDateAndroid] = useState(false);
   const [showEndDateAndroid, setShowEndDateAndroid] = useState(false);
+  const [chosenReminderDate, setChosenReminderDate] = useState(null);
+  const [startDateTruth, setStartDateTruth] = useState(startDate);
 
   useEffect(() => {
     setStartDate(startDate);
     setEndDate(endDate);
-    setTime(time);
   }, [startDate, endDate, time]);
+
+  useEffect(() => {
+    setStartDate(startDateTruth);
+    console.log(startDateTruth);
+    let x = recurring
+      ? startDate.toDateString()
+      : initialReminderDate.toDateString();
+    setChosenReminderDate(x);
+  }, [recurring]);
 
   const saveStartDate = (event, selectedDate) => {
     const currentDate = selectedDate || startDate;
     setStartDate(currentDate);
+    setChosenReminderDate(currentDate.toDateString());
+    console.log(selectedDate + 'IS THE SELECTED DATE');
     console.log(currentDate);
     console.log(endDate);
     console.log(currentDate > endDate);
@@ -101,7 +115,8 @@ const DateTime = ({
                   alignSelf: 'center',
                 }}
               >
-                {startDate.toDateString()}
+                {/*{recurring? startDate.toDateString() : initialReminderDate.toDateString()}*/}
+                {chosenReminderDate}
               </Text>
             )}
           />

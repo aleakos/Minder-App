@@ -21,12 +21,17 @@ import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 import RecurringDates from '../components/RecurringDates';
 import DateTime from '../components/DateTime';
 import colors from '../config/colors';
+import moment from "moment";
 
 const EditReminderContent = ({ navigation, route }) => {
   const { id } = route.params;
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [time, setTime] = useState(new Date());
+  const initialReminderDate = moment(route.params.reminderDate).toDate()
+
+  // let now = new Date()
+  let now = moment(new Date()).local().subtract(7, 'hours').toDate();
+  const [startDate, setStartDate] = useState(now);
+  const [endDate, setEndDate] = useState(now);
+  const [time, setTime] = useState(now);
 
   const [mondays, setMondays] = useState(false);
   const [tuesdays, setTuesdays] = useState(false);
@@ -64,6 +69,8 @@ const EditReminderContent = ({ navigation, route }) => {
         console.log('res.data');
         console.log(JSON.stringify(res.data));
 
+
+
         let hours = res.data.TimeOfDay.split(':')[0];
         let minutes = res.data.TimeOfDay.split(':')[1];
         let timeOfDay = new Date(new Date().setHours(hours, minutes, 0, 0));
@@ -76,6 +83,8 @@ const EditReminderContent = ({ navigation, route }) => {
         } else {
           setStartDate(new Date(res.data.ReminderDate));
           setEndDate(new Date(res.data.ReminderDate));
+          // console.log(startDate + "IS THE  START DATE")
+          // console.log(new Date(res.data.ReminderDate))
         }
         setReminderContent(res.data.ReminderContent);
         setTitle(res.data.Title);
@@ -256,6 +265,7 @@ const EditReminderContent = ({ navigation, route }) => {
             <DateTime
               recurring={recurring}
               startDate={startDate}
+              initialReminderDate={initialReminderDate}
               setStartDate={setStartDate}
               endDate={endDate}
               setEndDate={setEndDate}
