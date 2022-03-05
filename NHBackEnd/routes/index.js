@@ -152,7 +152,7 @@ async function insertRecurringReminder (reminder) {
 
 //helper function to insert single reminder into DB
 async function insertMultiReminder (reminder, date, recurringID) {
-  console.log('CALLING INSERT MUILTI REMIDER')
+  console.log('CALLING INSERT MUILTI REMINDER')
   let sql = `
       INSERT INTO REMINDER (
       PatientID, 
