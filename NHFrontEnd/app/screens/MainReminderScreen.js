@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     flexDirection: 'row',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 20,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 50,
   },
   titleContent: {
     flex: 1,

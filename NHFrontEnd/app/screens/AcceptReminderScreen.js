@@ -27,11 +27,12 @@ const AcceptReminder = ({ navigation, route }) => {
     reminderTime,
   } = route.params;
 
-  const reminderDateTime = moment
-    .utc(reminderDate + ' ' + reminderTime)
-    // .subtract(7, 'hours'); // convert to usable dateTime
+  const reminderDateTime = moment.utc(reminderDate + ' ' + reminderTime);
+  // .subtract(7, 'hours'); // convert to usable dateTime
 
-  const [visible, setVisible] = useState(moment(new Date()).local().subtract(7, 'hours').isBefore(reminderDateTime));
+  const [visible, setVisible] = useState(
+    moment(new Date()).local().subtract(7, 'hours').isBefore(reminderDateTime)
+  );
 
   const handleAccept = () => {
     async function acceptReminder(reminderId) {
@@ -43,7 +44,7 @@ const AcceptReminder = ({ navigation, route }) => {
           method: 'put',
           headers: {},
         });
-        console.log(res)
+        console.log(res);
         navigation.navigate('Home');
       } catch (err) {
         console.error(err);
@@ -93,7 +94,10 @@ const AcceptReminder = ({ navigation, route }) => {
 
   return (
     <>
-      {moment(new Date()).local().subtract(7, 'hours').isBefore(reminderDateTime) ? (
+      {moment(new Date())
+        .local()
+        .subtract(7, 'hours')
+        .isBefore(reminderDateTime) ? (
         <Banner
           visible={visible}
           actions={[
@@ -111,7 +115,7 @@ const AcceptReminder = ({ navigation, route }) => {
           )}
           style={{
             paddingTop:
-              Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 20,
+              Platform.OS === 'android' ? StatusBar.currentHeight + 3 : 50,
           }}
         >
           This reminder is in the future and cannot be accepted.
