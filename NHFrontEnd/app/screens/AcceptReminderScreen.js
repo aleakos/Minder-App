@@ -86,11 +86,20 @@ const AcceptReminder = ({ navigation, route }) => {
     } else {
       return (
         <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
-          <Text style={styles.acceptText}>Accept</Text>
+          <Text style={styles.acceptText}>Done</Text>
         </TouchableOpacity>
       );
     }
   };
+
+  // {
+  //   label: 'OK',
+  //   onPress: () => setVisible(false),
+  // },
+  // {
+  //   label: 'Go Back',
+  //   onPress: () => navigation.navigate('Home'),
+  // },
 
   return (
     <>
@@ -100,16 +109,7 @@ const AcceptReminder = ({ navigation, route }) => {
         .isBefore(reminderDateTime) ? (
         <Banner
           visible={visible}
-          actions={[
-            {
-              label: 'Go Back',
-              onPress: () => navigation.navigate('Home'),
-            },
-            {
-              label: 'OK',
-              onPress: () => setVisible(false),
-            },
-          ]}
+          actions={[]}
           icon={() => (
             <Avatar.Icon icon={icons.alert} backgroundColor={colors.caution} />
           )}
