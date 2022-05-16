@@ -50,4 +50,4 @@ FrontEnd:
 ### MySQL database relational schema
 <img src="https://github.com/zachfrena/MinderApp/blob/main/Images/dataBaseSchema.JPG" width="800"/>
 
-Contributers: [Graydon Hall](https://github.com/GraydonHall42), [Alex Leakos](https://github.com/aleakos), [Jared Kraus](https://github.com/JaredKraus), [Zach Frena](https://github.com/zachfrena), and [Deylin Yiao](https://github.com/dyiao),
+Contributers: [Alex Leakos](https://github.com/aleakos), [Graydon Hall](https://github.com/GraydonHall42), [Jared Kraus](https://github.com/JaredKraus), [Zach Frena](https://github.com/zachfrena), and [Deylin Yiao](https://github.com/dyiao),
